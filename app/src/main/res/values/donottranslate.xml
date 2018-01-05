@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--App Fonts-->
+    <string name="font_regular">fonts/calibri_regular.ttf</string>
+    <string name="font_italic">fonts/calibri_italic.ttf</string>
+    <string name="font_bold">fonts/calibri_bold.ttf</string>
+    <string name="font_bold_italic">fonts/calibri_bolditalic.ttf</string>
+
+    <!--Project Id-->
+    <string name="project_id">248122013856</string>
+
+    <!--API KEY-->
+    <string name="api_key">AIzaSyBRuQhIhdljo9U1uKf10tvRTIsd94zV9cQ</string>
+
+    <!--Facebook App Id-->
+    <string name="facebook_app_id">685162578332868</string>
+
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="MyCustomWidget">
+        <attr name="fontStyle" format="enum">
+            <enum name="regular" value="1"/>
+            <enum name="italic" value="2"/>
+            <enum name="bold" value="3"/>
+            <enum name="bold_italic" value="4"/>
+        </attr>
+    </declare-styleable>
+</resources>
