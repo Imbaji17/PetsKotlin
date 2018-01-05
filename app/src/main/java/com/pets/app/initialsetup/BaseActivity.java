@@ -7,11 +7,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.pets.app.R;
 
@@ -56,6 +61,39 @@ public class BaseActivity extends AppCompatActivity {
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         mFrameLayout.addView(layoutInflater.inflate(layoutResID, null));
+    }
+
+    /**
+     * Initialize Toolbar
+     */
+    private void initializeToolbar(String cmgString) {
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            TextView tvToolbar = toolbar.findViewById(R.id.toolbar_title);
+            tvToolbar.setText(cmgString);
+            setSupportActionBar(toolbar);
+        }
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.back));
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     protected void showProgressBar() {
