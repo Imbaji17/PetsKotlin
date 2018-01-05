@@ -2,14 +2,12 @@ package com.pets.app.initialsetup
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.pets.app.R
-
 import kotlinx.android.synthetic.main.activity_splash_screen.*
 
-class SplashScreenActivity : AppCompatActivity() {
+class SplashScreenActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +18,8 @@ class SplashScreenActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
+
+        showProgressBar()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -52,7 +52,7 @@ public class CheckBoxPlus extends AppCompatCheckBox {
                     setTypeface(MyApplication.fontBold);
                     break;
                 case 4:
-                    setTypeface(MyApplication.fontBoldItalic);
+                    setTypeface(MyApplication.fontLight);
                     break;
                 default:
                     setTypeface(MyApplication.fontRegular);

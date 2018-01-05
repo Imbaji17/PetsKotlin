@@ -52,38 +52,37 @@ public class BaseActivity extends AppCompatActivity {
 
         mFrameLayout = findViewById(R.id.frame_layout);
         mProgressBar = findViewById(R.id.rel_progress_bar);
+        mProgressBar.setClickable(true);
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         mFrameLayout.addView(layoutInflater.inflate(layoutResID, null));
     }
 
-    public void showProgressBar() {
-
+    protected void showProgressBar() {
         mProgressBar.setVisibility(View.VISIBLE);
         mFrameLayout.setClickable(false);
     }
 
-    public void hideProgressBar() {
-
+    protected void hideProgressBar() {
         mProgressBar.setVisibility(View.GONE);
         mFrameLayout.setClickable(true);
     }
 
-    public void showProgressDialog() {
+    protected void showProgressDialog() {
         mProgressDialog = new ProgressDialog(BaseActivity.this);
         mProgressDialog.setMessage(getString(R.string.please_wait));
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
     }
 
-    public void showProgressDialog(String msg) {
+    protected void showProgressDialog(String msg) {
         mProgressDialog = new ProgressDialog(BaseActivity.this);
         mProgressDialog.setMessage(msg);
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
     }
 
-    public void hideProgressDialogue() {
+    protected void hideProgressDialogue() {
         if (mProgressDialog != null)
             mProgressDialog.dismiss();
     }

@@ -3,7 +3,6 @@ package com.pets.app.widgets;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.pets.app.R;
 import com.pets.app.app.MyApplication;
@@ -49,7 +48,7 @@ public class TextViewPlus extends android.support.v7.widget.AppCompatTextView {
                     setTypeface(MyApplication.fontBold);
                     break;
                 case 4:
-                    setTypeface(MyApplication.fontBoldItalic);
+                    setTypeface(MyApplication.fontLight);
                     break;
                 default:
                     setTypeface(MyApplication.fontRegular);

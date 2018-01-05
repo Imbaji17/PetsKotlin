@@ -7,21 +7,21 @@ import android.util.AttributeSet;
 import com.pets.app.R;
 import com.pets.app.app.MyApplication;
 
-public class Button extends android.support.v7.widget.AppCompatButton {
+public class ButtonPlus extends android.support.v7.widget.AppCompatButton {
 
     private TypedArray a = null;
 
-    public Button(Context context) {
+    public ButtonPlus(Context context) {
         super(context);
         init(null, 0);
     }
 
-    public Button(Context context, AttributeSet attrs) {
+    public ButtonPlus(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
 
-    public Button(Context context, AttributeSet attrs, int defStyle) {
+    public ButtonPlus(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
@@ -48,7 +48,7 @@ public class Button extends android.support.v7.widget.AppCompatButton {
                     setTypeface(MyApplication.fontBold);
                     break;
                 case 4:
-                    setTypeface(MyApplication.fontBoldItalic);
+                    setTypeface(MyApplication.fontLight);
                     break;
                 default:
                     setTypeface(MyApplication.fontRegular);

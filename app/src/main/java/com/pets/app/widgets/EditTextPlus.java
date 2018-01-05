@@ -58,7 +58,7 @@ public class EditTextPlus extends android.support.v7.widget.AppCompatEditText {
                     setTypeface(MyApplication.fontBold);
                     break;
                 case 4:
-                    setTypeface(MyApplication.fontBoldItalic);
+                    setTypeface(MyApplication.fontLight);
                     break;
                 default:
                     setTypeface(MyApplication.fontRegular);

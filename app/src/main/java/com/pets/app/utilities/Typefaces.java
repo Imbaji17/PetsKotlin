@@ -12,10 +12,10 @@ import java.util.Hashtable;
 public class Typefaces {
 
     private static final String TAG = Typefaces.class.getSimpleName();
-    public static final String FONT_REGULAR = "fonts/calibri_regular.ttf";
-    public static final String FONT_ITALIC = "fonts/calibri_italic.ttf";
-    public static final String FONT_BOLD = "fonts/calibri_bold.ttf";
-    public static final String FONT_BOLD_ITALIC = "fonts/calibri_bolditalic.ttf";
+    public static final String FONT_REGULAR = "fonts/Lato-Regular.ttf";
+    public static final String FONT_ITALIC = "fonts/Lato-Italic.ttf";
+    public static final String FONT_BOLD = "fonts/Lato-Bold.ttf";
+    public static final String FONT_LIGHT = "fonts/Lato-Light.ttf";
 
     private static final Hashtable<String, Typeface> cache = new Hashtable<String, Typeface>();
 

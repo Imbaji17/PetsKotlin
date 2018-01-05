@@ -28,7 +28,7 @@ public class MyApplication extends MultiDexApplication {
     public static Typeface fontRegular;
     public static Typeface fontItalic;
     public static Typeface fontBold;
-    public static Typeface fontBoldItalic;
+    public static Typeface fontLight;
 
     @Override
     public void onCreate() {
@@ -67,7 +67,7 @@ public class MyApplication extends MultiDexApplication {
         fontRegular = Typefaces.get(getApplicationContext(), Typefaces.FONT_REGULAR);
         fontItalic = Typefaces.get(getApplicationContext(), Typefaces.FONT_ITALIC);
         fontBold = Typefaces.get(getApplicationContext(), Typefaces.FONT_BOLD);
-        fontBoldItalic = Typefaces.get(getApplicationContext(), Typefaces.FONT_BOLD_ITALIC);
+        fontLight = Typefaces.get(getApplicationContext(), Typefaces.FONT_LIGHT);
     }
 
     private void printHashKey() {
