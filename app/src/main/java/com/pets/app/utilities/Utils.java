@@ -2,11 +2,9 @@ package com.pets.app.utilities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
-import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
@@ -74,6 +72,10 @@ public class Utils {
         return matcher.matches();
     }
 
+    public static boolean isEmailValidDefault(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
     public static boolean getConnectionStatus(Context context) {
 
         ConnectivityManager mConnectivityManager;
@@ -105,64 +107,6 @@ public class Utils {
         if (imm.isAcceptingText()) {
             imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
         }
-    }
-
-    public static void showDialogWithOkAndCancel(Context context, String message, DialogInterface.OnClickListener onClickListener) {
-        if (context instanceof Activity && !checkIfActivityIsRunning((Activity) context)) {
-            return;
-        }
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setTitle(MyApplication.getInstance().getString(R.string.app_name))
-                .setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton(MyApplication.getInstance().getString(R.string.ok), onClickListener)
-                .setNegativeButton(MyApplication.getInstance().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
-    }
-
-    public static void showDialogWithYesAndNo(Context context, String message, DialogInterface.OnClickListener onClickListener) {
-        if (context instanceof Activity && !checkIfActivityIsRunning((Activity) context)) {
-            return;
-        }
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setTitle(MyApplication.getInstance().getString(R.string.app_name))
-                .setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton(MyApplication.getInstance().getString(R.string.yes), onClickListener)
-                .setNegativeButton(MyApplication.getInstance().getString(R.string.no), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
-    }
-
-    public static void showDialogWithOkButton(Context context, String message) {
-        if (context instanceof Activity && !checkIfActivityIsRunning((Activity) context)) {
-            return;
-        }
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setTitle(MyApplication.getInstance().getString(R.string.app_name))
-                .setMessage(message)
-                .setCancelable(false)
-                .setNeutralButton(MyApplication.getInstance().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .show();
-    }
-
-    public static boolean checkIfActivityIsRunning(Activity activity) {
-        if (activity.isFinishing()) {
-            return false;
-        }
-        return !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed());
     }
 
     public static <T> T getResponse(String result, Class<?> cls) {

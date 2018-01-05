@@ -1,9 +1,7 @@
-package com.pets.app.utilities;
+package com.pets.app.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import com.pets.app.app.MyApplication;
 
 /**
  * Created by BAJIRAO on 05 January 2018.

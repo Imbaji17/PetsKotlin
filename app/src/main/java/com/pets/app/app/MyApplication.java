@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Typeface;
+import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.util.Base64;
@@ -35,6 +36,8 @@ public class MyApplication extends MultiDexApplication {
         super.onCreate();
         mInstance = this;
         new WebView(this).destroy();
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         ApplicationLifecycleHandler handler = new ApplicationLifecycleHandler(getApplicationContext());
         registerActivityLifecycleCallbacks(handler);
         registerComponentCallbacks(handler);
