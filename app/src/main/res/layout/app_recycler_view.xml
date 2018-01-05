@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none"/>
+
+    <LinearLayout
+        android:id="@+id/linLoadMore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/dimen_size_2"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="@dimen/dimen_size_20"
+            android:layout_height="@dimen/dimen_size_20"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/dimen_size_2"
+            android:layout_marginRight="@dimen/dimen_size_2"/>
+
+        <com.pets.app.widgets.TextViewPlus
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dimen_size_2"
+            android:layout_marginStart="@dimen/dimen_size_2"
+            android:text="@string/loading"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_12"
+            app:fontStyle="regular"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/llForOfflineScreen"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <com.pets.app.widgets.TextViewPlus
+        android:id="@+id/tvErrorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dimen_size_15"
+        android:layout_marginRight="@dimen/dimen_size_15"
+        android:gravity="center"
+        android:text="@string/internet_connection_has_been_lost"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text_size_14"
+        app:fontStyle="regular"/>
+
+    <com.pets.app.widgets.ButtonPlus
+        android:id="@+id/btnRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_size_40"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dimen_size_20"
+        android:background="@color/colorPrimary"
+        android:text="@string/retry"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_14"
+        app:fontStyle="regular"/>
+</LinearLayout>
