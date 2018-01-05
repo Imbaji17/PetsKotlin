@@ -13,7 +13,7 @@
         <!-- To change the background of options menu-->
         <item name="android:itemBackground">@color/white</item>
         <!-- To change text color of action menu-->
-        <item name="actionMenuTextColor">@color/text_color</item>
+        <item name="actionMenuTextColor">@color/colorAccent</item>
     </style>
 
     <bool name="abc_config_actionMenuItemAllCaps">false</bool>

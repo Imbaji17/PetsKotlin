@@ -3,4 +3,16 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--App Colors-->
+    <color name="white">#ffffffff</color>
+    <color name="white_fade">#F0F0F0</color>
+    <color name="black">#34383a</color>
+    <color name="grey">#a0a2a5</color>
+    <color name="light_grey">#eff2f4</color>
+    <color name="dark_grey">#515151</color>
+    <color name="blue_facebook">#3B5999</color>
+    <color name="blue_linked_in">#0177B5</color>
+    <color name="green">#17AF26</color>
+    <color name="orange">#EF9B0F</color>
 </resources>
