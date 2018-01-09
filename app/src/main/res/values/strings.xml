@@ -23,4 +23,6 @@
     <string name="login">Login</string>
     <string name="or">OR</string>
     <string name="continue_with_social_media">Continue with Social media</string>
+    <string name="title_activity_forgot_password">"Forgot Password "</string>
+    <string name="title_activity_sign_up">Sign Up</string>
 </resources>

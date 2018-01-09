@@ -1,12 +1,12 @@
 package com.pets.app.initialsetup
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.*
 import com.pets.app.R
 
-class LoginActivity : AppCompatActivity(), View.OnClickListener {
+class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private var edtEmail: EditText? = null
     private var edtPassword: EditText? = null
@@ -51,19 +51,24 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
 
             R.id.tvForgotPassword -> {
-
+                val signUp = Intent(this, ForgotPasswordActivity::class.java)
+                startActivity(signUp)
             }
             R.id.btnLogin -> {
-
+                val signUp = Intent(this, SignUpActivity::class.java)
+                startActivity(signUp)
             }
             R.id.tvSignUp -> {
-
+                val signUp = Intent(this, SignUpActivity::class.java)
+                startActivity(signUp)
             }
             R.id.imgFacebook -> {
-
+                val signUp = Intent(this, SignUpActivity::class.java)
+                startActivity(signUp)
             }
             R.id.imgInstagram -> {
-
+                val signUp = Intent(this, SignUpActivity::class.java)
+                startActivity(signUp)
             }
         }
     }
