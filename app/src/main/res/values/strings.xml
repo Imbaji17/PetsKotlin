@@ -15,4 +15,12 @@
     <string name="no_result_found">No result found</string>
 
     <string name="title_activity_login">LoginActivity</string>
+    <string name="please_login_to_continue">Please login to continue</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="login">Login</string>
+    <string name="or">OR</string>
+    <string name="continue_with_social_media">Continue with Social media</string>
 </resources>
