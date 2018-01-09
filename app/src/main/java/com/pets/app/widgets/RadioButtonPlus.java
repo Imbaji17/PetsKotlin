@@ -6,7 +6,7 @@ import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 
 import com.pets.app.R;
-import com.pets.app.app.MyApplication;
+import com.pets.app.common.MyApplication;
 
 /**
  * Created by BAJIRAO on 05 January 2018.

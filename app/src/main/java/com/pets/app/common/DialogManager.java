@@ -1,4 +1,4 @@
-package com.pets.app.app;
+package com.pets.app.common;
 
 import android.app.Activity;
 import android.content.Context;

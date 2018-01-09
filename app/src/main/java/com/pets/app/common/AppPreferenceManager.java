@@ -1,4 +1,4 @@
-package com.pets.app.app;
+package com.pets.app.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;

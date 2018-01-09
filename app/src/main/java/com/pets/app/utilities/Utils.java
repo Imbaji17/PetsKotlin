@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.pets.app.R;
-import com.pets.app.app.MyApplication;
+import com.pets.app.common.MyApplication;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

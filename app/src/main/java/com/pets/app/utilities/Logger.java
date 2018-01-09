@@ -2,7 +2,7 @@ package com.pets.app.utilities;
 
 import android.util.Log;
 
-import com.pets.app.app.Constants;
+import com.pets.app.common.Constants;
 
 
 /**

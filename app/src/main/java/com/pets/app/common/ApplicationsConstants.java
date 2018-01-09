@@ -1,4 +1,4 @@
-package com.pets.app.app;
+package com.pets.app.common;
 
 public class ApplicationsConstants {
 

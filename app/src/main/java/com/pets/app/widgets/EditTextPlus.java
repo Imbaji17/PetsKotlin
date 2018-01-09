@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.pets.app.R;
-import com.pets.app.app.MyApplication;
+import com.pets.app.common.MyApplication;
 import com.pets.app.interfaces.DrawableClickListener;
 
 public class EditTextPlus extends android.support.v7.widget.AppCompatEditText {

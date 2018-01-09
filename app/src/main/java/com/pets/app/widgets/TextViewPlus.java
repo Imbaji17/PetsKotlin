@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import com.pets.app.R;
-import com.pets.app.app.MyApplication;
+import com.pets.app.common.MyApplication;
 
 public class TextViewPlus extends android.support.v7.widget.AppCompatTextView {
 
