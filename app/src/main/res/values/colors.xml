@@ -15,4 +15,9 @@
     <color name="blue_linked_in">#0177B5</color>
     <color name="green">#17AF26</color>
     <color name="orange">#EF9B0F</color>
+
+    <color name="start_color">#1EBB68</color>
+    <color name="centre_color">#44C566</color>
+    <color name="end_color">#72dd63</color>
+
 </resources>
