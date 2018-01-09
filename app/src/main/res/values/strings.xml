@@ -13,4 +13,6 @@
     <string name="please_check_internet_connection">Please check internet connection</string>
     <string name="internet_connection_has_been_lost">It seems the internet connection has been lost. Please retry when your connection returns.</string>
     <string name="no_result_found">No result found</string>
+
+    <string name="title_activity_login">LoginActivity</string>
 </resources>

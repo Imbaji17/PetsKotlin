@@ -64,7 +64,7 @@ public class DialogManager {
                 .show();
     }
 
-    public static boolean checkIfActivityIsRunning(Activity activity) {
+    private static boolean checkIfActivityIsRunning(Activity activity) {
         if (activity.isFinishing()) {
             return false;
         }
