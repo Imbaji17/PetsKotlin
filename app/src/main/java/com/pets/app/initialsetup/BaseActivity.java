@@ -1,7 +1,6 @@
 package com.pets.app.initialsetup;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,11 +25,10 @@ import com.pets.app.R;
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
-    protected Activity mActivity;
-    private ProgressDialog mProgressDialog;
     protected RelativeLayout mProgressBar;
-    private FrameLayout mFrameLayout;
     protected boolean isDataChanged;
+    private ProgressDialog mProgressDialog;
+    private FrameLayout mFrameLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
