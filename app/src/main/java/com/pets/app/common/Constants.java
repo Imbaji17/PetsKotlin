@@ -6,9 +6,11 @@ package com.pets.app.common;
 public class Constants {
 
     public static final String PREFERENCE_FILE = "PetsApp";
-        public static final String API_BASE_URL = "http://34.199.202.75/pets/api/";
+    public static final String API_BASE_URL = "http://34.199.202.75/pets/api/PetsApi/";
 //    public static final String API_BASE_URL = "http://192.168.2.195/pets/api/";
     public static final String TIME_STAMP_KEY = "$P#H!N@X%TR!";
     public static final String SPACE = " ";
+    public static final int SUCCESS = 200;
+    public static final String DEVICE_TYPE = "ANDROID";
     public static boolean isInDebugMode = true;
 }

@@ -57,7 +57,7 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
     private fun getHostelList() {
 
         val timeStamp = TimeStamp.getTimeStamp()
-        val key = TimeStamp.getNewMd5(timeStamp + "10" + Constants.TIME_STAMP_KEY)
+        val key = TimeStamp.getMd5(timeStamp + "10" + Constants.TIME_STAMP_KEY)
 
 //        @Field("key") String key, @Field("keyword") String keyword, @Field("language_code") String languageCode, @Field("lat") String lat, @Field("lng") String lng, @Field("next_offset") String next_offset, @Field("timestamp") String timestamp, @Field("user_id") String user_id
 

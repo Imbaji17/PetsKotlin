@@ -5,12 +5,15 @@ package com.pets.app.common;
  */
 public class Enums {
 
+    public enum Language {
+        EN
+    }
+
     public enum SocialType {
         FACEBOOK, LINKED_IN
     }
 
     public enum BroadCastAction {
-
         PROFILE_UPDATE
     }
 }

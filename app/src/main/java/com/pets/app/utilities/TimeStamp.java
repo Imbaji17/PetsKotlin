@@ -20,7 +20,7 @@ public class TimeStamp {
         return Long.toString(currentTimestamp);
     }
 
-    public static String getMd5(String cmgString) {
+    public static String getNewMd5(String cmgString) {
 
         cmgString += Constants.TIME_STAMP_KEY + getTimeStamp();
         try {
@@ -54,7 +54,7 @@ public class TimeStamp {
         return "";
     }
 
-    public static String getNewMd5(String cmgString) {
+    public static String getMd5(String cmgString) {
 
         try {
             // Create MD5 Hash

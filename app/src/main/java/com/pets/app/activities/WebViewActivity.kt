@@ -32,7 +32,7 @@ class WebViewActivity : BaseActivity() {
         viewFlipper!!.displayedChild = 1
 
         btnTry!!.setOnClickListener(View.OnClickListener {
-            Utils.showToast(this.getString(R.string.no_internet))
+            Utils.showToast(this.getString(R.string.device_is_offline))
         })
     }
 }
