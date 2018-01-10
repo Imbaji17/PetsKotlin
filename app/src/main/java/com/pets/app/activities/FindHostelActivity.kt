@@ -84,8 +84,8 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
                                 e.printStackTrace()
                             }
                         }
-                        setNoResult()
                     }
+                    setNoResult()
                 }
 
                 override fun onFailure(call: Call<FindHostelResponse>, t: Throwable) {
