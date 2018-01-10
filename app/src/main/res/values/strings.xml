@@ -31,4 +31,7 @@
     <string name="contact">Contact</string>
     <string name="location">Location</string>
     <string name="register">Register</string>
+    <string name="i_accept">I Accept</string>
+    <string name="terms_and_conditions">Terms &amp; Conditions</string>
+    <string name="already_account">Already Account</string>
 </resources>
