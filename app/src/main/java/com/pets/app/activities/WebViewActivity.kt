@@ -28,5 +28,7 @@ class WebViewActivity : BaseActivity() {
         btnTry = findViewById(R.id.btnRetry)
 
         viewFlipper!!.displayedChild = 1
+
+        btnTry
     }
 }
