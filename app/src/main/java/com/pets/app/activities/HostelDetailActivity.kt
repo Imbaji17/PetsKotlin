@@ -11,20 +11,21 @@ import com.pets.app.R
 
 class HostelDetailActivity : AppCompatActivity() {
 
-    var viewPager: ViewPager? = null
-    var tvName: TextView? = null
-    var ratingBar: RatingBar? = null
-    var tvReview: TextView? = null
-    var llContactPerson: LinearLayout? = null
-    var tvContactPerson: TextView? = null
-    var llContact: LinearLayout? = null
-    var tvContact: TextView? = null
-    var llDistance: LinearLayout? = null
-    var tvDistance: TextView? = null
-    var llDescription: LinearLayout? = null
-    var tvDescription: TextView? = null
-    var llImages: LinearLayout? = null
-    var recyclerView: RecyclerView? = null
+    private var viewPager: ViewPager? = null
+    private var tvName: TextView? = null
+    private var ratingBar: RatingBar? = null
+    private var tvReview: TextView? = null
+    private var llContactPerson: LinearLayout? = null
+    private var tvContactPerson: TextView? = null
+    private var llContact: LinearLayout? = null
+    private var tvContact: TextView? = null
+    private var llDistance: LinearLayout? = null
+    private var tvDistance: TextView? = null
+    private var llDescription: LinearLayout? = null
+    private var tvDescription: TextView? = null
+    private var llImages: LinearLayout? = null
+    private var recyclerView: RecyclerView? = null
+    var hostelId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +37,23 @@ class HostelDetailActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        viewPager = findViewById(R.id.viewPager)
-        tvName = findViewById(R.id.tvName)
-        ratingBar = findViewById(R.id.ratingBar)
+//        viewPager = findViewById(R.id.viewPager)
+//        tvName = findViewById(R.id.tvName)
+//        ratingBar = findViewById(R.id.ratingBar)
+//        tvReview = findViewById(R.id.tvReview)
+        llContactPerson = findViewById(R.id.llContactPerson)
+        tvContactPerson = findViewById(R.id.tvContactPerson)
+        llContact = findViewById(R.id.llContact)
+        tvContact = findViewById(R.id.tvContact)
+        llDistance = findViewById(R.id.llDistance)
+        tvDistance = findViewById(R.id.tvDistance)
+        llDescription = findViewById(R.id.llDescription)
+        tvDescription = findViewById(R.id.tvDescription)
+        llImages = findViewById(R.id.llImages)
+        recyclerView = findViewById(R.id.recyclerView)
+    }
+
+    private fun setValues() {
+
     }
 }

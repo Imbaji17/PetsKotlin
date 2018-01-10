@@ -83,4 +83,11 @@
         <item name="android:singleLine">true</item>
         <item name="android:fontFamily">@font/lato_regular</item>
     </style>
+
+    <style name="StarRatingBarSmall" parent="@android:style/Widget.RatingBar">
+         <item name="android:progressDrawable">@drawable/start_rating_bar_small</item> 
+        <item name="android:minHeight">11dip</item> 
+        <item name="android:maxHeight">11dip</item> 
+    </style>
+
 </resources>

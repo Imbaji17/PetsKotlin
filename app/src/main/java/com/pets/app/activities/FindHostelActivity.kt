@@ -1,10 +1,18 @@
 package com.pets.app.activities
 
 import android.os.Bundle
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.ViewFlipper
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.adapters.FindHostelAdapter
@@ -21,9 +29,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 import java.util.*
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
 
-class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
+class FindHostelActivity : AppCompatActivity(), View.OnClickListener, OnMapReadyCallback {
+
 
     private var layoutManager: LinearLayoutManager? = null
     private var adapter: FindHostelAdapter? = null
@@ -32,6 +44,7 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
     private var viewFlipper: ViewFlipper? = null
     private var nextOffset = 0
     private var gridLayoutManager: GridLayoutManager? = null
+    private var mMap: GoogleMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +58,9 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
         recyclerView = findViewById(R.id.recyclerView)
         viewFlipper = findViewById(R.id.viewFlipper)
 
+        val mapFragment = supportFragmentManager
+                .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     private fun setAdapter() {
@@ -131,5 +147,39 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
 //            }
         }
     }
+
+    override fun onMapReady(googleMap: GoogleMap?) {
+        mMap = googleMap;
+        var sydney: LatLng
+        sydney = LatLng(-34.0, 151.0);
+        mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_find_hostel, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val id = item!!.itemId
+        when (id) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+
+            R.id.action_map -> {
+
+            }
+
+            R.id.action_search -> {
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
 }
