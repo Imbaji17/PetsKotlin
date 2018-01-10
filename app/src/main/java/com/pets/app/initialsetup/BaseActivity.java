@@ -3,6 +3,7 @@ package com.pets.app.initialsetup;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -64,21 +65,23 @@ public class BaseActivity extends AppCompatActivity {
     /**
      * Initialize Toolbar
      */
-    private void initializeToolbar(String cmgString) {
+    protected void initializeToolbar(String cmgString) {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
-            TextView tvToolbar = toolbar.findViewById(R.id.toolbar_title);
+            TextView tvToolbar = toolbar.findViewById(R.id.tvToolbar);
             tvToolbar.setText(cmgString);
             setSupportActionBar(toolbar);
         }
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
+        Drawable gradient = getResources().getDrawable(R.drawable.app_gradient);
         if (actionBar != null) {
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setBackgroundDrawable(gradient);
             actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.back));
         }
     }

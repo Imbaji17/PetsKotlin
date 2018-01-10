@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import com.pets.app.R
-import com.pets.app.activities.FindHostelActivity
 
 class SplashScreenActivity : BaseActivity() {
 
@@ -23,9 +22,8 @@ class SplashScreenActivity : BaseActivity() {
         mHandler = Handler()
         mHandler!!.postDelayed(Runnable {
 
-            //            val mIntent = Intent(this, LoginActivity::class.java);
-            val mIntent = Intent(this, FindHostelActivity::class.java);
-
+            val mIntent = Intent(this, LoginActivity::class.java);
+//            val mIntent = Intent(this, FindHostelActivity::class.java);
             startActivity(mIntent)
             this.finish();
         }, DELAY)
