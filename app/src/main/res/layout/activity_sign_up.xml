@@ -1,20 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.pets.app.initialsetup.SignUpActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <include layout="@layout/app_toolbar" />
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-    </android.support.design.widget.AppBarLayout>
+            <include layout="@layout/app_toolbar" />
 
-    <include layout="@layout/content_sign_up" />
+        </android.support.design.widget.AppBarLayout>
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dimen_size_20"
+            android:layout_marginRight="@dimen/dimen_size_20"
+            android:layout_marginTop="@dimen/dimen_size_20"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/FloatingLabel">
+
+                <EditText
+                    android:id="@+id/edtName"
+                    style="@style/EditTextStyle"
+                    android:hint="@string/name"
+                    android:inputType="textPersonName|textCapSentences" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_5"
+                app:hintTextAppearance="@style/FloatingLabel">
+
+                <EditText
+                    android:id="@+id/edtEmail"
+                    style="@style/EditTextStyle"
+                    android:hint="@string/email" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_5"
+                app:hintTextAppearance="@style/FloatingLabel"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/edtPassword"
+                    style="@style/EditTextStyle"
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_5"
+                app:hintTextAppearance="@style/FloatingLabel"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/edtConfirmPassword"
+                    style="@style/EditTextStyle"
+                    android:hint="@string/confirm_password"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_5">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/edt_country_code_container"
+                    android:layout_width="@dimen/dimen_size_50"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/FloatingLabel">
+
+                    <EditText
+                        android:id="@+id/edt_country_code"
+                        style="@style/EditTextStyle"
+                        android:layout_width="@dimen/dimen_size_50"
+                        android:focusable="false"
+                        android:inputType="textShortMessage"
+                        android:text="+91" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/edt_country_code_container"
+                    android:layout_toRightOf="@+id/edt_country_code_container"
+                    app:hintTextAppearance="@style/FloatingLabel">
+
+                    <EditText
+                        android:id="@+id/edtContact"
+                        style="@style/EditTextStyle"
+                        android:hint="@string/contact"
+                        android:inputType="number"
+                        android:maxLength="15" />
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_5"
+                app:hintTextAppearance="@style/FloatingLabel">
+
+                <EditText
+                    android:id="@+id/edtLocation"
+                    style="@style/EditTextStyle"
+                    android:drawableEnd="@drawable/location1"
+                    android:drawableRight="@drawable/location1"
+                    android:editable="false"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/location" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
