@@ -59,7 +59,9 @@
         <activity
             android:name=".activities.WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.HostelDetailActivity"></activity>
+        <activity
+            android:name=".activities.HostelDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

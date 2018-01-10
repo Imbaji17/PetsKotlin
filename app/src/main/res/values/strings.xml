@@ -46,4 +46,18 @@
     <string name="please_enter_password">Please enter password</string>
     <string name="password_must_be_greater_than_6">Password length must be greater or equal to 6 characters</string>
     <string name="please_enter_confirm_password_match">Password and Confirm password did\'nt matched</string>
+
+    <!--Hostel-->
+    <string name="find_hostel">Find Hostel</string>
+    <string name="hostel">Hostel</string>
+    <string name="contact_person">Contact Person</string>
+    <string name="address">Address</string>
+    <string name="distance">Distance</string>
+    <string name="description">Description</string>
+    <string name="images">Images</string>
+    <plurals name="reviews">
+        <item quantity="one">(%d review)</item>
+        <item quantity="other">(%d reviews)</item>
+    </plurals>
+
 </resources>
