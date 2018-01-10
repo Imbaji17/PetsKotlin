@@ -35,4 +35,10 @@
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
     <string name="already_account">Already Account</string>
     <string name="submit">Submit</string>
+    <string name="enter_verification_code">Enter Verification Code</string>
+    <string name="enter_verification_code_sent_on">Enter verification code sent on to :-</string>
+    <string name="dash">-</string>
+    <string name="dint_receive_code">Didn\'t receive the code yet?</string>
+    <string name="resent">Resend code</string>
+    <string name="otp">OTP Verification</string>
 </resources>

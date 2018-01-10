@@ -1,11 +1,13 @@
 package com.pets.app.activities
 
 import android.os.Bundle
+import android.view.View
 import android.webkit.WebView
 import android.widget.Button
 import android.widget.ViewFlipper
 import com.pets.app.R
 import com.pets.app.initialsetup.BaseActivity
+import com.pets.app.utilities.Utils
 
 class WebViewActivity : BaseActivity() {
 
@@ -29,6 +31,8 @@ class WebViewActivity : BaseActivity() {
 
         viewFlipper!!.displayedChild = 1
 
-        btnTry
+        btnTry!!.setOnClickListener(View.OnClickListener {
+            Utils.showToast(this.getString(R.string.no_internet))
+        })
     }
 }

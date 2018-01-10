@@ -79,7 +79,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 startActivity(signUp)
             }
             R.id.btnRegister -> {
-                val signUp = Intent(this, SignUpActivity::class.java)
+                val signUp = Intent(this, OtpVerificationActivity::class.java)
                 startActivity(signUp)
             }
         }
