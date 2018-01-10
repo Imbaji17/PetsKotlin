@@ -149,7 +149,7 @@
                 android:id="@+id/tvLogin"
                 style="@style/TextViewStyle"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimen_size_15"
+                android:layout_marginTop="@dimen/dimen_size_20"
                 android:text="@string/register" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
