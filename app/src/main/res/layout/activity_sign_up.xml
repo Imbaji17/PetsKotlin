@@ -110,6 +110,7 @@
                         android:id="@+id/edtContact"
                         style="@style/EditTextStyle"
                         android:hint="@string/contact"
+                        android:imeOptions="actionDone"
                         android:inputType="number"
                         android:maxLength="15" />
                 </android.support.design.widget.TextInputLayout>
