@@ -20,5 +20,6 @@
     <color name="centre_color">#44C566</color>
     <color name="end_color">#72dd63</color>
     <color name="transparent_black">#CC000000</color>
+    <color name="drawer_grey">#343943</color>
 
 </resources>

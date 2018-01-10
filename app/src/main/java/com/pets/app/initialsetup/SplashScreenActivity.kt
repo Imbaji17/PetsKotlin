@@ -3,8 +3,9 @@ package com.pets.app.initialsetup
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.text.TextUtils
 import com.pets.app.R
-import com.pets.app.activities.FindHostelActivity
+import com.pets.app.common.AppPreferenceManager
 
 class SplashScreenActivity : BaseActivity() {
 
@@ -20,11 +21,16 @@ class SplashScreenActivity : BaseActivity() {
 
     private fun callHandler() {
 
+
         mHandler = Handler()
         mHandler!!.postDelayed(Runnable {
-
-            //            val mIntent = Intent(this, LoginActivity::class.java);
-            val mIntent = Intent(this, FindHostelActivity::class.java);
+            val mIntent: Intent?
+            if (TextUtils.isEmpty(AppPreferenceManager.getUserID())) {
+                mIntent = Intent(this, LoginActivity::class.java);
+//            val mIntent = Intent(this, FindHostelActivity::class.java);
+            } else {
+                mIntent = Intent(this, LandingActivity::class.java);
+            }
             startActivity(mIntent)
             this.finish();
         }, DELAY)
