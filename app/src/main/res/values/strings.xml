@@ -30,4 +30,5 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="contact">Contact</string>
     <string name="location">Location</string>
+    <string name="register">Register</string>
 </resources>

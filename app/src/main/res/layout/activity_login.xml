@@ -88,8 +88,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:text="@string/remember_me"
-                    android:textSize="@dimen/text_size_12" />
+                    android:text="@string/remember_me" />
 
                 <TextView
                     android:id="@+id/tvForgotPassword"
