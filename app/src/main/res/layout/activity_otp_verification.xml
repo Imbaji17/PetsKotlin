@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.pets.app.initialsetup.OtpVerificationActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <include layout="@layout/app_toolbar" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_size_20">
+
+            <TextView
+                style="@style/TextViewStyle"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_verification_code"
+                android:textSize="@dimen/text_size_18" />
+
+            <TextView
+                android:id="@+id/tvNumber"
+                style="@style/TextViewStyle"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:gravity="center"
+                android:text="@string/enter_verification_code_sent_on"
+                android:textColor="@color/grey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_size_50"
+                android:layout_marginRight="@dimen/dimen_size_50"
+                android:layout_marginTop="@dimen/dimen_size_50"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_size_10"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/edtText1"
+                        style="@style/EditTextStyle"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="@string/dash"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberPassword"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_size_0.5px"
+                        android:layout_marginTop="@dimen/dimen_size_10"
+                        android:background="@color/grey" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_size_10"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/edtText2"
+                        style="@style/EditTextStyle"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="@string/dash"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberPassword"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_size_0.5px"
+                        android:layout_marginTop="@dimen/dimen_size_10"
+                        android:background="@color/grey" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_size_10"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/edtText3"
+                        style="@style/EditTextStyle"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="@string/dash"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberPassword"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_size_0.5px"
+                        android:layout_marginTop="@dimen/dimen_size_10"
+                        android:background="@color/grey" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dimen_size_10"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/edtText4"
+                        style="@style/EditTextStyle"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:hint="@string/dash"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberPassword"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_size_0.5px"
+                        android:layout_marginTop="@dimen/dimen_size_10"
+                        android:background="@color/grey" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSubmit"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="@dimen/dimen_size_30"
+                android:text="@string/submit" />
+
+            <TextView
+                android:id="@+id/tvResent"
+                style="@style/TextViewStyle"
+                android:layout_marginTop="@dimen/dimen_size_30"
+                android:text="@string/resent" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

@@ -72,6 +72,7 @@
                     android:id="@+id/edtPassword"
                     style="@style/EditTextStyle"
                     android:hint="@string/password"
+                    android:imeOptions="actionDone"
                     android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 

@@ -5,13 +5,25 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.SpannableString
 import android.text.TextPaint
+import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.*
+import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.common.Constants
+import com.pets.app.common.Enums
+import com.pets.app.model.LoginResponse
+import com.pets.app.utilities.TimeStamp
+import com.pets.app.utilities.Utils
+import com.pets.app.webservice.RestClient
+import com.pets.app.webservice.WebServiceBuilder
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.IOException
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
@@ -64,8 +76,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 startActivity(signUp)
             }
             R.id.btnLogin -> {
-                val signUp = Intent(this, SignUpActivity::class.java)
-                startActivity(signUp)
+                if (checkValidations()) {
+                    if (Utils.isOnline(this)) {
+                        loginApiCall()
+                    } else {
+                        Utils.showToast(this.getString(R.string.device_is_offline))
+                    }
+                }
             }
             R.id.imgFacebook -> {
                 val signUp = Intent(this, SignUpActivity::class.java)
@@ -76,6 +93,25 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 startActivity(signUp)
             }
         }
+    }
+
+    private fun checkValidations(): Boolean {
+
+        if (TextUtils.isEmpty(edtEmail?.text.toString().trim())) {
+            edtEmail?.setError(this.getString(R.string.please_enter_email))
+            return false
+        } else if (!Utils.isEmailValid(edtEmail?.text.toString().trim())) {
+            edtEmail?.setError(this.getString(R.string.please_enter_valid_email))
+            return false
+        } else if (TextUtils.isEmpty(edtPassword?.text.toString().trim())) {
+            edtPassword?.setError(this.getString(R.string.please_enter_password))
+            return false
+        } else if (edtPassword?.text.toString().trim().length < 6) {
+            edtPassword?.setError(this.getString(R.string.password_must_be_greater_than_6))
+            return false;
+        }
+
+        return true
     }
 
     private fun generateSpannableString(string: String?, string1: String?): SpannableString {
@@ -101,5 +137,55 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         outString.setSpan(clickableSpan, string.length + 1, string.length + string1.length + 1, 0)
 
         return outString
+    }
+
+    private fun loginApiCall() {
+
+        val email = edtEmail?.text.toString().trim()
+        val passsword = edtPassword?.text.toString().trim()
+        val languageCode = Enums.Language.EN.name
+        val deviceType = Constants.DEVICE_TYPE
+        val deviceToken = ""
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + email + passsword + Constants.TIME_STAMP_KEY)
+
+        showProgressBar()
+        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = api.login(email, passsword, languageCode, deviceType, deviceToken, timeStamp, key)
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        checkResponse(response)
+                    } else if (response.code() == 403) {
+                        val gson = GsonBuilder().create()
+                        val mError: LoginResponse
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
+                            Utils.showToast("" + mError.getMessage())
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>?, t: Throwable?) {
+                hideProgressBar()
+            }
+        })
+
+        println(email + "\n" + passsword + "\n" + languageCode + "\n" + deviceType + "\n" + deviceToken + "\n" + timeStamp + "\n" + key)
+    }
+
+    private fun checkResponse(response: Response<LoginResponse>) {
+
+        when (response.body().message as Int) {
+
+            Constants.SUCCESS -> {
+                Utils.showToast(response.body().message)
+            }
+        }
     }
 }

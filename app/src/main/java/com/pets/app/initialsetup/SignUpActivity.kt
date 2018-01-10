@@ -14,6 +14,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import com.pets.app.R
+import com.pets.app.activities.WebViewActivity
 import com.pets.app.common.Constants
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
@@ -78,7 +79,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 startActivity(signUp)
             }
             R.id.btnRegister -> {
-                val signUp = Intent(this, SignUpActivity::class.java)
+                val signUp = Intent(this, OtpVerificationActivity::class.java)
                 startActivity(signUp)
             }
         }
@@ -98,7 +99,8 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 if (isTrue) {
                     this@SignUpActivity.finish()
                 } else {
-
+                    val signUp = Intent(this@SignUpActivity, WebViewActivity::class.java)
+                    startActivity(signUp)
                 }
             }
 
