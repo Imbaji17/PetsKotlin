@@ -65,7 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_size_10"
-                app:hintTextAppearance="@style/FloatingLabel">
+                app:hintTextAppearance="@style/FloatingLabel"
+                app:passwordToggleEnabled="true">
 
                 <EditText
                     android:id="@+id/edtPassword"
@@ -98,6 +99,7 @@
                     android:layout_centerVertical="true"
                     android:padding="@dimen/dimen_size_5"
                     android:text="@string/forgot_password"
+                    android:textColor="@color/colorAccent"
                     android:textSize="@dimen/text_size_12" />
             </RelativeLayout>
 

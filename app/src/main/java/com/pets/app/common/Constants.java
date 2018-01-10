@@ -7,5 +7,6 @@ public class Constants {
 
     public static final String PREFERENCE_FILE = "PetsApp";
     public static final String API_BASE_URL = "";
+    public static final String SPACE = " ";
     public static boolean isInDebugMode = true;
 }
