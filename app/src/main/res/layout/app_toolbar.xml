@@ -9,15 +9,13 @@
     android:minHeight="?attr/actionBarSize"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-
-    <com.pets.app.widgets.TextViewPlus
-        android:id="@+id/toolbar_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <TextView
+        android:id="@+id/tvToolbar"
+        style="@style/TextViewStyle"
         android:layout_gravity="center"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/text_size_16"
-        app:fontStyle="bold" />
+        android:fontFamily="@font/lato_bold"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_16" />
 
 </android.support.v7.widget.Toolbar>
 
