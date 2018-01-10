@@ -1,20 +1,43 @@
 package com.pets.app.initialsetup
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import com.pets.app.R
-import kotlinx.android.synthetic.main.activity_forgot_password.*
 
-class ForgotPasswordActivity : BaseActivity() {
+class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
+
+    private var edtEmail: EditText? = null
+    private var btnSubmit: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_forgot_password)
-        setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        initializeToolbar(this.getString(R.string.title_activity_forgot_password))
+        initView()
+        clickListeners()
+    }
+
+    private fun initView() {
+
+        edtEmail = findViewById(R.id.edtEmail)
+        btnSubmit = findViewById(R.id.btnSubmit)
+    }
+
+    private fun clickListeners() {
+
+        btnSubmit?.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+
+        when (v?.id) {
+
+            R.id.btnSubmit -> {
+                this.finish()
+            }
         }
     }
 

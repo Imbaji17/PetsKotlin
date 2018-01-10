@@ -9,7 +9,7 @@
     <string name="please_wait">Please wait&#8230;</string>
     <string name="no_internet">No Internet Connection</string>
     <string name="loading">Loading&#8230;</string>
-    <string name="retry">Retry</string>
+    <string name="retry">Try Again</string>
     <string name="please_check_internet_connection">Please check internet connection</string>
     <string name="internet_connection_has_been_lost">It seems the internet connection has been lost. Please retry when your connection returns.</string>
     <string name="no_result_found">No result found</string>
@@ -23,7 +23,7 @@
     <string name="login">Login</string>
     <string name="or">OR</string>
     <string name="continue_with_social_media">Continue with Social media</string>
-    <string name="title_activity_forgot_password">"Forgot Password "</string>
+    <string name="title_activity_forgot_password">Forgot Password</string>
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="dont_have_account">Don\'t have an account?</string>
     <string name="name">Name</string>
@@ -34,4 +34,5 @@
     <string name="i_accept">I Accept</string>
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
     <string name="already_account">Already Account</string>
+    <string name="submit">Submit</string>
 </resources>
