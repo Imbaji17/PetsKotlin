@@ -2,8 +2,7 @@ package com.pets.app.activities
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.*
 import android.view.View
 import android.widget.ViewFlipper
 import com.google.gson.GsonBuilder
@@ -12,6 +11,7 @@ import com.pets.app.adapters.FindHostelAdapter
 import com.pets.app.common.Constants
 import com.pets.app.model.FindHostelResponse
 import com.pets.app.model.NormalResponse
+import com.pets.app.utilities.GridSpacingItemDecoration
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -31,7 +31,7 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
     private var recyclerView: RecyclerView? = null
     private var viewFlipper: ViewFlipper? = null
     private var nextOffset = 0
-    private var layoutManger: LinearLayoutManager? = null
+    private var gridLayoutManager: GridLayoutManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +48,16 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setAdapter() {
-        layoutManger = LinearLayoutManager(this)
-        recyclerView!!.layoutManager = layoutManger
+
+        val spanCount = 2 // 3 columns
+        val spacing = 10 // 50px
+        val includeEdge = true
+        recyclerView!!.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
+        gridLayoutManager = GridLayoutManager(this, spanCount)
+        recyclerView!!.layoutManager = gridLayoutManager
+        recyclerView!!.itemAnimator = DefaultItemAnimator()
+//        val snapHelper = LinearSnapHelper()
+//        snapHelper.attachToRecyclerView(recyclerView)
         adapter = FindHostelAdapter(listItems, this)
         recyclerView!!.adapter = adapter
     }
@@ -113,7 +121,15 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-
+        when (view) {
+//            R.id.llFindHostel -> {
+//
+//            }
+//
+//            R.id.ivFavourite -> {
+//
+//            }
+        }
     }
 
 }
