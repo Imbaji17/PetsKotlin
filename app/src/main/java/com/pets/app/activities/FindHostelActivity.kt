@@ -31,6 +31,7 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
     private var recyclerView: RecyclerView? = null
     private var viewFlipper: ViewFlipper? = null
     private var nextOffset = 0
+    private var layoutManger: LinearLayoutManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +44,12 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
     fun initView() {
         recyclerView = findViewById(R.id.recyclerView)
         viewFlipper = findViewById(R.id.viewFlipper)
+
     }
 
     private fun setAdapter() {
+        layoutManger = LinearLayoutManager(this)
+        recyclerView!!.layoutManager = layoutManger
         adapter = FindHostelAdapter(listItems, this)
         recyclerView!!.adapter = adapter
     }
@@ -63,7 +67,7 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener {
         viewFlipper!!.displayedChild = 0
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-            val call = apiClient.hostelList(key, timeStamp, "EN", "0.000000", "0.000000", nextOffset, timeStamp, "10")
+            val call = apiClient.hostelList(key, "", "EN", "0.000000", "0.000000", nextOffset, timeStamp, "10")
 
 
             call.enqueue(object : Callback<FindHostelResponse> {
