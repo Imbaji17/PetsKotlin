@@ -105,8 +105,7 @@
                 android:id="@+id/btnLogin"
                 style="@style/ButtonStyle"
                 android:layout_marginTop="@dimen/dimen_size_20"
-                android:text="@string/login"
-                android:textAllCaps="true" />
+                android:text="@string/login" />
 
             <TextView
                 android:id="@+id/tvSignUp"
