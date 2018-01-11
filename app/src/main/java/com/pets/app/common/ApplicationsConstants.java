@@ -11,6 +11,7 @@ public class ApplicationsConstants {
     public static final String CITY = "CITY";
     public static final String ID = "id";
     public static final String DATA = "data";
+    public static final String NAME = "name";
 
     public class Chat {
 

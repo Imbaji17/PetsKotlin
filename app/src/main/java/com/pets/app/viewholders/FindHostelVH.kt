@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 
 import com.pets.app.R
+import com.pets.app.common.ImageSetter
 import com.pets.app.model.FindHostel
 import com.squareup.picasso.Picasso
 
@@ -39,10 +40,11 @@ class FindHostelVH(itemView: View, clickListener: View.OnClickListener) : Recycl
         tvLocation.text = if (!TextUtils.isEmpty(findHostel.address)) findHostel.address else ""
 
         if (!findHostel.hostelImages.isEmpty() && !TextUtils.isEmpty(findHostel.hostelImages[0].image)) {
-            Picasso.with(context)
-                    .load(findHostel.hostelImages[0].image)
-                    .placeholder(R.drawable.alert_placeholder)
-                    .into(ivFindHostel)
+            ImageSetter.loadImage(context, findHostel.hostelImages[0].image, R.drawable.alert_placeholder, ivFindHostel)
+//            Picasso.with(context)
+//                    .load(findHostel.hostelImages[0].image)
+//                    .placeholder(R.drawable.alert_placeholder)
+//                    .into(ivFindHostel)
         }
         ivFavourite.setImageResource(if (findHostel.isInterest) R.drawable.fav1 else R.drawable.fav2)
     }
