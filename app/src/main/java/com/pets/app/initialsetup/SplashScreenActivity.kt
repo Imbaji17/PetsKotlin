@@ -3,7 +3,6 @@ package com.pets.app.initialsetup
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.text.TextUtils
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
 
@@ -24,7 +23,7 @@ class SplashScreenActivity : BaseActivity() {
         mHandler = Handler()
         mHandler!!.postDelayed(Runnable {
             val mIntent: Intent?
-            if (TextUtils.isEmpty(AppPreferenceManager.getUserID())) {
+            if (!AppPreferenceManager.isSignIn()) {
                 mIntent = Intent(this, LoginActivity::class.java);
 //                mIntent = Intent(this, FindHostelActivity::class.java);
             } else {

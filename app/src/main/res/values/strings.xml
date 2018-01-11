@@ -50,6 +50,9 @@
     <string name="please_accept_terms">Please accept terms and conditions</string>
     <string name="please_select_location">Please select location</string>
     <string name="please_enter_confirm_password_match">Password and Confirm password did\'nt matched</string>
+    <string name="enter_all_fields">Please enter Verification code</string>
+    <string name="otp_verified">OTP verified successfully</string>
+    <string name="otp_resent">Verification code sent successfully</string>
     <string name="title_activity_landing">LandingActivity</string>
     <string name="are_you_sure_you_want_to_exit">Are you sure you want to Logout ?</string>
 

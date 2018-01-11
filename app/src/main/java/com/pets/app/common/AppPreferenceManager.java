@@ -66,4 +66,12 @@ public class AppPreferenceManager {
     public static String getUserPassword() {
         return getPreferences().getString(PrefConstants.USER_PASSWORD, "");
     }
+
+    public static boolean isSignIn() {
+        return getPreferences().getBoolean(PrefConstants.SIGN_IN, false);
+    }
+
+    public static void setSignIn(boolean value) {
+        getPreferences().edit().putBoolean(PrefConstants.SIGN_IN, value).apply();
+    }
 }

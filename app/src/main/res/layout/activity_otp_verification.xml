@@ -65,7 +65,8 @@
                         android:gravity="center"
                         android:hint="@string/dash"
                         android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
+                        android:inputType="number"
+                        android:maxLength="1"
                         android:textSize="@dimen/text_size_18" />
 
                     <View
@@ -89,7 +90,8 @@
                         android:gravity="center"
                         android:hint="@string/dash"
                         android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
+                        android:inputType="number"
+                        android:maxLength="1"
                         android:textSize="@dimen/text_size_18" />
 
                     <View
@@ -113,7 +115,8 @@
                         android:gravity="center"
                         android:hint="@string/dash"
                         android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
+                        android:inputType="number"
+                        android:maxLength="1"
                         android:textSize="@dimen/text_size_18" />
 
                     <View
@@ -137,7 +140,8 @@
                         android:gravity="center"
                         android:hint="@string/dash"
                         android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
+                        android:inputType="number"
+                        android:maxLength="1"
                         android:textSize="@dimen/text_size_18" />
 
                     <View
