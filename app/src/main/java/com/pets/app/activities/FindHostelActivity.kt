@@ -32,9 +32,10 @@ import java.util.*
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.pets.app.initialsetup.BaseActivity
 
 
-class FindHostelActivity : AppCompatActivity(), View.OnClickListener, OnMapReadyCallback {
+class FindHostelActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback {
 
 
     private var layoutManager: LinearLayoutManager? = null
@@ -49,12 +50,13 @@ class FindHostelActivity : AppCompatActivity(), View.OnClickListener, OnMapReady
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_hostel)
+        initializeToolbar(getString(R.string.find_hostel))
         initView()
         setAdapter()
         getHostelList()
     }
 
-    fun initView() {
+    private fun initView() {
         recyclerView = findViewById(R.id.recyclerView)
         viewFlipper = findViewById(R.id.viewFlipper)
 
