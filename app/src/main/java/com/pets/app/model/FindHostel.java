@@ -50,6 +50,12 @@ public class FindHostel implements Serializable {
     @SerializedName("hostel_images")
     private ArrayList<HostelImage> hostelImages;
 
+    @SerializedName("reviews_count")
+    private int reviewsCount;
+
+    @SerializedName("avg_rating")
+    private double avgRating;
+
     public String getHostelId() {
         return hostelId;
     }
@@ -98,7 +104,19 @@ public class FindHostel implements Serializable {
         return isInterest;
     }
 
+    public void setInterest(boolean interest) {
+        isInterest = interest;
+    }
+
     public ArrayList<HostelImage> getHostelImages() {
         return hostelImages;
+    }
+
+    public int getReviewsCount() {
+        return reviewsCount;
+    }
+
+    public double getAvgRating() {
+        return avgRating;
     }
 }

@@ -16,4 +16,8 @@ public class Enums {
     public enum BroadCastAction {
         PROFILE_UPDATE
     }
+
+    public enum Favourite {
+        VET, HOSTEL, ADOPTION, PETS_MATCH, PET_SITTERS
+    }
 }

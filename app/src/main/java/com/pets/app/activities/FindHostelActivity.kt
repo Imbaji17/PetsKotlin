@@ -22,11 +22,15 @@ import android.widget.ViewFlipper
 import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.adapters.FindHostelAdapter
+import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
+import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
+import com.pets.app.model.FindHostel
 import com.pets.app.model.FindHostelResponse
 import com.pets.app.model.NormalResponse
+import com.pets.app.model.request.FavouriteHostel
 import com.pets.app.utilities.GridSpacingItemDecoration
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
@@ -55,6 +59,7 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
     private val RC_MAP_ACTIVITY: Int = 2
     private var edtSearch: EditText? = null
     private var imgClear: ImageView? = null
+    private var findHostel: FindHostel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,11 +144,17 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.llFindHostel -> {
-
+                findHostel = view.tag as FindHostel
+                if (findHostel != null) {
+                    HostelDetailActivity.startActivity(this, findHostel!!.hostelId)
+                }
             }
 
             R.id.ivFavourite -> {
-
+                findHostel = view.tag as FindHostel
+                if (findHostel != null) {
+                    favourite()
+                }
             }
             R.id.imgClear -> {
                 edtSearch?.setText("")
@@ -214,6 +225,47 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
         } else {
             imgClear?.visibility = View.GONE
         }
+    }
+
+
+    private fun favourite() {
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + 10 + Enums.Favourite.HOSTEL.name + findHostel?.hostelId + Constants.TIME_STAMP_KEY)
+        val request = FavouriteHostel()
+        request.setUserId("10")
+        request.setTimestamp(timeStamp)
+        request.setType(Enums.Favourite.HOSTEL.name)
+        request.setTypeId(findHostel?.hostelId)
+        request.setKey(key)
+
+        showProgressBar()
+        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = api.favourite(request)
+        call.enqueue(object : Callback<NormalResponse> {
+            override fun onResponse(call: Call<NormalResponse>?, response: Response<NormalResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        var pos = listItems.indexOf(findHostel as Any)
+                        findHostel!!.isInterest = !findHostel!!.isInterest
+                        adapter!!.notifyItemChanged(pos)
+                    } else if (response.code() == 403) {
+                        val gson = GsonBuilder().create()
+                        val mError: NormalResponse
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
+                            Utils.showToast("" + mError.getMessage())
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<NormalResponse>?, t: Throwable?) {
+                hideProgressBar()
+            }
+        })
     }
 
 }

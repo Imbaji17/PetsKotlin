@@ -21,5 +21,7 @@
     <color name="end_color">#72dd63</color>
     <color name="transparent_black">#CC000000</color>
     <color name="drawer_grey">#343943</color>
+    <color name="blue_wood">#324B5D</color>
+    <color name="blue_wood1">#CC324B5D</color>
 
 </resources>
