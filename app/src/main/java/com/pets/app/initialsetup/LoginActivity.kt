@@ -17,6 +17,7 @@ import com.facebook.login.LoginResult
 import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
+import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.interfaces.SimpleItemClickListener
@@ -294,6 +295,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             this.startActivity(mIntent)
         } else {
             val mIntent = Intent(this, SignUpActivity::class.java)
+            mIntent.putExtra(ApplicationsConstants.USER_OBJECT, loginDetails)
             this.startActivity(mIntent)
         }
     }
