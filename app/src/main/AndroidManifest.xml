@@ -45,7 +45,7 @@
             android:name=".initialsetup.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".initialsetup.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
@@ -55,7 +55,7 @@
             android:name=".initialsetup.SignUpActivity"
             android:label="@string/title_activity_sign_up"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activities.FindHostelActivity"
             android:screenOrientation="portrait"
@@ -63,7 +63,7 @@
         <activity
             android:name=".initialsetup.OtpVerificationActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activities.WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
