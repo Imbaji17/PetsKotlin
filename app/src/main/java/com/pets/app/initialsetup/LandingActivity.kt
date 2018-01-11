@@ -1,5 +1,7 @@
 package com.pets.app.initialsetup
 
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -7,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
 import com.pets.app.R
+import com.pets.app.common.DialogManager
 import kotlinx.android.synthetic.main.activity_landing.*
 
 class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -73,7 +76,11 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
             }
             R.id.nav_logout -> {
-
+                DialogManager.showDialogWithYesAndNo(this, this.getString(R.string.are_you_sure_you_want_to_exit), DialogInterface.OnClickListener { dialogInterface, i ->
+                    val mIntent = Intent(this, LoginActivity::class.java)
+                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    this.startActivity(mIntent)
+                })
             }
         }
 

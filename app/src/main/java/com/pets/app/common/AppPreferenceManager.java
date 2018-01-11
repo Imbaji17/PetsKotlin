@@ -36,7 +36,11 @@ public class AppPreferenceManager {
     }
 
     public static String getUserID() {
-        return getUser().getUser_id();
+        if (getUser() != null) {
+            return getUser().getUser_id();
+        } else {
+            return "";
+        }
     }
 
     public static boolean isRemember() {

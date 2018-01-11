@@ -198,9 +198,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
 
         val mIntent = Intent(this, LandingActivity::class.java)
-        mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         this.startActivity(mIntent)
     }
 }

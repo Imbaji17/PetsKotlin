@@ -47,6 +47,7 @@
     <string name="password_must_be_greater_than_6">Password length must be greater or equal to 6 characters</string>
     <string name="please_enter_confirm_password_match">Password and Confirm password did\'nt matched</string>
     <string name="title_activity_landing">LandingActivity</string>
+    <string name="are_you_sure_you_want_to_exit">Are you sure you want to Logout ?</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
