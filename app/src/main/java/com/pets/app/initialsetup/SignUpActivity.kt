@@ -27,6 +27,7 @@ import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.model.LoginResponse
 import com.pets.app.model.`object`.LoginDetails
+import com.pets.app.model.request.UpdateUserRequest
 import com.pets.app.utilities.Logger
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
@@ -261,7 +262,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         val deviceType = Constants.DEVICE_TYPE
         val deviceToken = ""
         val timeStamp = TimeStamp.getTimeStamp()
-        val key = TimeStamp.getMd5(timeStamp + email + passsword + Constants.TIME_STAMP_KEY)
+        val key = TimeStamp.getMd5(timeStamp + passsword + email + Constants.TIME_STAMP_KEY)
 
         showProgressBar()
         val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
@@ -293,7 +294,54 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
 
     private fun updateUserApiCall() {
 
+        val name = edtName?.text.toString().trim()
+        val email = edtEmail?.text.toString().trim()
+        val phoneCode = edtCountryCode?.text.toString().trim()
+        val contact = edtContact?.text.toString().trim()
+        val location = edtLocation?.text.toString().trim()
+        val languageCode = Enums.Language.EN.name
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + AppPreferenceManager.getUserID() + email + Constants.TIME_STAMP_KEY)
 
+        val request = UpdateUserRequest()
+        request.setUser_id(AppPreferenceManager.getUserID())
+        request.setName(name)
+        request.setEmail_id(email)
+        request.setPhone_code(phoneCode)
+        request.setPhone_number(contact)
+        request.setLocation(location)
+        request.setLat(latitude)
+        request.setLng(longitude)
+        request.setLanguage_code(languageCode)
+        request.setTimestamp(timeStamp)
+        request.setKey(key)
+
+        showProgressBar()
+        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = api.updateUser(request)
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        checkResponse(response.body().result)
+                    } else if (response.code() == 403) {
+                        val gson = GsonBuilder().create()
+                        val mError: LoginResponse
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
+                            Utils.showToast("" + mError.getMessage())
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>?, t: Throwable?) {
+                hideProgressBar()
+            }
+        })
     }
 
     private fun checkResponse(details: LoginDetails?) {
