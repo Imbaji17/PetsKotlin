@@ -9,30 +9,45 @@ import java.io.Serializable;
  */
 public class UpdateUserRequest implements Serializable {
 
+    /*Common*/
     @SerializedName("timestamp")
     private String timestamp;
     @SerializedName("language_code")
     private String language_code;
+    @SerializedName("name")
+    private String name;
+    @SerializedName("email_id")
+    private String email_id;
+    @SerializedName("key")
+    private String key;
+
+    /*For Update Profile Only*/
     @SerializedName("phone_number")
     private String phone_number;
     @SerializedName("location")
     private String location;
     @SerializedName("description")
     private String description;
-    @SerializedName("name")
-    private String name;
     @SerializedName("phone_code")
     private String phone_code;
     @SerializedName("lng")
     private String lng;
     @SerializedName("user_id")
     private String user_id;
-    @SerializedName("email_id")
-    private String email_id;
     @SerializedName("lat")
     private String lat;
-    @SerializedName("key")
-    private String key;
+
+    /*For Social Login Only*/
+    @SerializedName("device_token")
+    private String device_token;
+    @SerializedName("profile_image")
+    private String profile_image;
+    @SerializedName("v")
+    private String device_type;
+    @SerializedName("social_type")
+    private String social_type;
+    @SerializedName("social_id")
+    private String social_id;
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
@@ -80,5 +95,25 @@ public class UpdateUserRequest implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public void setDevice_token(String device_token) {
+        this.device_token = device_token;
+    }
+
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
+    }
+
+    public void setDevice_type(String device_type) {
+        this.device_type = device_type;
+    }
+
+    public void setSocial_type(String social_type) {
+        this.social_type = social_type;
+    }
+
+    public void setSocial_id(String social_id) {
+        this.social_id = social_id;
     }
 }

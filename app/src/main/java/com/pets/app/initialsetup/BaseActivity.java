@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pets.app.R;
+import com.pets.app.mediator.SocialIntegratorInterface;
 
 /**
  * Created by BAJIRAO on 05 January 2018.
@@ -27,6 +28,7 @@ import com.pets.app.R;
 @SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
+    protected static SocialIntegratorInterface mSocialIntegratorInterface;
     protected RelativeLayout mProgressBar;
     protected boolean isDataChanged, isHeaderImage;
     protected Toolbar toolbar;

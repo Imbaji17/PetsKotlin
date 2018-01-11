@@ -32,6 +32,9 @@ public class WebServiceBuilder {
         Call<LoginResponse> signUp(@Field("name") String name, @Field("email_id") String email_id, @Field("password") String password, @Field("phone_code") String phone_code, @Field("phone_number") String phone_number, @Field("location") String location, @Field("lat") String lat, @Field("lng") String lng,
                                    @Field("language_code") String language_code, @Field("device_type") String device_type, @Field("device_token") String device_token, @Field("timestamp") String timestamp, @Field("key") String key);
 
+        @POST("socialLogin/")
+        Call<LoginResponse> socialLogin(@Body UpdateUserRequest userRequest);
+
         @POST("updateProfile/")
         Call<LoginResponse> updateUser(@Body UpdateUserRequest userRequest);
 
