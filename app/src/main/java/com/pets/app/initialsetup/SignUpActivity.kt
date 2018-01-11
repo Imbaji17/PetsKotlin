@@ -187,7 +187,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         } else if (TextUtils.isEmpty(edtEmail?.text.toString().trim())) {
             edtEmail?.setError(this.getString(R.string.please_enter_email))
             return false
-        } else if (Utils.isEmailValid(edtEmail?.text.toString().trim())) {
+        } else if (!Utils.isEmailValid(edtEmail?.text.toString().trim())) {
             edtEmail?.setError(this.getString(R.string.please_enter_valid_email))
             return false
         } else if (TextUtils.isEmpty(edtPassword?.text.toString().trim())) {
