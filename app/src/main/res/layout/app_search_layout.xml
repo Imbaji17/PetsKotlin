@@ -7,47 +7,46 @@
     android:orientation="horizontal"
     android:padding="@dimen/dimen_size_10">
 
-    <!--<RelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_size_40"
-        android:background="@drawable/rounded_white"
-        android:paddingTop="@dimen/dimen_size_10">
+        android:background="@drawable/rounded_white">
 
         <ImageView
-            android:id="@+id/img_search"
+            android:id="@+id/imgSearch"
             android:layout_width="@dimen/dimen_size_20"
             android:layout_height="@dimen/dimen_size_20"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_size_10"
             android:layout_marginStart="@dimen/dimen_size_10"
-            android:src="@drawable/search1" />
+            android:src="@drawable/search" />
 
         <EditText
-            android:id="@+id/edtEmail"
+            android:id="@+id/edtSearch"
             style="@style/EditTextStyle"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_size_10"
-            android:layout_marginStart="@dimen/dimen_size_10"
-            android:layout_toEndOf="@id/img_search"
-            android:layout_toLeftOf="@+id/img_clear"
-            android:layout_toRightOf="@+id/img_search"
-            android:layout_toStartOf="@id/img_clear"
-            android:hint="@string/email"
+            android:layout_marginLeft="@dimen/dimen_size_5"
+            android:layout_marginStart="@dimen/dimen_size_5"
+            android:layout_toEndOf="@id/imgSearch"
+            android:layout_toLeftOf="@+id/imgClear"
+            android:layout_toRightOf="@+id/imgSearch"
+            android:layout_toStartOf="@id/imgClear"
+            android:background="@android:color/transparent"
+            android:ellipsize="end"
+            android:hint="@string/search"
             android:imeOptions="actionSearch"
-            android:inputType="text|textCapSentences"
-            android:singleLine="true" />
-
+            android:inputType="text|textCapSentences" />
 
         <ImageView
-            android:id="@+id/img_clear"
+            android:id="@+id/imgClear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:padding="@dimen/dimen_size_10"
-            android:src="@drawable/edit1"
-            android:visibility="gone" />
-    </RelativeLayout>-->
-
+            android:src="@drawable/cross"
+            android:visibility="visible" />
+    </RelativeLayout>
 </LinearLayout>

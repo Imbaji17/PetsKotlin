@@ -68,6 +68,7 @@
     <string name="logout">Logout</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="chat">Chat</string>
+    <string name="search">Search</string>
     <plurals name="reviews">
         <item quantity="one">(%d review)</item>
         <item quantity="other">(%d reviews)</item>
