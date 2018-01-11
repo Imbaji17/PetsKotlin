@@ -59,6 +59,10 @@
         <activity
             android:name=".activities.WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".initialsetup.LandingActivity"
+            android:label="@string/title_activity_landing"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

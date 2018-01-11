@@ -5,7 +5,8 @@ package com.pets.app.common;
  */
 public class PrefConstants {
 
-    public static final String LINKED_IN_TOKEN = "LINKED_IN_TOKEN";
-    public static final String LINKED_IN_TOKEN_EXPIRY = "LINKED_IN_TOKEN_EXPIRY";
-    public static final String FCM_TOKEN = "FCM_TOKEN";
+    public static final String USER_OBJECT = "user_object";
+    public static final String LOGIN_REMEMBER = "login_remember";
+    public static final String USER_EMAIL = "user_email";
+    public static final String USER_PASSWORD = "user_password";
 }

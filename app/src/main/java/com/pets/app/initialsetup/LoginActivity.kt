@@ -13,9 +13,11 @@ import android.view.View
 import android.widget.*
 import com.google.gson.GsonBuilder
 import com.pets.app.R
+import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.model.LoginResponse
+import com.pets.app.model.`object`.LoginDetails
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -57,6 +59,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         tvSignUp?.movementMethod = LinkMovementMethod.getInstance()
         tvSignUp?.text = generateSpannableString(this.getString(R.string.dont_have_account), this.getString(R.string.title_activity_sign_up))
+
+        if (AppPreferenceManager.isRemember()) {
+            edtEmail?.setText(AppPreferenceManager.getUserEmail())
+            edtPassword?.setText(AppPreferenceManager.getUserPassword())
+            checkRemember?.isChecked = true
+        } else {
+            checkRemember?.isChecked = false
+        }
     }
 
     private fun clickListeners() {
@@ -157,7 +167,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 hideProgressBar()
                 if (response != null) {
                     if (response.body() != null && response.isSuccessful()) {
-                        checkResponse(response)
+                        checkResponse(response.body().result)
                     } else if (response.code() == 403) {
                         val gson = GsonBuilder().create()
                         val mError: LoginResponse
@@ -175,17 +185,22 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 hideProgressBar()
             }
         })
-
-        println(email + "\n" + passsword + "\n" + languageCode + "\n" + deviceType + "\n" + deviceToken + "\n" + timeStamp + "\n" + key)
     }
 
-    private fun checkResponse(response: Response<LoginResponse>) {
+    private fun checkResponse(details: LoginDetails?) {
 
-        when (response.body().message as Int) {
+        AppPreferenceManager.saveUser(details)
 
-            Constants.SUCCESS -> {
-                Utils.showToast(response.body().message)
-            }
+        if (checkRemember!!.isChecked) {
+            AppPreferenceManager.setRemember(true)
+            AppPreferenceManager.saveUserEmail(edtEmail?.text.toString())
+            AppPreferenceManager.saveUserPassword(edtPassword?.text.toString())
         }
+
+        val mIntent = Intent(this, LandingActivity::class.java)
+        mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        this.startActivity(mIntent)
     }
 }
