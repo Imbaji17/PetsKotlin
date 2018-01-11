@@ -230,39 +230,41 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private fun checkValidations(): Boolean {
 
         if (TextUtils.isEmpty(edtName?.text.toString().trim())) {
-            edtName?.setError(this.getString(R.string.please_enter_name))
+            edtName?.error = this.getString(R.string.please_enter_name)
             edtName?.requestFocus()
             return false
         } else if (TextUtils.isEmpty(edtEmail?.text.toString().trim())) {
-            edtEmail?.setError(this.getString(R.string.please_enter_email))
+            edtEmail?.error = this.getString(R.string.please_enter_email)
             edtEmail?.requestFocus()
             return false
         } else if (!Utils.isEmailValid(edtEmail?.text.toString().trim())) {
-            edtEmail?.setError(this.getString(R.string.please_enter_valid_email))
+            edtEmail?.error = this.getString(R.string.please_enter_valid_email)
             edtEmail?.requestFocus()
             return false
-        } else if (userObj == null) {
+        }
+
+        if (userObj == null) {
             if (TextUtils.isEmpty(edtPassword?.text.toString().trim())) {
-                edtPassword?.setError(this.getString(R.string.please_enter_password))
+                edtPassword?.error = this.getString(R.string.please_enter_password)
                 edtPassword?.requestFocus()
                 return false
             } else if (edtPassword?.text.toString().trim().length < 6) {
-                edtPassword?.setError(this.getString(R.string.password_must_be_greater_than_6))
+                edtPassword?.error = this.getString(R.string.password_must_be_greater_than_6)
                 edtPassword?.requestFocus()
                 return false
             } else if (TextUtils.isEmpty(edtConfirmPassword?.text.toString().trim())) {
-                edtConfirmPassword?.setError(this.getString(R.string.please_enter_confirm_password))
+                edtConfirmPassword?.error = this.getString(R.string.please_enter_confirm_password)
                 edtConfirmPassword?.requestFocus()
                 return false
             } else if (!edtConfirmPassword?.text.toString().trim().equals(edtPassword?.text.toString().trim(), ignoreCase = true)) {
-                edtConfirmPassword?.setError(this.getString(R.string.please_enter_confirm_password_match))
+                edtConfirmPassword?.error = this.getString(R.string.please_enter_confirm_password_match)
                 edtConfirmPassword?.requestFocus()
                 return false
             }
         }
 
         if (TextUtils.isEmpty(edtContact?.text.toString().trim())) {
-            edtContact?.setError(this.getString(R.string.please_enter_contact))
+            edtContact?.error = this.getString(R.string.please_enter_contact)
             edtContact?.requestFocus()
             return false
         } else if (TextUtils.isEmpty(edtLocation?.text.toString().trim())) {
@@ -297,14 +299,14 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
                 hideProgressBar()
                 if (response != null) {
-                    if (response.body() != null && response.isSuccessful()) {
+                    if (response.body() != null && response.isSuccessful) {
                         checkResponse(response.body().result)
                     } else if (response.code() == 403) {
                         val gson = GsonBuilder().create()
                         val mError: LoginResponse
                         try {
                             mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
+                            Utils.showToast("" + mError.message)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -353,14 +355,14 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
                 hideProgressBar()
                 if (response != null) {
-                    if (response.body() != null && response.isSuccessful()) {
+                    if (response.body() != null && response.isSuccessful) {
                         checkResponse(response.body().result)
                     } else if (response.code() == 403) {
                         val gson = GsonBuilder().create()
                         val mError: LoginResponse
                         try {
                             mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
+                            Utils.showToast("" + mError.message)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
