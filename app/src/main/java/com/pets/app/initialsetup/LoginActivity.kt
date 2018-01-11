@@ -282,7 +282,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         AppPreferenceManager.saveUser(response)
 
-        if (response?.isNewUser()!!) {
+        if (!response?.isNewUser()!!) {
 
             val mIntent: Intent?
             if (response.isMobileVerified) {
