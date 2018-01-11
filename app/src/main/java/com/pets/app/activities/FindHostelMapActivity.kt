@@ -3,6 +3,7 @@ package com.pets.app.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -17,6 +18,8 @@ import com.pets.app.common.ApplicationsConstants
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.FindHostel
 import java.util.ArrayList
+import com.pets.app.R.mipmap.ic_launcher
+
 
 class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback {
 
@@ -38,6 +41,7 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback {
         initializeToolbar(getString(R.string.find_hostel))
         init()
         initView()
+        invalidateOptionsMenu();
     }
 
     private fun init() {
@@ -55,13 +59,11 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback {
         if (!listItems.isEmpty()) {
             var cnt = 0
             for (i in listItems.indices) {
-                var findHostel = FindHostel()
-                findHostel = listItems[i] as FindHostel
-
+                var findHostel = listItems[i] as FindHostel
                 googleMap!!.addMarker(MarkerOptions()
                         .position(LatLng(findHostel.lat, findHostel.lng))
                         .title(findHostel.hostelName)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_view))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.location))
                         .snippet(findHostel.address))
 
                 if (cnt == 0) {
@@ -75,6 +77,13 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_find_hostel, menu)
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val settingsItem = menu!!.findItem(R.id.action_map)
+        // set your desired icon here based on a flag if you like
+        settingsItem.icon = ContextCompat.getDrawable(this, R.drawable.menu)
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -94,5 +103,4 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }
