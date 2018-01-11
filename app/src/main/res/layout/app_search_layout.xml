@@ -49,4 +49,5 @@
             android:src="@drawable/cross"
             android:visibility="gone" />
     </RelativeLayout>
+
 </LinearLayout>

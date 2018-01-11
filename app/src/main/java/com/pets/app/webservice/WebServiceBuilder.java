@@ -2,6 +2,7 @@ package com.pets.app.webservice;
 
 import com.pets.app.model.FindHostelResponse;
 import com.pets.app.model.LoginResponse;
+import com.pets.app.model.NormalResponse;
 import com.pets.app.model.request.UpdateUserRequest;
 
 import retrofit2.Call;
@@ -57,6 +58,9 @@ public class WebServiceBuilder {
         @GET("hostel_list")
         Call<FindHostelResponse> hostelList(@Query("key") String key, @Query("keyword") String keyword, @Query("language_code") String languageCode, @Query("lat") String lat,
                                             @Query("lng") String lng, @Query("next_offset") int next_offset, @Query("timestamp") String timestamp, @Query("user_id") String user_id);
+
+//        @POST("favorite_unfavorite/")
+//        Call<NormalResponse> signUp(@Body SignUpRequest signUpRequest);
 
     }
 }
