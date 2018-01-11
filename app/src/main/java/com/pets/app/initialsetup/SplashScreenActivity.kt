@@ -26,12 +26,13 @@ class SplashScreenActivity : BaseActivity() {
         mHandler = Handler()
         mHandler!!.postDelayed(Runnable {
             val mIntent: Intent?
-            if (TextUtils.isEmpty(AppPreferenceManager.getUserID())) {
-//                mIntent = Intent(this, LoginActivity::class.java);
-                mIntent = Intent(this, FindHostelActivity::class.java);
-            } else {
-                mIntent = Intent(this, LandingActivity::class.java);
-            }
+//            if (TextUtils.isEmpty(AppPreferenceManager.getUserID())) {
+////                mIntent = Intent(this, LoginActivity::class.java);
+//                mIntent = Intent(this, FindHostelActivity::class.java);
+//            } else {
+//                mIntent = Intent(this, LandingActivity::class.java);
+//            }
+            mIntent = Intent(this, FindHostelActivity::class.java);
             startActivity(mIntent)
             this.finish();
         }, DELAY)

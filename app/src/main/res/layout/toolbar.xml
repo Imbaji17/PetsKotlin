@@ -4,7 +4,7 @@
     android:id="@+id/toolbar"
     style="@style/ToolbarStyle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?attr/actionBarSize"
     android:background="@drawable/app_gradient"
     android:minHeight="?attr/actionBarSize"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">

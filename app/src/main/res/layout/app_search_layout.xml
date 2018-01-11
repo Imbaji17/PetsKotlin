@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_search"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_fade"
+    android:orientation="horizontal"
+    android:padding="@dimen/dimen_size_10">
+
+    <!--<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_40"
+        android:background="@drawable/rounded_white"
+        android:paddingTop="@dimen/dimen_size_10">
+
+        <ImageView
+            android:id="@+id/img_search"
+            android:layout_width="@dimen/dimen_size_20"
+            android:layout_height="@dimen/dimen_size_20"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:src="@drawable/search1" />
+
+        <EditText
+            android:id="@+id/edtEmail"
+            style="@style/EditTextStyle"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_size_10"
+            android:layout_marginStart="@dimen/dimen_size_10"
+            android:layout_toEndOf="@id/img_search"
+            android:layout_toLeftOf="@+id/img_clear"
+            android:layout_toRightOf="@+id/img_search"
+            android:layout_toStartOf="@id/img_clear"
+            android:hint="@string/email"
+            android:imeOptions="actionSearch"
+            android:inputType="text|textCapSentences"
+            android:singleLine="true" />
+
+
+        <ImageView
+            android:id="@+id/img_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dimen_size_10"
+            android:src="@drawable/edit1"
+            android:visibility="gone" />
+    </RelativeLayout>-->
+
+</LinearLayout>

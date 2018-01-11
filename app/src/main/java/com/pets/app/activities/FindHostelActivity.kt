@@ -1,22 +1,19 @@
 package com.pets.app.activities
 
 import android.os.Bundle
-import android.support.v4.view.MenuItemCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.*
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import android.widget.ViewFlipper
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.adapters.FindHostelAdapter
 import com.pets.app.common.Constants
+import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.FindHostelResponse
 import com.pets.app.model.NormalResponse
 import com.pets.app.utilities.GridSpacingItemDecoration
@@ -29,13 +26,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 import java.util.*
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.pets.app.initialsetup.BaseActivity
 
 
-class FindHostelActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallback {
+class FindHostelActivity : BaseActivity(), View.OnClickListener {
 
 
     private var layoutManager: LinearLayoutManager? = null
@@ -45,7 +38,6 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallb
     private var viewFlipper: ViewFlipper? = null
     private var nextOffset = 0
     private var gridLayoutManager: GridLayoutManager? = null
-    private var mMap: GoogleMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +52,6 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallb
         recyclerView = findViewById(R.id.recyclerView)
         viewFlipper = findViewById(R.id.viewFlipper)
 
-        val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
     }
 
     private fun setAdapter() {
@@ -150,15 +139,6 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallb
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
-        mMap = googleMap;
-        var sydney: LatLng
-        sydney = LatLng(-34.0, 151.0);
-        mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
-
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_find_hostel, menu)
         return true
@@ -173,7 +153,7 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, OnMapReadyCallb
             }
 
             R.id.action_map -> {
-
+                FindHostelMapActivity.startActivity(this, listItems)
             }
 
             R.id.action_search -> {
