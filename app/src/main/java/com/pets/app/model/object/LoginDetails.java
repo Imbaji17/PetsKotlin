@@ -44,7 +44,7 @@ public class LoginDetails implements Serializable {
     }
 
     public boolean isNewUser() {
-        return isNewUser.equalsIgnoreCase("true");
+        return isNewUser.equalsIgnoreCase("false");
     }
 
     public String getUser_id() {
