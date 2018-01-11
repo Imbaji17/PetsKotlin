@@ -47,6 +47,6 @@
             android:layout_centerVertical="true"
             android:padding="@dimen/dimen_size_10"
             android:src="@drawable/cross"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

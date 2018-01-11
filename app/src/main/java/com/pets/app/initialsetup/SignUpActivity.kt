@@ -37,6 +37,8 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var btnRegister: Button? = null
     private var tvLogin: TextView? = null
     private val RC_AUTOCOMPLETE: Int = 100
+    private lateinit var latitude: String
+    private lateinit var longitude: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,9 +146,6 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
 
         return outString
     }
-
-    private lateinit var latitude: String
-    private lateinit var longitude: String
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
