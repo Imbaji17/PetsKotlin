@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:id="@+id/menu1">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="@string/home" />
+    </group>
+    <group android:id="@+id/menu2">
+        <item
+            android:id="@+id/nav_mypets"
+            android:icon="@drawable/mypets"
+            android:title="@string/my_pets" />
+    </group>
+    <group android:id="@+id/menu3">
+        <item
+            android:id="@+id/nav_mymatches"
+            android:icon="@drawable/mymatches"
+            android:title="@string/my_matches" />
+    </group>
+    <group android:id="@+id/menu4">
+        <item
+            android:id="@+id/nav_my_interests"
+            android:icon="@drawable/myintrests"
+            android:title="@string/my_interests" />
+    </group>
+    <group android:id="@+id/menu5">
+        <item
+            android:id="@+id/nav_sent_feedback"
+            android:icon="@drawable/feedback"
+            android:title="@string/sent_feedback" />
+    </group>
+    <group android:id="@+id/menu6">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logout"
+            android:title="@string/logout" />
+    </group>
+</menu>

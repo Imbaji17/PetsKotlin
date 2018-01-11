@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,7 +28,8 @@ import com.pets.app.R;
 public class BaseActivity extends AppCompatActivity {
 
     protected RelativeLayout mProgressBar;
-    protected boolean isDataChanged;
+    protected boolean isDataChanged, isHeaderImage;
+    protected Toolbar toolbar;
     private ProgressDialog mProgressDialog;
     private FrameLayout mFrameLayout;
 
@@ -67,10 +69,14 @@ public class BaseActivity extends AppCompatActivity {
      */
     protected void initializeToolbar(String cmgString) {
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             TextView tvToolbar = toolbar.findViewById(R.id.tvToolbar);
             tvToolbar.setText(cmgString);
+            ImageView imgView = toolbar.findViewById(R.id.imgHeader);
+            if (isHeaderImage) {
+                imgView.setVisibility(View.VISIBLE);
+            }
             setSupportActionBar(toolbar);
         }
         setSupportActionBar(toolbar);

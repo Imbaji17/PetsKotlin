@@ -17,6 +17,14 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_16" />
 
+    <ImageView
+        android:id="@+id/imgHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/add_pet"
+        android:visibility="gone" />
+
 </android.support.v7.widget.Toolbar>
 
 
