@@ -45,6 +45,9 @@
     <string name="please_enter_valid_email">Please enter valid email</string>
     <string name="please_enter_password">Please enter password</string>
     <string name="password_must_be_greater_than_6">Password length must be greater or equal to 6 characters</string>
+    <string name="please_enter_confirm_password">Please enter confirm password</string>
+    <string name="please_accept_terms">Please accept terms and conditions</string>
+    <string name="please_select_location">Please select location</string>
     <string name="please_enter_confirm_password_match">Password and Confirm password did\'nt matched</string>
     <string name="title_activity_landing">LandingActivity</string>
     <string name="are_you_sure_you_want_to_exit">Are you sure you want to Logout ?</string>
@@ -69,6 +72,7 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="chat">Chat</string>
     <string name="search">Search</string>
+    <string name="please_enter_name">Please enter name</string>
     <plurals name="reviews">
         <item quantity="one">(%d review)</item>
         <item quantity="other">(%d reviews)</item>

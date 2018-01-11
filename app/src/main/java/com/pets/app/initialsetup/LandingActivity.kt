@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
 import com.pets.app.R
+import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.DialogManager
 import kotlinx.android.synthetic.main.activity_landing.*
 
@@ -77,6 +78,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             }
             R.id.nav_logout -> {
                 DialogManager.showDialogWithYesAndNo(this, this.getString(R.string.are_you_sure_you_want_to_exit), DialogInterface.OnClickListener { dialogInterface, i ->
+                    AppPreferenceManager.saveUser(null)
                     val mIntent = Intent(this, LoginActivity::class.java)
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     this.startActivity(mIntent)

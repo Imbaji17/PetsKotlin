@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.SpannableString
 import android.text.TextPaint
+import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
@@ -88,8 +89,14 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 openAutocompleteActivity()
             }
             R.id.btnRegister -> {
-                val signUp = Intent(this, OtpVerificationActivity::class.java)
-                startActivity(signUp)
+                if (checkValidations()) {
+                    if (Utils.isOnline(this)) {
+                        val signUp = Intent(this, OtpVerificationActivity::class.java)
+                        startActivity(signUp)
+                    } else {
+                        Utils.showToast(this.getString(R.string.device_is_offline))
+                    }
+                }
             }
         }
     }
@@ -170,5 +177,39 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 // the user pressed the back button.
             }
         }
+    }
+
+    private fun checkValidations(): Boolean {
+
+        if (TextUtils.isEmpty(edtName?.text.toString().trim())) {
+            edtName?.setError(this.getString(R.string.please_enter_name))
+            return false
+        } else if (TextUtils.isEmpty(edtEmail?.text.toString().trim())) {
+            edtEmail?.setError(this.getString(R.string.please_enter_email))
+            return false
+        } else if (Utils.isEmailValid(edtEmail?.text.toString().trim())) {
+            edtEmail?.setError(this.getString(R.string.please_enter_valid_email))
+            return false
+        } else if (TextUtils.isEmpty(edtPassword?.text.toString().trim())) {
+            edtPassword?.setError(this.getString(R.string.please_enter_password))
+            return false
+        } else if (edtPassword?.text.toString().trim().length < 6) {
+            edtPassword?.setError(this.getString(R.string.password_must_be_greater_than_6))
+            return false
+        } else if (TextUtils.isEmpty(edtConfirmPassword?.text.toString().trim())) {
+            edtConfirmPassword?.setError(this.getString(R.string.please_enter_confirm_password))
+            return false
+        } else if (!edtConfirmPassword?.text.toString().trim().equals(edtPassword?.text.toString().trim(), ignoreCase = true)) {
+            edtConfirmPassword?.setError(this.getString(R.string.please_enter_confirm_password_match))
+            return false
+        } else if (TextUtils.isEmpty(edtLocation?.text.toString().trim())) {
+            edtLocation?.setError(this.getString(R.string.please_select_location))
+            return false
+        } else if (checkTerms?.isChecked!!) {
+            Utils.showToast(this.getString(R.string.please_accept_terms))
+            return false
+        }
+
+        return true
     }
 }
