@@ -13,6 +13,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.facebook.FacebookSdk;
 import com.pets.app.utilities.Typefaces;
 
 import java.security.MessageDigest;
@@ -24,12 +25,23 @@ import java.security.NoSuchAlgorithmException;
 public class MyApplication extends MultiDexApplication {
 
     private static final String TAG = MyApplication.class.getSimpleName();
-    private static MyApplication mInstance;
-    private static SharedPreferences prefs;
     public static Typeface fontRegular;
     public static Typeface fontItalic;
     public static Typeface fontBold;
     public static Typeface fontLight;
+    private static MyApplication mInstance;
+    private static SharedPreferences prefs;
+
+    public static synchronized MyApplication getInstance() {
+        return mInstance;
+    }
+
+    public static SharedPreferences getSharedPreferences() {
+        if (prefs == null) {
+            prefs = getInstance().getSharedPreferences(Constants.PREFERENCE_FILE, MODE_PRIVATE);
+        }
+        return prefs;
+    }
 
     @Override
     public void onCreate() {
@@ -43,23 +55,14 @@ public class MyApplication extends MultiDexApplication {
         registerComponentCallbacks(handler);
         preloadTypefaces();
         printHashKey();
+        // Facebook Sdk Initiazile
+        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(base);
-    }
-
-    public static synchronized MyApplication getInstance() {
-        return mInstance;
-    }
-
-    public static SharedPreferences getSharedPreferences() {
-        if (prefs == null) {
-            prefs = getInstance().getSharedPreferences(Constants.PREFERENCE_FILE, MODE_PRIVATE);
-        }
-        return prefs;
     }
 
     /**

@@ -1,10 +1,22 @@
 package com.pets.app.initialsetup
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import com.google.gson.GsonBuilder
 import com.pets.app.R
+import com.pets.app.common.Constants
+import com.pets.app.model.NormalResponse
+import com.pets.app.utilities.TimeStamp
+import com.pets.app.utilities.Utils
+import com.pets.app.webservice.RestClient
+import com.pets.app.webservice.WebServiceBuilder
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.IOException
 
 class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
 
@@ -36,9 +48,62 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
         when (v?.id) {
 
             R.id.btnSubmit -> {
-                this.finish()
+                if (checkValidations()) {
+                    if (Utils.isOnline(this)) {
+                        forgotPasswordApiCall()
+                    } else {
+                        Utils.showToast(this.getString(R.string.device_is_offline))
+                    }
+                }
             }
         }
     }
 
+    private fun checkValidations(): Boolean {
+
+        if (TextUtils.isEmpty(edtEmail?.text.toString().trim())) {
+            edtEmail?.error = this.getString(R.string.please_enter_email)
+            return false
+        } else if (!Utils.isEmailValid(edtEmail?.text.toString().trim())) {
+            edtEmail?.error = this.getString(R.string.please_enter_valid_email)
+            return false
+        }
+
+        return true
+    }
+
+    private fun forgotPasswordApiCall() {
+
+        val email = edtEmail?.text.toString().trim()
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + email + Constants.TIME_STAMP_KEY)
+
+        showProgressBar()
+        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = api.forgetPassword(email, timeStamp, key)
+        call.enqueue(object : Callback<NormalResponse> {
+            override fun onResponse(call: Call<NormalResponse>?, response: Response<NormalResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.body() != null && response.isSuccessful) {
+                        Utils.showToast(response.body().message)
+                        this@ForgotPasswordActivity.finish()
+                    } else if (response.code() == 403) {
+                        val gson = GsonBuilder().create()
+                        val mError: NormalResponse
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
+                            Utils.showToast("" + mError.message)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<NormalResponse>?, t: Throwable?) {
+                hideProgressBar()
+            }
+        })
+    }
 }

@@ -30,22 +30,20 @@ public class WebServiceBuilder {
         Call<LoginResponse> login(@Field("email_id") String email_id, @Field("password") String password, @Field("language_code") String language_code, @Field("device_type") String device_type, @Field("device_token") String device_token, @Field("timestamp") String timestamp, @Field("key") String key);
 
         @FormUrlEncoded
-        @POST("login/")
+        @POST("registerUser/")
         Call<LoginResponse> signUp(@Field("name") String name, @Field("email_id") String email_id, @Field("password") String password, @Field("phone_code") String phone_code, @Field("phone_number") String phone_number, @Field("location") String location, @Field("lat") String lat, @Field("lng") String lng,
                                    @Field("language_code") String language_code, @Field("device_type") String device_type, @Field("device_token") String device_token, @Field("timestamp") String timestamp, @Field("key") String key);
+
+        @POST("socialLogin/")
+        Call<LoginResponse> socialLogin(@Body UpdateUserRequest userRequest);
 
         @POST("updateProfile/")
         Call<LoginResponse> updateUser(@Body UpdateUserRequest userRequest);
 
-//        @FormUrlEncoded
-//        @POST("sociallogin/")
-//        Call<LoginResponse> socialLogin(@Field("timestamp") String timestamp, @Field("key") String key, @Field("social_id") String social_id, @Field("social_type") String social_type, @Field("email") String email, @Field("device_id") String device_id, @Field("device_type") String device_type, @Field("type") String type);
-//
-//        @FormUrlEncoded
-//        @POST("forget_password/")
-//        Call<NormalResponse> forgetPassword(@Field("mobile") String mobile, @Field("timestamp") String timestamp, @Field("key") String key);
-//
-//
+        @FormUrlEncoded
+        @POST("forgot_password/")
+        Call<NormalResponse> forgetPassword(@Field("email_id") String email_id, @Field("timestamp") String timestamp, @Field("key") String key);
+
 //        @POST("update_user/")
 //        Call<SignUpResponse> updateUser(@Body UpdateUserRequest signUpRequest);
 //

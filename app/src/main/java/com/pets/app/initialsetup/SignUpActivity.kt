@@ -23,6 +23,7 @@ import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.activities.WebViewActivity
 import com.pets.app.common.AppPreferenceManager
+import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.model.LoginResponse
@@ -33,6 +34,7 @@ import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
 import com.pets.app.webservice.WebServiceBuilder
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,6 +57,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var isBack: Boolean = false
     private val RC_AUTOCOMPLETE: Int = 100
     private val RC_OTP: Int = 200
+    private var userObj: LoginDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +66,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         initializeToolbar(this.getString(R.string.title_activity_sign_up))
         initView()
         clickListeners()
+        getIntentData()
     }
 
     private fun initView() {
@@ -92,6 +96,24 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         btnRegister?.setOnClickListener(this)
     }
 
+    private fun getIntentData() {
+
+        if (intent.hasExtra(ApplicationsConstants.USER_OBJECT)) {
+
+            userObj = intent.getSerializableExtra(ApplicationsConstants.USER_OBJECT) as LoginDetails?
+
+            password.visibility = View.GONE
+            confirmPassword.visibility = View.GONE
+
+            if (!TextUtils.isEmpty(userObj?.name)) {
+                edtName?.setText(userObj?.name)
+            }
+            if (!TextUtils.isEmpty(userObj?.email_id)) {
+                edtEmail?.setText(userObj?.email_id)
+            }
+        }
+    }
+
     override fun onClick(v: View?) {
 
         when (v?.id) {
@@ -106,7 +128,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             R.id.btnRegister -> {
                 if (checkValidations()) {
                     if (Utils.isOnline(this)) {
-                        if (isBack) {
+                        if (isBack or (userObj != null)) {
                             updateUserApiCall()
                         } else {
                             signUpApiCall()
@@ -208,35 +230,41 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private fun checkValidations(): Boolean {
 
         if (TextUtils.isEmpty(edtName?.text.toString().trim())) {
-            edtName?.setError(this.getString(R.string.please_enter_name))
+            edtName?.error = this.getString(R.string.please_enter_name)
             edtName?.requestFocus()
             return false
         } else if (TextUtils.isEmpty(edtEmail?.text.toString().trim())) {
-            edtEmail?.setError(this.getString(R.string.please_enter_email))
+            edtEmail?.error = this.getString(R.string.please_enter_email)
             edtEmail?.requestFocus()
             return false
         } else if (!Utils.isEmailValid(edtEmail?.text.toString().trim())) {
-            edtEmail?.setError(this.getString(R.string.please_enter_valid_email))
+            edtEmail?.error = this.getString(R.string.please_enter_valid_email)
             edtEmail?.requestFocus()
             return false
-        } else if (TextUtils.isEmpty(edtPassword?.text.toString().trim())) {
-            edtPassword?.setError(this.getString(R.string.please_enter_password))
-            edtPassword?.requestFocus()
-            return false
-        } else if (edtPassword?.text.toString().trim().length < 6) {
-            edtPassword?.setError(this.getString(R.string.password_must_be_greater_than_6))
-            edtPassword?.requestFocus()
-            return false
-        } else if (TextUtils.isEmpty(edtConfirmPassword?.text.toString().trim())) {
-            edtConfirmPassword?.setError(this.getString(R.string.please_enter_confirm_password))
-            edtConfirmPassword?.requestFocus()
-            return false
-        } else if (!edtConfirmPassword?.text.toString().trim().equals(edtPassword?.text.toString().trim(), ignoreCase = true)) {
-            edtConfirmPassword?.setError(this.getString(R.string.please_enter_confirm_password_match))
-            edtConfirmPassword?.requestFocus()
-            return false
-        } else if (TextUtils.isEmpty(edtContact?.text.toString().trim())) {
-            edtContact?.setError(this.getString(R.string.please_enter_contact))
+        }
+
+        if (userObj == null) {
+            if (TextUtils.isEmpty(edtPassword?.text.toString().trim())) {
+                edtPassword?.error = this.getString(R.string.please_enter_password)
+                edtPassword?.requestFocus()
+                return false
+            } else if (edtPassword?.text.toString().trim().length < 6) {
+                edtPassword?.error = this.getString(R.string.password_must_be_greater_than_6)
+                edtPassword?.requestFocus()
+                return false
+            } else if (TextUtils.isEmpty(edtConfirmPassword?.text.toString().trim())) {
+                edtConfirmPassword?.error = this.getString(R.string.please_enter_confirm_password)
+                edtConfirmPassword?.requestFocus()
+                return false
+            } else if (!edtConfirmPassword?.text.toString().trim().equals(edtPassword?.text.toString().trim(), ignoreCase = true)) {
+                edtConfirmPassword?.error = this.getString(R.string.please_enter_confirm_password_match)
+                edtConfirmPassword?.requestFocus()
+                return false
+            }
+        }
+
+        if (TextUtils.isEmpty(edtContact?.text.toString().trim())) {
+            edtContact?.error = this.getString(R.string.please_enter_contact)
             edtContact?.requestFocus()
             return false
         } else if (TextUtils.isEmpty(edtLocation?.text.toString().trim())) {
@@ -271,14 +299,15 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
                 hideProgressBar()
                 if (response != null) {
-                    if (response.body() != null && response.isSuccessful()) {
+                    if (response.body() != null && response.isSuccessful) {
+                        Utils.showToast(response.body().message)
                         checkResponse(response.body().result)
                     } else if (response.code() == 403) {
                         val gson = GsonBuilder().create()
                         val mError: LoginResponse
                         try {
                             mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
+                            Utils.showToast("" + mError.message)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -304,6 +333,10 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         val key = TimeStamp.getMd5(timeStamp + AppPreferenceManager.getUserID() + email + Constants.TIME_STAMP_KEY)
 
         val request = UpdateUserRequest()
+        if (userObj != null) {
+            request.setSocial_id(userObj?.social_id)
+            request.setSocial_type(userObj?.social_type)
+        }
         request.setUser_id(AppPreferenceManager.getUserID())
         request.setName(name)
         request.setEmail_id(email)
@@ -323,14 +356,15 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
                 hideProgressBar()
                 if (response != null) {
-                    if (response.body() != null && response.isSuccessful()) {
+                    if (response.body() != null && response.isSuccessful) {
+                        Utils.showToast(response.body().message)
                         checkResponse(response.body().result)
                     } else if (response.code() == 403) {
                         val gson = GsonBuilder().create()
                         val mError: LoginResponse
                         try {
                             mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
+                            Utils.showToast("" + mError.message)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }

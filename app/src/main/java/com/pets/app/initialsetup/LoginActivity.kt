@@ -11,13 +11,20 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.*
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
 import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
+import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
+import com.pets.app.interfaces.SimpleItemClickListener
+import com.pets.app.mediator.FaceBookIntegrator
 import com.pets.app.model.LoginResponse
 import com.pets.app.model.`object`.LoginDetails
+import com.pets.app.model.request.UpdateUserRequest
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -29,6 +36,7 @@ import java.io.IOException
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
+    private val FACEBOOK_REQUEST_CODE = 64206
     private var edtEmail: EditText? = null
     private var edtPassword: EditText? = null
     private var checkRemember: CheckBox? = null
@@ -37,6 +45,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private var tvSignUp: TextView? = null
     private var imgFacebook: ImageView? = null
     private var imgInstagram: ImageView? = null
+    private lateinit var loginDetails: LoginDetails
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,8 +104,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.imgFacebook -> {
-                val signUp = Intent(this, SignUpActivity::class.java)
-                startActivity(signUp)
+                loginFacebook()
             }
             R.id.imgInstagram -> {
                 val signUp = Intent(this, SignUpActivity::class.java)
@@ -108,17 +116,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private fun checkValidations(): Boolean {
 
         if (TextUtils.isEmpty(edtEmail?.text.toString().trim())) {
-            edtEmail?.setError(this.getString(R.string.please_enter_email))
+            edtEmail?.error = this.getString(R.string.please_enter_email)
             return false
         } else if (!Utils.isEmailValid(edtEmail?.text.toString().trim())) {
-            edtEmail?.setError(this.getString(R.string.please_enter_valid_email))
+            edtEmail?.error = this.getString(R.string.please_enter_valid_email)
             return false
         } else if (TextUtils.isEmpty(edtPassword?.text.toString().trim())) {
-            edtPassword?.setError(this.getString(R.string.please_enter_password))
+            edtPassword?.error = this.getString(R.string.please_enter_password)
             return false
         } else if (edtPassword?.text.toString().trim().length < 6) {
-            edtPassword?.setError(this.getString(R.string.password_must_be_greater_than_6))
-            return false;
+            edtPassword?.error = this.getString(R.string.password_must_be_greater_than_6)
+            return false
         }
 
         return true
@@ -149,6 +157,90 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         return outString
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == FACEBOOK_REQUEST_CODE)
+            mSocialIntegratorInterface.facebookCallbackManager.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun loginFacebook() {
+
+        showProgressBar()
+        mSocialIntegratorInterface = FaceBookIntegrator(this, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
+                hideProgressBar()
+                mSocialIntegratorInterface.getProfile(loginResult, object : SimpleItemClickListener {
+                    override fun onItemClick(`object`: Any?) {
+                        loginDetails = `object` as LoginDetails
+                        if (loginDetails != null) {
+                            if (Utils.isOnline(this@LoginActivity)) {
+                                socialLoginApiCall(loginDetails.social_id, loginDetails.social_type, loginDetails.email_id)
+                            } else {
+                                Utils.showToast(this@LoginActivity.getString(R.string.device_is_offline))
+                            }
+                        }
+                    }
+                })
+            }
+
+            override fun onCancel() {
+                hideProgressBar()
+            }
+
+            override fun onError(error: FacebookException) {
+                hideProgressBar()
+                Utils.showToast(error.message)
+            }
+        })
+    }
+
+    private fun socialLoginApiCall(socialId: String, socialType: String, email: String) {
+
+        val languageCode = Enums.Language.EN.name
+        val deviceType = Constants.DEVICE_TYPE
+        val deviceToken = ""
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + socialId + socialType + Constants.TIME_STAMP_KEY)
+
+        val request = UpdateUserRequest()
+        request.setSocial_id(socialId)
+        request.setSocial_type(socialType)
+        request.setName(loginDetails.name)
+        request.setEmail_id(email)
+        request.setLanguage_code(languageCode)
+        request.setDevice_type(deviceType)
+        request.setDevice_token(deviceToken)
+        request.setTimestamp(timeStamp)
+        request.setKey(key)
+
+        showProgressBar()
+        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = api.socialLogin(request)
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.body() != null && response.isSuccessful) {
+                        checkSocialLoginResponse(response.body().result)
+                    } else if (response.code() == 403) {
+                        val gson = GsonBuilder().create()
+                        val mError: LoginResponse
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
+                            Utils.showToast("" + mError.message)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>?, t: Throwable?) {
+                hideProgressBar()
+            }
+        })
+    }
+
     private fun loginApiCall() {
 
         val email = edtEmail?.text.toString().trim()
@@ -166,14 +258,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
                 hideProgressBar()
                 if (response != null) {
-                    if (response.body() != null && response.isSuccessful()) {
+                    if (response.body() != null && response.isSuccessful) {
                         checkResponse(response.body().result)
                     } else if (response.code() == 403) {
                         val gson = GsonBuilder().create()
                         val mError: LoginResponse
                         try {
                             mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
+                            Utils.showToast("" + mError.message)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -187,6 +279,27 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
+    private fun checkSocialLoginResponse(response: LoginDetails?) {
+
+        AppPreferenceManager.saveUser(response)
+
+        if (!response?.isNewUser()!!) {
+
+            val mIntent: Intent?
+            if (response.isMobileVerified) {
+                mIntent = Intent(this, LandingActivity::class.java)
+                mIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            } else {
+                mIntent = Intent(this, OtpVerificationActivity::class.java)
+            }
+            this.startActivity(mIntent)
+        } else {
+            val mIntent = Intent(this, SignUpActivity::class.java)
+            mIntent.putExtra(ApplicationsConstants.USER_OBJECT, loginDetails)
+            this.startActivity(mIntent)
+        }
+    }
+
     private fun checkResponse(details: LoginDetails?) {
 
         AppPreferenceManager.saveUser(details)
@@ -197,8 +310,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             AppPreferenceManager.saveUserPassword(edtPassword?.text.toString())
         }
 
-        val mIntent = Intent(this, LandingActivity::class.java)
-        mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        val mIntent: Intent?
+        if (details!!.isMobileVerified) {
+            mIntent = Intent(this, LandingActivity::class.java)
+            mIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        } else {
+            mIntent = Intent(this, OtpVerificationActivity::class.java)
+        }
         this.startActivity(mIntent)
     }
 }
