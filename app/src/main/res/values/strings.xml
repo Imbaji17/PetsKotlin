@@ -46,6 +46,7 @@
     <string name="please_enter_password">Please enter password</string>
     <string name="password_must_be_greater_than_6">Password length must be greater or equal to 6 characters</string>
     <string name="please_enter_confirm_password">Please enter confirm password</string>
+    <string name="please_enter_contact">Please enter contact</string>
     <string name="please_accept_terms">Please accept terms and conditions</string>
     <string name="please_select_location">Please select location</string>
     <string name="please_enter_confirm_password_match">Password and Confirm password did\'nt matched</string>
