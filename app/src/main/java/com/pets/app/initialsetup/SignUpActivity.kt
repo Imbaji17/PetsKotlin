@@ -241,23 +241,27 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             edtEmail?.setError(this.getString(R.string.please_enter_valid_email))
             edtEmail?.requestFocus()
             return false
-        } else if (TextUtils.isEmpty(edtPassword?.text.toString().trim())) {
-            edtPassword?.setError(this.getString(R.string.please_enter_password))
-            edtPassword?.requestFocus()
-            return false
-        } else if (edtPassword?.text.toString().trim().length < 6) {
-            edtPassword?.setError(this.getString(R.string.password_must_be_greater_than_6))
-            edtPassword?.requestFocus()
-            return false
-        } else if (TextUtils.isEmpty(edtConfirmPassword?.text.toString().trim())) {
-            edtConfirmPassword?.setError(this.getString(R.string.please_enter_confirm_password))
-            edtConfirmPassword?.requestFocus()
-            return false
-        } else if (!edtConfirmPassword?.text.toString().trim().equals(edtPassword?.text.toString().trim(), ignoreCase = true)) {
-            edtConfirmPassword?.setError(this.getString(R.string.please_enter_confirm_password_match))
-            edtConfirmPassword?.requestFocus()
-            return false
-        } else if (TextUtils.isEmpty(edtContact?.text.toString().trim())) {
+        } else if (userObj == null) {
+            if (TextUtils.isEmpty(edtPassword?.text.toString().trim())) {
+                edtPassword?.setError(this.getString(R.string.please_enter_password))
+                edtPassword?.requestFocus()
+                return false
+            } else if (edtPassword?.text.toString().trim().length < 6) {
+                edtPassword?.setError(this.getString(R.string.password_must_be_greater_than_6))
+                edtPassword?.requestFocus()
+                return false
+            } else if (TextUtils.isEmpty(edtConfirmPassword?.text.toString().trim())) {
+                edtConfirmPassword?.setError(this.getString(R.string.please_enter_confirm_password))
+                edtConfirmPassword?.requestFocus()
+                return false
+            } else if (!edtConfirmPassword?.text.toString().trim().equals(edtPassword?.text.toString().trim(), ignoreCase = true)) {
+                edtConfirmPassword?.setError(this.getString(R.string.please_enter_confirm_password_match))
+                edtConfirmPassword?.requestFocus()
+                return false
+            }
+        }
+
+        if (TextUtils.isEmpty(edtContact?.text.toString().trim())) {
             edtContact?.setError(this.getString(R.string.please_enter_contact))
             edtContact?.requestFocus()
             return false
