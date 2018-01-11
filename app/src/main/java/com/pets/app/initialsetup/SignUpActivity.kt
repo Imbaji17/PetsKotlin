@@ -19,11 +19,23 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.activities.WebViewActivity
+import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.Constants
+import com.pets.app.common.Enums
+import com.pets.app.model.LoginResponse
+import com.pets.app.model.`object`.LoginDetails
 import com.pets.app.utilities.Logger
+import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
+import com.pets.app.webservice.RestClient
+import com.pets.app.webservice.WebServiceBuilder
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.IOException
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
 
@@ -37,9 +49,11 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var checkTerms: CheckBox? = null
     private var btnRegister: Button? = null
     private var tvLogin: TextView? = null
-    private val RC_AUTOCOMPLETE: Int = 100
     private lateinit var latitude: String
     private lateinit var longitude: String
+    private var isBack: Boolean = false
+    private val RC_AUTOCOMPLETE: Int = 100
+    private val RC_OTP: Int = 200
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,8 +105,11 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             R.id.btnRegister -> {
                 if (checkValidations()) {
                     if (Utils.isOnline(this)) {
-                        val signUp = Intent(this, OtpVerificationActivity::class.java)
-                        startActivity(signUp)
+                        if (isBack) {
+                            updateUserApiCall()
+                        } else {
+                            signUpApiCall()
+                        }
                     } else {
                         Utils.showToast(this.getString(R.string.device_is_offline))
                     }
@@ -156,25 +173,33 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
-        Logger.errorLog("requestCode : " + requestCode)
-        if (requestCode == RC_AUTOCOMPLETE) {
-            if (resultCode == RESULT_OK) {
-                // Get the user's selected place from the Intent.
-                val place = PlaceAutocomplete.getPlace(this, data)
-                Log.i("TAG", "Place Selected: " + place.name)
+        when (requestCode) {
+            RC_AUTOCOMPLETE -> {
+                if (resultCode == RESULT_OK) {
+                    // Get the user's selected place from the Intent.
+                    val place = PlaceAutocomplete.getPlace(this, data)
+                    Log.i("TAG", "Place Selected: " + place.name)
 
-                val latLng = place.latLng
-                latitude = latLng.latitude.toString()
-                longitude = latLng.longitude.toString()
-                edtLocation?.setText(place.address)
+                    val latLng = place.latLng
+                    latitude = latLng.latitude.toString()
+                    longitude = latLng.longitude.toString()
+                    edtLocation?.setText(place.address)
 
-                Logger.errorLog(place.id + "\n" + place.placeTypes + "\n" + place.address + "\n" + place.locale)
-            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                val status = PlaceAutocomplete.getStatus(this, data)
-                Log.e("TAG", "Error: Status = " + status.toString())
-            } else if (resultCode == RESULT_CANCELED) {
-                // Indicates that the activity closed before a selection was made. For example if
-                // the user pressed the back button.
+                    Logger.errorLog(place.id + "\n" + place.placeTypes + "\n" + place.address + "\n" + place.locale)
+                } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                    val status = PlaceAutocomplete.getStatus(this, data)
+                    Log.e("TAG", "Error: Status = " + status.toString())
+                } else if (resultCode == RESULT_CANCELED) {
+                    // Indicates that the activity closed before a selection was made. For example if
+                    // the user pressed the back button.
+                }
+            }
+            RC_OTP -> {
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        isBack = true
+                    }
+                }
             }
         }
     }
@@ -222,5 +247,60 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         }
 
         return true
+    }
+
+    private fun signUpApiCall() {
+
+        val name = edtName?.text.toString().trim()
+        val email = edtEmail?.text.toString().trim()
+        val passsword = edtPassword?.text.toString().trim()
+        val phoneCode = edtCountryCode?.text.toString().trim()
+        val contact = edtContact?.text.toString().trim()
+        val location = edtLocation?.text.toString().trim()
+        val languageCode = Enums.Language.EN.name
+        val deviceType = Constants.DEVICE_TYPE
+        val deviceToken = ""
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + email + passsword + Constants.TIME_STAMP_KEY)
+
+        showProgressBar()
+        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = api.signUp(name, email, passsword, phoneCode, contact, location, latitude, longitude, languageCode, deviceType, deviceToken, timeStamp, key)
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        checkResponse(response.body().result)
+                    } else if (response.code() == 403) {
+                        val gson = GsonBuilder().create()
+                        val mError: LoginResponse
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
+                            Utils.showToast("" + mError.getMessage())
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>?, t: Throwable?) {
+                hideProgressBar()
+            }
+        })
+    }
+
+    private fun updateUserApiCall() {
+
+
+    }
+
+    private fun checkResponse(details: LoginDetails?) {
+
+        AppPreferenceManager.saveUser(details)
+
+        val signUp = Intent(this, OtpVerificationActivity::class.java)
+        this.startActivityForResult(signUp, RC_OTP)
     }
 }

@@ -1,5 +1,6 @@
 package com.pets.app.initialsetup
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.Editable
@@ -8,11 +9,13 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.pets.app.R
+import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
 import com.pets.app.mediator.AppTextWatcher
 import com.pets.app.utilities.Utils
@@ -89,6 +92,18 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
     private fun clickListeners() {
 
         btnSubmit?.setOnClickListener(this)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                val mIntent = Intent()
+                mIntent.putExtra(ApplicationsConstants.NORMAL, true)
+                setResult(RESULT_OK, mIntent)
+                this.finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onClick(v: View?) {
