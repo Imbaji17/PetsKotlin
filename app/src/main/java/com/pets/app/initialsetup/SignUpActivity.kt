@@ -8,14 +8,21 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.pets.app.R
 import com.pets.app.activities.WebViewActivity
 import com.pets.app.common.Constants
+import com.pets.app.utilities.Logger
+import com.pets.app.utilities.Utils
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
 
@@ -29,6 +36,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var checkTerms: CheckBox? = null
     private var btnRegister: Button? = null
     private var tvLogin: TextView? = null
+    private val RC_AUTOCOMPLETE: Int = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,14 +83,37 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 startActivity(signUp)
             }
             R.id.edtLocation -> {
-                val signUp = Intent(this, SignUpActivity::class.java)
-                startActivity(signUp)
+                openAutocompleteActivity()
             }
             R.id.btnRegister -> {
                 val signUp = Intent(this, OtpVerificationActivity::class.java)
                 startActivity(signUp)
             }
         }
+    }
+
+    private fun openAutocompleteActivity() {
+
+        try {
+            // The autocomplete activity requires Google Play Services to be available. The intent
+            // builder checks this and throws an exception if it is not the case.
+            val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                    .build(this)
+            startActivityForResult(intent, RC_AUTOCOMPLETE)
+        } catch (e: GooglePlayServicesRepairableException) {
+            // Indicates that Google Play Services is either not installed or not up to date. Prompt
+            // the user to correct the issue.
+            GoogleApiAvailability.getInstance().getErrorDialog(this, e.connectionStatusCode,
+                    0 /* requestCode */).show()
+        } catch (e: GooglePlayServicesNotAvailableException) {
+            // Indicates that Google Play Services is not available and the problem is not easily
+            // resolvable.
+            val message = "Google Play Services is not available: " + GoogleApiAvailability.getInstance().getErrorString(e.errorCode)
+
+            Log.e("Tag", message)
+            Utils.showToast(message)
+        }
+
     }
 
     private fun generateSpannableString(string: String?, string1: String?, isTrue: Boolean): SpannableString {
@@ -114,4 +145,31 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         return outString
     }
 
+    private lateinit var latitude: String
+    private lateinit var longitude: String
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Logger.errorLog("requestCode : " + requestCode)
+        if (requestCode == RC_AUTOCOMPLETE) {
+            if (resultCode == RESULT_OK) {
+                // Get the user's selected place from the Intent.
+                val place = PlaceAutocomplete.getPlace(this, data)
+                Log.i("TAG", "Place Selected: " + place.name)
+
+                val latLng = place.latLng
+                latitude = latLng.latitude.toString()
+                longitude = latLng.longitude.toString()
+                edtLocation?.setText(place.address)
+
+                Logger.errorLog(place.id + "\n" + place.placeTypes + "\n" + place.address + "\n" + place.locale)
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                val status = PlaceAutocomplete.getStatus(this, data)
+                Log.e("TAG", "Error: Status = " + status.toString())
+            } else if (resultCode == RESULT_CANCELED) {
+                // Indicates that the activity closed before a selection was made. For example if
+                // the user pressed the back button.
+            }
+        }
+    }
 }
