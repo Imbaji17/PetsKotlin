@@ -21,7 +21,6 @@ class SplashScreenActivity : BaseActivity() {
 
     private fun callHandler() {
 
-
         mHandler = Handler()
         mHandler!!.postDelayed(Runnable {
             val mIntent: Intent?
