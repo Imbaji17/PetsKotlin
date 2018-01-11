@@ -6,5 +6,26 @@
     android:orientation="vertical"
     tools:context="com.pets.app.activities.ReviewActivity">
 
+    <include layout="@layout/app_toolbar" />
+
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/app_loading_screen" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <include layout="@layout/app_no_result_found" />
+
+        <include layout="@layout/app_no_internet_connection" />
+    </ViewFlipper>
+
 
 </LinearLayout>

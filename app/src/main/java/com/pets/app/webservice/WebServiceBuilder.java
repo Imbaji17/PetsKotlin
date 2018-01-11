@@ -3,6 +3,7 @@ package com.pets.app.webservice;
 import com.pets.app.model.FindHostelResponse;
 import com.pets.app.model.LoginResponse;
 import com.pets.app.model.NormalResponse;
+import com.pets.app.model.ReviewsResponse;
 import com.pets.app.model.request.FavouriteHostel;
 import com.pets.app.model.request.UpdateUserRequest;
 
@@ -66,8 +67,8 @@ public class WebServiceBuilder {
         // key=f8173a2d89b1dd8e57070ff8a4ca974c&language_code=EN&next_offset=0&
         // timestamp=1515672430190.93&type=HOSTEL&type_id=2&user_id=20
         @GET("reviews_by_type")
-        Call<FindHostelResponse> reviewsByType(@Query("key") String key, @Query("language_code") String languageCode, @Query("next_offset") int nextOffset,
-                                               @Query("timestamp") String timeStamp, @Query("type") String type, @Query("type_id") String type_id, @Query("user_id") String user_id);
+        Call<ReviewsResponse> reviewsByType(@Query("key") String key, @Query("language_code") String languageCode, @Query("next_offset") int nextOffset,
+                                            @Query("timestamp") String timeStamp, @Query("type") String type, @Query("type_id") String type_id, @Query("user_id") String user_id);
 
     }
 }

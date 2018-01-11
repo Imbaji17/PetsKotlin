@@ -90,4 +90,10 @@
         <item name="android:maxHeight">11dip</item> 
     </style>
 
+    <style name="StarRatingBarLarge" parent="@android:style/Widget.RatingBar">
+         <item name="android:progressDrawable">@drawable/start_rating_bar_large</item> 
+        <item name="android:minHeight">21dip</item> 
+        <item name="android:maxHeight">21dip</item> 
+    </style>
+
 </resources>

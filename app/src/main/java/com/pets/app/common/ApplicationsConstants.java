@@ -11,4 +11,5 @@ public class ApplicationsConstants {
     public static final String DATA = "data";
     public static final String NAME = "name";
     public static final String USER_OBJECT = "USER_OBJECT";
+    public static final String ID = "id";
 }
