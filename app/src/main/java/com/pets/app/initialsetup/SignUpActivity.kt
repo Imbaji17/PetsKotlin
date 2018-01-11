@@ -216,7 +216,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         } else if (TextUtils.isEmpty(edtLocation?.text.toString().trim())) {
             Utils.showToast(this.getString(R.string.please_select_location))
             return false
-        } else if (checkTerms?.isChecked!!) {
+        } else if (!checkTerms?.isChecked!!) {
             Utils.showToast(this.getString(R.string.please_accept_terms))
             return false
         }
