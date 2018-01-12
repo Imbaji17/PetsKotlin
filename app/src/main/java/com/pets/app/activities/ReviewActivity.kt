@@ -3,20 +3,17 @@ package com.pets.app.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.ViewFlipper
+import android.widget.*
 import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.adapters.ReviewsAdapter
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
+import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.NormalResponse
 import com.pets.app.model.ReviewsResponse
 import com.pets.app.utilities.TimeStamp
@@ -29,7 +26,7 @@ import retrofit2.Response
 import java.io.IOException
 import java.util.*
 
-class ReviewActivity : AppCompatActivity(), View.OnClickListener {
+class ReviewActivity : BaseActivity(), View.OnClickListener {
 
     private var adapter: ReviewsAdapter? = null
     private var listItems = ArrayList<Any>()
@@ -40,10 +37,12 @@ class ReviewActivity : AppCompatActivity(), View.OnClickListener {
     private var recyclerView: RecyclerView? = null
     private var llForNoResult: LinearLayout? = null
     private var llForOfflineScreen: LinearLayout? = null
+    private var tvNoResult: TextView? = null
     private var btnRetry: Button? = null
     private var hostelId: String? = null
     private var type: String? = null
     private var nextOffset = 0
+    private var btnWriteReview: Button? = null
 
 
     companion object {
@@ -59,6 +58,7 @@ class ReviewActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review)
+        initializeToolbar(getString(R.string.reviews))
         init()
         initView()
         setAdapter()
@@ -77,7 +77,10 @@ class ReviewActivity : AppCompatActivity(), View.OnClickListener {
         llForNoResult = findViewById(R.id.llForNoResult)
         llForOfflineScreen = findViewById(R.id.llForOfflineScreen)
         btnRetry = findViewById(R.id.btnRetry)
+        tvNoResult = findViewById(R.id.tvNoResult)
+        btnWriteReview = findViewById(R.id.btnWriteReview)
         btnRetry?.setOnClickListener(this)
+        btnWriteReview!!.setOnClickListener(this)
     }
 
     private fun setAdapter() {
@@ -95,6 +98,10 @@ class ReviewActivity : AppCompatActivity(), View.OnClickListener {
         when (p0?.id) {
             R.id.btnRetry -> {
                 getReview()
+            }
+
+            R.id.btnWriteReview -> {
+                WriteReviewActivity.startActivity(this, hostelId!!, type!!)
             }
         }
     }
@@ -155,6 +162,7 @@ class ReviewActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setNoDataLayout() {
+        tvNoResult?.text = getString(R.string.no_review_found)
         viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(llForNoResult)
     }
 

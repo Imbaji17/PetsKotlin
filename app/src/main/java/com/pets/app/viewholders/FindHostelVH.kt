@@ -38,11 +38,7 @@ class FindHostelVH(itemView: View, clickListener: View.OnClickListener) : Recycl
 
         tvName.text = if (!TextUtils.isEmpty(findHostel.hostelName)) findHostel.hostelName else ""
         tvLocation.text = if (!TextUtils.isEmpty(findHostel.address)) findHostel.address else ""
-        if (!findHostel.hostelImages.isEmpty() && !TextUtils.isEmpty(findHostel.hostelImages[0].image)) {
-            ImageSetter.loadImage(context, findHostel.hostelImages[0].image, R.drawable.alert_placeholder, ivFindHostel)
-        } else {
-            ivFindHostel.setImageResource(R.drawable.alert_placeholder)
-        }
+        ImageSetter.loadImage(context, findHostel.hostelImages[0].image, R.drawable.alert_placeholder, ivFindHostel)
         ivFavourite.setImageResource(if (findHostel.isInterest) R.drawable.fav1 else R.drawable.fav2)
     }
 }
