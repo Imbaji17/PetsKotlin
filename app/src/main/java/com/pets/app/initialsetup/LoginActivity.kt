@@ -36,7 +36,8 @@ import java.io.IOException
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
-    private val FACEBOOK_REQUEST_CODE = 64206
+    private val RC_FACEBOOK = 64206
+    private val RC_INSTAGRAM: Int = 200
     private var edtEmail: EditText? = null
     private var edtPassword: EditText? = null
     private var checkRemember: CheckBox? = null
@@ -92,7 +93,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
             R.id.tvForgotPassword -> {
                 val signUp = Intent(this, ForgotPasswordActivity::class.java)
-                startActivity(signUp)
+                this.startActivity(signUp)
             }
             R.id.btnLogin -> {
                 if (checkValidations()) {
@@ -107,8 +108,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 loginFacebook()
             }
             R.id.imgInstagram -> {
-                val signUp = Intent(this, SignUpActivity::class.java)
-                startActivity(signUp)
+                val instagram = Intent(this, InstagramActivity::class.java)
+                this.startActivityForResult(instagram, RC_INSTAGRAM)
             }
         }
     }
@@ -159,8 +160,23 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == FACEBOOK_REQUEST_CODE)
-            mSocialIntegratorInterface.facebookCallbackManager.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            RC_FACEBOOK -> {
+                mSocialIntegratorInterface.facebookCallbackManager.onActivityResult(requestCode, resultCode, data)
+            }
+            RC_INSTAGRAM -> {
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        loginDetails = data.getSerializableExtra(ApplicationsConstants.USER_OBJECT) as LoginDetails
+                        if (Utils.isOnline(this@LoginActivity)) {
+                            socialLoginApiCall(loginDetails.social_id, loginDetails.social_type, loginDetails.email_id)
+                        } else {
+                            Utils.showToast(this@LoginActivity.getString(R.string.device_is_offline))
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun loginFacebook() {
@@ -172,12 +188,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 mSocialIntegratorInterface.getProfile(loginResult, object : SimpleItemClickListener {
                     override fun onItemClick(`object`: Any?) {
                         loginDetails = `object` as LoginDetails
-                        if (loginDetails != null) {
-                            if (Utils.isOnline(this@LoginActivity)) {
-                                socialLoginApiCall(loginDetails.social_id, loginDetails.social_type, loginDetails.email_id)
-                            } else {
-                                Utils.showToast(this@LoginActivity.getString(R.string.device_is_offline))
-                            }
+                        if (Utils.isOnline(this@LoginActivity)) {
+                            socialLoginApiCall(loginDetails.social_id, loginDetails.social_type, loginDetails.email_id)
+                        } else {
+                            Utils.showToast(this@LoginActivity.getString(R.string.device_is_offline))
                         }
                     }
                 })
