@@ -79,8 +79,19 @@
     <string name="please_enter_name">Please enter name</string>
     <string name="choose_country">Choose Country</string>
     <plurals name="reviews">
+    <plurals name="reviews_plural">
         <item quantity="one">(%d review)</item>
         <item quantity="other">(%d reviews)</item>
     </plurals>
+
+    <!--REVIEWS-->
+    <string name="reviews">Reviews</string>
+    <string name="review">Review</string>
+    <string name="no_review_found">No review found</string>
+    <string name="write_reviews">Write Reviews</string>
+    <string name="please_write_your_review">Please write your review</string>
+    <string name="please_give_ratings">Please give ratings</string>
+    <string name="write_comment">Write Comment</string>
+    <string name="are_you_sure_you_want_to_delete_review">Are you sure you want to delete review?</string>
 
 </resources>

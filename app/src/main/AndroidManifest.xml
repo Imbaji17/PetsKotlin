@@ -91,6 +91,7 @@
             android:name=".activities.FullImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.WriteReviewActivity"></activity>
         <activity
             android:name=".activities.ReviewActivity"
             android:screenOrientation="portrait"

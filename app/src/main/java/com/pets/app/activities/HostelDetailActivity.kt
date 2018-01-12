@@ -14,6 +14,7 @@ import com.pets.app.R
 import com.pets.app.adapters.ImageAdapter
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
+import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.FindHostel
 import com.pets.app.model.FindHostelResponse
@@ -181,7 +182,7 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
         }
 
         ratingBar?.rating = result.avgRating.toFloat();
-        tvReview?.text = resources.getQuantityString(R.plurals.reviews, result.reviewsCount, result.reviewsCount)
+        tvReview?.text = resources.getQuantityString(R.plurals.reviews_plural, result.reviewsCount, result.reviewsCount)
         tvName?.text = if (!TextUtils.isEmpty(result.hostelName)) {
             result.hostelName
         } else {
@@ -195,7 +196,7 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
                 getHostelDetails()
             }
             R.id.tvReview -> {
-
+                ReviewActivity.startActivity(this, hostelId!!, Enums.Favourite.HOSTEL.name)
             }
         }
     }

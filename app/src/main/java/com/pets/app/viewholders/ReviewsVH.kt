@@ -4,11 +4,10 @@ import android.content.Context
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.RatingBar
 import android.widget.TextView
 import com.pets.app.R
 import com.pets.app.common.ImageSetter
-import com.pets.app.model.FindHostel
 import com.pets.app.model.Reviews
 
 /**
@@ -16,30 +15,33 @@ import com.pets.app.model.Reviews
  */
 class ReviewsVH(itemView: View, clickListener: View.OnClickListener) : RecyclerViewHolder(itemView) {
 
-    private val ivFindHostel: ImageView = itemView.findViewById<View>(R.id.ivFindHostel) as ImageView
-    private val ivFavourite: ImageView = itemView.findViewById(R.id.ivFavourite)
+    private val ivReview: ImageView = itemView.findViewById<View>(R.id.ivReview) as ImageView
     private val tvName: TextView = itemView.findViewById<View>(R.id.tvName) as TextView
-    private val tvLocation: TextView = itemView.findViewById<View>(R.id.tvLocation) as TextView
-    private val llFindHostel: LinearLayout = itemView.findViewById<View>(R.id.llFindHostel) as LinearLayout
+    private val tvDate: TextView = itemView.findViewById<View>(R.id.tvDate) as TextView
+    private val ratingBar: RatingBar = itemView.findViewById<View>(R.id.ratingBar) as RatingBar
+    private val tvComment: TextView = itemView.findViewById<View>(R.id.tvComment) as TextView
     private val context: Context = itemView.context
 
     init {
-        llFindHostel.setOnClickListener(clickListener)
-        ivFavourite.setOnClickListener(clickListener)
     }
 
     override fun onBindView(`object`: Any) {
-//        val revies = `object` as Reviews
-//        llFindHostel.tag = findHostel
-//        ivFavourite.tag = findHostel
-//
-//        tvName.text = if (!TextUtils.isEmpty(findHostel.hostelName)) findHostel.hostelName else ""
-//        tvLocation.text = if (!TextUtils.isEmpty(findHostel.address)) findHostel.address else ""
-//        if (!findHostel.hostelImages.isEmpty() && !TextUtils.isEmpty(findHostel.hostelImages[0].image)) {
-//            ImageSetter.loadImage(context, findHostel.hostelImages[0].image, R.drawable.alert_placeholder, ivFindHostel)
-//        } else {
-//            ivFindHostel.setImageResource(R.drawable.alert_placeholder)
-//        }
-//        ivFavourite.setImageResource(if (findHostel.isInterest) R.drawable.fav1 else R.drawable.fav2)
+        val review = `object` as Reviews
+        if (review.user != null) {
+            if (!TextUtils.isEmpty(review.user.name)) {
+                tvName.text = review.user.name
+            } else {
+                tvName.text = ""
+            }
+
+            ImageSetter.loadImage(context, review.user.profile_image, R.drawable.alert_placeholder, ivReview)
+        }
+        tvDate.text = review.createdDate
+        ratingBar.rating = review.rating.toFloat()
+        tvComment.text = if (!TextUtils.isEmpty(review.comment)) {
+            review.comment
+        } else {
+            ""
+        }
     }
 }

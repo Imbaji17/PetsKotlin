@@ -8,6 +8,7 @@ import com.pets.app.R
 import com.pets.app.model.FindHostel
 import com.pets.app.viewholders.FindHostelVH
 import com.pets.app.viewholders.RecyclerViewHolder
+import com.pets.app.viewholders.ReviewsVH
 import java.util.ArrayList
 
 /**
@@ -24,16 +25,16 @@ class ReviewsAdapter(arrayList: ArrayList<Any>, private val clickListener: View.
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
-        var viewHolder: RecyclerViewHolder? = null
+        var viewHolder: RecyclerViewHolder?
         val inflater = LayoutInflater.from(parent.context)
         when (viewType) {
             FIND_HOSTEL -> {
-                val homeCategoryLayout = inflater.inflate(R.layout.item_find_hostel, parent, false)
-                viewHolder = FindHostelVH(homeCategoryLayout, clickListener)
+                val homeCategoryLayout = inflater.inflate(R.layout.item_review, parent, false)
+                viewHolder = ReviewsVH(homeCategoryLayout, clickListener)
             }
             else -> {
-                val layout = inflater.inflate(R.layout.item_find_hostel, parent, false)
-                viewHolder = FindHostelVH(layout, clickListener)
+                val layout = inflater.inflate(R.layout.item_review, parent, false)
+                viewHolder = ReviewsVH(layout, clickListener)
             }
         }
         return viewHolder

@@ -1,8 +1,11 @@
 package com.pets.app.activities
 
-import android.support.v7.app.AppCompatActivity
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.NestedScrollView
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Button
@@ -11,10 +14,11 @@ import android.widget.RelativeLayout
 import android.widget.ViewFlipper
 import com.google.gson.GsonBuilder
 import com.pets.app.R
+import com.pets.app.adapters.ReviewsAdapter
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
-import com.pets.app.model.FindHostelResponse
 import com.pets.app.model.NormalResponse
+import com.pets.app.model.ReviewsResponse
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -23,9 +27,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
+import java.util.*
 
 class ReviewActivity : AppCompatActivity(), View.OnClickListener {
 
+    private var adapter: ReviewsAdapter? = null
+    private var listItems = ArrayList<Any>()
+    private var layoutManager: LinearLayoutManager? = null
 
     private var viewFlipper: ViewFlipper? = null
     private var rlForLoadingScreen: RelativeLayout? = null
@@ -34,18 +42,35 @@ class ReviewActivity : AppCompatActivity(), View.OnClickListener {
     private var llForOfflineScreen: LinearLayout? = null
     private var btnRetry: Button? = null
     private var hostelId: String? = null
+    private var type: String? = null
+    private var nextOffset = 0
+
+
+    companion object {
+        private val TAG = ReviewActivity::class.java.simpleName
+        fun startActivity(activity: Activity, hostelId: String, type: String) {
+            val intent = Intent(activity, ReviewActivity::class.java)
+            intent.putExtra(ApplicationsConstants.ID, hostelId)
+            intent.putExtra(ApplicationsConstants.DATA, type)
+            activity.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review)
+        init()
+        initView()
+        setAdapter()
+        getReview()
     }
 
     private fun init() {
         hostelId = intent.getStringExtra(ApplicationsConstants.ID)
+        type = intent.getStringExtra(ApplicationsConstants.DATA)
     }
 
     private fun initView() {
-
         viewFlipper = findViewById(R.id.viewFlipper)
         rlForLoadingScreen = findViewById(R.id.rlForLoadingScreen)
         recyclerView = findViewById(R.id.recyclerView)
@@ -55,46 +80,66 @@ class ReviewActivity : AppCompatActivity(), View.OnClickListener {
         btnRetry?.setOnClickListener(this)
     }
 
-
-    override fun onClick(p0: View?) {
-
-
+    private fun setAdapter() {
+        layoutManager = LinearLayoutManager(this)
+        recyclerView!!.layoutManager = layoutManager
+        recyclerView!!.itemAnimator = DefaultItemAnimator()
+//        val snapHelper = LinearSnapHelper()
+//        snapHelper.attachToRecyclerView(recyclerView)
+        adapter = ReviewsAdapter(listItems, this)
+        recyclerView!!.adapter = adapter
     }
 
-//    private fun getHostelDetails() {
-//        setLoadingLayout()
-//        val timeStamp = TimeStamp.getTimeStamp()
-//        val key = TimeStamp.getMd5(timeStamp + "10" + hostelId + Constants.TIME_STAMP_KEY)
-//        if (Utils.isOnline(this)) {
-//            val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-//            val call = apiClient.hostelDetailsById(hostelId, key, "EN", "18.499666", "73.865377", timeStamp, "10")
-//            call.enqueue(object : Callback<FindHostelResponse> {
-//                override fun onResponse(call: Call<FindHostelResponse>, response: Response<FindHostelResponse>?) {
-//                    if (response != null && response.isSuccessful() && response.body() != null && response.body().result != null) {
-//                        setMainLayout()
-//                        setValues(response.body().result)
-//                    } else {
-//                        setNoDataLayout()
-//                        val gson = GsonBuilder().create()
-//                        val mError: NormalResponse
-//                        try {
-//                            mError = gson.fromJson(response!!.errorBody().string(), NormalResponse::class.java)
-//                            Utils.showToast("" + mError.getMessage())
-//                        } catch (e: IOException) {
-//                            e.printStackTrace()
-//                        }
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<FindHostelResponse>, t: Throwable) {
-//                    setNoDataLayout()
-//                }
-//            })
-//
-//        } else {
-//            setOfflineLayout()
-//        }
-//    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.btnRetry -> {
+                getReview()
+            }
+        }
+    }
+
+    private fun getReview() {
+        setLoadingLayout()
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + "10" + hostelId + Constants.TIME_STAMP_KEY)
+        if (Utils.isOnline(this)) {
+            val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+            val call = apiClient.reviewsByType(key, "EN", nextOffset, timeStamp, type, hostelId, "10")
+            call.enqueue(object : Callback<ReviewsResponse> {
+                override fun onResponse(call: Call<ReviewsResponse>, response: Response<ReviewsResponse>?) {
+                    if (response != null && response.isSuccessful() && response.body() != null) {
+                        nextOffset = response.body().next_offset
+                        if (response.body().list != null) {
+                            listItems.addAll(response.body().list)
+                            adapter!!.notifyDataSetChanged()
+                        }
+                    } else {
+                        val gson = GsonBuilder().create()
+                        val mError: NormalResponse
+                        try {
+                            mError = gson.fromJson(response!!.errorBody().string(), NormalResponse::class.java)
+                            Utils.showToast("" + mError.getMessage())
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                    if (listItems.size > 0) {
+                        setMainLayout()
+                    } else {
+                        setNoDataLayout()
+                    }
+                }
+
+                override fun onFailure(call: Call<ReviewsResponse>, t: Throwable) {
+                    setNoDataLayout()
+                }
+            })
+
+        } else {
+            setOfflineLayout()
+        }
+    }
 
 
     private fun setOfflineLayout() {
