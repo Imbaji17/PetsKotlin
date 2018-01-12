@@ -55,6 +55,10 @@ public class WebServiceBuilder {
         @POST("resend_otp/")
         Call<NormalResponse> resendOTP(@Field("user_id") String userId, @Field("timestamp") String timestamp, @Field("key") String key);
 
+        @FormUrlEncoded
+        @POST("changePassword/")
+        Call<NormalResponse> changePassword(@Field("user_id") String user_id, @Field("old") String old, @Field("new") String newP, @Field("language_code") String language_code, @Field("timestamp") String timestamp, @Field("key") String key);
+
 
 //        @POST("update_user/")
 //        Call<SignUpResponse> updateUser(@Body UpdateUserRequest signUpRequest);

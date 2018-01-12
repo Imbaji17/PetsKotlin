@@ -9,19 +9,20 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.pets.app.R
+import com.pets.app.activities.ProfileActivity
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.DialogManager
-import com.pets.app.utilities.Utils
 import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.app_toolbar.*
-import kotlinx.android.synthetic.main.nav_header_landing.*
 
 class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private var tvUserName: TextView? = null
     private var imgProfile: ImageView? = null
+    private var linHeader: LinearLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +32,6 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         initializeToolbar("")
         setUpDrawerMenu()
         initView()
-        clickListeners()
     }
 
     private fun setUpDrawerMenu() {
@@ -46,22 +46,27 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
         tvUserName = findViewById(R.id.tvName)
         imgProfile = findViewById(R.id.imageView)
-    }
+        linHeader = nav_view.findViewById(R.id.nav_header)
 
-    private fun clickListeners() {
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val headerView = navigationView.getHeaderView(0)
+        val header = headerView.findViewById<LinearLayout>(R.id.nav_header)
 
-        nav_header.setOnClickListener(this)
-        imgHeader.setOnClickListener(this)
+        header?.setOnClickListener(this)
+        imgHeader?.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
 
         when (v?.id) {
             R.id.nav_header -> {
-                Utils.showToast("xxxxxxxxxxxxxx")
+                val mIntent = Intent(this, ProfileActivity::class.java)
+                this.startActivity(mIntent)
+                drawer_layout.closeDrawer(GravityCompat.START)
             }
             R.id.imgHeader -> {
-                Utils.showToast("zzzzzzzzzzzzzz")
+                val mIntent = Intent(this, ProfileActivity::class.java)
+                this.startActivity(mIntent)
             }
         }
     }
