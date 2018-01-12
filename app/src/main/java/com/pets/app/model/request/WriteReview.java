@@ -27,7 +27,7 @@ public class WriteReview {
     private String comment;
 
     @SerializedName("rating")
-    private String rating;
+    private Float rating;
 
     @SerializedName("type")
     private String type;
@@ -56,7 +56,7 @@ public class WriteReview {
         this.comment = comment;
     }
 
-    public void setRating(String rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 

@@ -20,4 +20,9 @@ public class Enums {
     public enum Favourite {
         VET, HOSTEL, ADOPTION, PETS_MATCH, PET_SITTERS
     }
+
+    public enum Notification {
+        VR_APPROVE, PS_REJECT, PS_APPROVE, VR_REJECT
+    }
+
 }
