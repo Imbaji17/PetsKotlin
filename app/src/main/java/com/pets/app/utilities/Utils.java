@@ -2,6 +2,7 @@ package com.pets.app.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
@@ -15,11 +16,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.pets.app.R;
+import com.pets.app.common.AppPreferenceManager;
 import com.pets.app.common.MyApplication;
 
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -159,5 +165,27 @@ public class Utils {
     public static int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
         return useWhiteIcon ? R.mipmap.ic_launcher : R.mipmap.ic_launcher;
+    }
+
+    public static String getDistance(Activity mActivity, String latitude, String longitude) {
+
+        double distance;
+        Location locationA = new Location("My Location");
+        locationA.setLatitude(Double.parseDouble(AppPreferenceManager.getUser().getLat()));
+        locationA.setLongitude(Double.parseDouble(AppPreferenceManager.getUser().getLng()));
+        Location locationB = new Location("Club Location");
+        locationB.setLatitude(Double.parseDouble(latitude));
+        locationB.setLongitude(Double.parseDouble(longitude));
+
+        distance = locationA.distanceTo(locationB) / 1000;
+
+        Locale locale = new Locale("en", "UK");
+        String pattern = "#.##";
+        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getNumberInstance(locale);
+        decimalFormat.applyPattern(pattern);
+
+        DecimalFormatSymbols local = DecimalFormatSymbols.getInstance(Locale.ENGLISH);
+
+        return "" + new DecimalFormat("#.#", local).format(distance);
     }
 }
