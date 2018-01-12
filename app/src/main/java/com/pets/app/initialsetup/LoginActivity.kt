@@ -287,6 +287,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
             val mIntent: Intent?
             if (response.isMobileVerified) {
+                AppPreferenceManager.setSignIn(true)
                 mIntent = Intent(this, LandingActivity::class.java)
                 mIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             } else {
@@ -312,6 +313,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         val mIntent: Intent?
         if (details!!.isMobileVerified) {
+            AppPreferenceManager.setSignIn(true)
             mIntent = Intent(this, LandingActivity::class.java)
             mIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         } else {

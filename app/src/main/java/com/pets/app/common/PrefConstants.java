@@ -9,4 +9,5 @@ public class PrefConstants {
     public static final String LOGIN_REMEMBER = "login_remember";
     public static final String USER_EMAIL = "user_email";
     public static final String USER_PASSWORD = "user_password";
+    public static final String SIGN_IN = "sign_in";
 }

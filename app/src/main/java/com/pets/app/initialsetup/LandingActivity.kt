@@ -79,6 +79,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             R.id.nav_logout -> {
                 DialogManager.showDialogWithYesAndNo(this, this.getString(R.string.are_you_sure_you_want_to_exit), DialogInterface.OnClickListener { dialogInterface, i ->
                     AppPreferenceManager.saveUser(null)
+                    AppPreferenceManager.setSignIn(false)
                     val mIntent = Intent(this, LoginActivity::class.java)
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     this.startActivity(mIntent)
