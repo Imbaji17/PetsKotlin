@@ -78,7 +78,6 @@
     <string name="search">Search</string>
     <string name="please_enter_name">Please enter name</string>
     <string name="choose_country">Choose Country</string>
-    <plurals name="reviews">
     <plurals name="reviews_plural">
         <item quantity="one">(%d review)</item>
         <item quantity="other">(%d reviews)</item>
