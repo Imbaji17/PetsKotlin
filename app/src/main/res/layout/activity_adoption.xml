@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.pets.app.activities.FindHostelActivity">
+
+    <include layout="@layout/app_toolbar" />
+
+    <include layout="@layout/app_search_layout" />
+
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <include layout="@layout/app_loading_screen" />
+
+        <include layout="@layout/app_recycler_view" />
+
+        <include layout="@layout/app_no_result_found" />
+
+        <include layout="@layout/app_no_internet_connection" />
+
+    </ViewFlipper>
+
+</LinearLayout>

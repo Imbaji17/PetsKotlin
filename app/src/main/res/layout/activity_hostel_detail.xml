@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/app_loading_screen" />
+        <!--<include layout="@layout/app_loading_screen" />-->
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/mainLayout"
@@ -25,13 +26,34 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewPager"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="200dp">
 
-                </android.support.v4.view.ViewPager>
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v4.view.ViewPager>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <com.viewpagerindicator.CirclePageIndicator
+                            android:id="@+id/cvp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:padding="10dp"
+                            app:fillColor="@color/orange"
+                            app:pageColor="@color/colorPrimary"
+                            app:radius="5dp"
+                            app:strokeColor="@android:color/transparent" />
+
+                    </RelativeLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

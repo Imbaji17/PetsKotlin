@@ -1,5 +1,6 @@
 package com.pets.app.webservice;
 
+import com.pets.app.model.AdoptionResponse;
 import com.pets.app.model.FindHostelResponse;
 import com.pets.app.model.LoginResponse;
 import com.pets.app.model.NormalResponse;
@@ -82,6 +83,15 @@ public class WebServiceBuilder {
 
         @POST("delete_review_by_type")
         Call<NormalResponse> deleteReview(@Body WriteReview writeReview);
+
+        //        http://192.168.2.195/pets/api/PetsApi/adopt_list?
+        // user_id=2&timestamp=1&key=69e5eccd59cc5e48659927fb25554f9a&language_code=EN&
+        // next_offset=0&lat&lng&pets_type_id=&breed_id&gender&distance
+        @GET("adopt_list")
+        Call<AdoptionResponse> adoptionList(@Query("user_id") String user_id, @Query("timestamp") String timestamp, @Query("key") String key,
+                                            @Query("language_code") String languageCode, @Query("next_offset") int next_offset, @Query("lat") String lat,
+                                            @Query("lng") String lng, @Query("pets_type_id") String petsTypeId, @Query("breed_id") String breedId,
+                                            @Query("gender") String gender, @Query("distance") String distance);
 
     }
 }
