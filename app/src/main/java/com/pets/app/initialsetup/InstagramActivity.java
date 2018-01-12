@@ -1,7 +1,6 @@
 package com.pets.app.initialsetup;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,7 +41,6 @@ public class InstagramActivity extends BaseActivity {
     private String accessTokenString;
     private String client_id = "39720825ac6a4f9088f1d5a5a7c8bc71";
     private String client_secret = "d3e5e80b7ab04f0a96f6f609558cea8b";
-    private ProgressDialog progressDialog;
     private LoginDetails mLoginDetails;
 
     /**
@@ -84,9 +82,7 @@ public class InstagramActivity extends BaseActivity {
      */
     private void initializeView() {
 
-        progressDialog = new ProgressDialog(mActivity);
-        progressDialog.setMessage("Please wait...");
-        WebView webView = (WebView) findViewById(R.id.webView);
+        WebView webView = findViewById(R.id.webView);
         webView.setVerticalScrollBarEnabled(false);
         webView.setHorizontalScrollBarEnabled(false);
         webView.setWebViewClient(new AuthWebViewClient());
@@ -109,7 +105,7 @@ public class InstagramActivity extends BaseActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                progressDialog.show();
+                showProgressDialog();
             }
 
             @Override
@@ -147,7 +143,7 @@ public class InstagramActivity extends BaseActivity {
             protected void onPostExecute(String response) {
                 super.onPostExecute(response);
                 JSONObject jsonObject;
-                progressDialog.dismiss();
+                hideProgressDialogue();
                 if (response != null) {
                     try {
                         jsonObject = (JSONObject) new JSONTokener(response).nextValue();
