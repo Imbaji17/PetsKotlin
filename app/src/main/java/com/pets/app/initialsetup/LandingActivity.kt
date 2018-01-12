@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.pets.app.R
 import com.pets.app.activities.ProfileActivity
@@ -17,12 +18,12 @@ import com.pets.app.common.DialogManager
 import com.pets.app.utilities.Utils
 import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.app_toolbar.*
-import kotlinx.android.synthetic.main.nav_header_landing.*
 
 class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private var tvUserName: TextView? = null
     private var imgProfile: ImageView? = null
+    private var linHeader: LinearLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,12 +48,13 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
         tvUserName = findViewById(R.id.tvName)
         imgProfile = findViewById(R.id.imageView)
+        linHeader = findViewById(R.id.nav_header)
     }
 
     private fun clickListeners() {
 
-        nav_header.setOnClickListener(this)
-        imgHeader.setOnClickListener(this)
+        linHeader?.setOnClickListener(this)
+        imgHeader?.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
