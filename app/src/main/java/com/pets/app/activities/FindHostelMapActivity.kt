@@ -97,7 +97,7 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
             var cnt = 0
             for (i in listItems.indices) {
                 var findHostel = listItems[i] as FindHostel
-                googleMap!!.addMarker(MarkerOptions()
+                googleMap.addMarker(MarkerOptions()
                         .position(LatLng(findHostel.lat, findHostel.lng))
                         .title(findHostel.hostelName)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.location))

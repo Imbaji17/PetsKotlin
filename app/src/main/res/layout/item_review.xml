@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/ivFindHostel"
+        android:id="@+id/ivReview"
         android:layout_width="@dimen/dimen_size_70"
         android:layout_height="@dimen/dimen_size_70"
         android:layout_centerVertical="true"
@@ -47,6 +47,29 @@
                 tools:text="@string/app_name" />
 
         </LinearLayout>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/StarRatingBarSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/dimen_size_5"
+            android:layout_toLeftOf="@+id/tvReview"
+            android:layout_toStartOf="@+id/tvReview"
+            android:clickable="false"
+            android:isIndicator="true"
+            android:rating="0"
+            android:stepSize="0.5" />
+
+        <TextView
+            android:id="@+id/tvComment"
+            style="@style/TextViewStyle"
+            android:layout_marginTop="@dimen/dimen_size_5"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_size_15"
+            tools:text="@string/app_name" />
+
 
     </LinearLayout>
 

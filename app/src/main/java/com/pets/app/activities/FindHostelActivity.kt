@@ -86,7 +86,7 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
         val includeEdge = true
         recyclerView!!.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
         gridLayoutManager = GridLayoutManager(this, spanCount)
-        recyclerView!!.layoutManager = gridLayoutManager
+        recyclerView!!.layoutManager = this!!.gridLayoutManager
         recyclerView!!.itemAnimator = DefaultItemAnimator()
 //        val snapHelper = LinearSnapHelper()
 //        snapHelper.attachToRecyclerView(recyclerView)
