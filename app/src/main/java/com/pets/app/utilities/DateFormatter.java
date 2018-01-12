@@ -8,11 +8,10 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Created by admin on 05 January 2018.
+ * Created by BAJIRAO on 05 January 2018.
  */
 public class DateFormatter {
 
-    private static final String TAG = DateFormatter.class.getName();
     public static final SimpleDateFormat h_mm_a = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
     public static final SimpleDateFormat EE_MMM_dd_hh_mm_a = new SimpleDateFormat("EE, MMM dd, hh:mm a", Locale.ENGLISH);
     public static final SimpleDateFormat MMMM_dd_yyyy = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
@@ -20,14 +19,11 @@ public class DateFormatter {
     public static final SimpleDateFormat yyyy_MM_dd_hh_mm_ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
     public static final SimpleDateFormat dd_MMM_yyyy = new SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH);
     public static final SimpleDateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-
-
     public static final String yyyy_mm_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
-
     public static final String MMM_yyyy_str = "MMM yyyy";
-
     public static final String CHAT_DATE_AND_TIME_FORMAT = "dd/MM/yyyy hh:mm a";
     public static final String CHAT_TIME_FORMAT = "hh:mm a";
+    private static final String TAG = DateFormatter.class.getName();
 
     public static String getFormattedDate(String inFormat, String strDate, String outFormat) {
         SimpleDateFormat sdf = new SimpleDateFormat(inFormat, Locale.ENGLISH);
