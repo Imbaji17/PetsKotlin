@@ -11,8 +11,10 @@ import android.widget.*
 import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.adapters.ReviewsAdapter
+import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
+import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.NormalResponse
 import com.pets.app.model.Reviews
@@ -153,10 +155,13 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
     private fun getReview() {
         setLoadingLayout()
         val timeStamp = TimeStamp.getTimeStamp()
-        val key = TimeStamp.getMd5(timeStamp + "10" + typeId + Constants.TIME_STAMP_KEY)
+        val language = Enums.Language.EN.name.toUpperCase()
+        val userId = AppPreferenceManager.getUserID()
+
+        val key = TimeStamp.getMd5(timeStamp + userId + typeId + Constants.TIME_STAMP_KEY)
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-            val call = apiClient.reviewsByType(key, "EN", nextOffset, timeStamp, type, typeId, "10")
+            val call = apiClient.reviewsByType(key, language, nextOffset, timeStamp, type, typeId, "10")
             call.enqueue(object : Callback<ReviewsResponse> {
                 override fun onResponse(call: Call<ReviewsResponse>, response: Response<ReviewsResponse>?) {
                     loading = true
@@ -216,8 +221,10 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
     private fun deleteReview(review: Reviews) {
         val timeStamp = TimeStamp.getTimeStamp()
         val key = TimeStamp.getMd5(timeStamp + 10 + review.reviewId + Constants.TIME_STAMP_KEY)
+        val userId = AppPreferenceManager.getUserID()
+
         val request = WriteReview()
-        request.setUserId("10")
+        request.setUserId(userId)
         request.setTimestamp(timeStamp)
         request.setKey(key)
         request.setReviewId(review.reviewId)

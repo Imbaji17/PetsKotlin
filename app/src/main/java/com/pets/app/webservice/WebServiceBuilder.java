@@ -73,9 +73,6 @@ public class WebServiceBuilder {
         Call<FindHostelResponse> hostelDetailsById(@Query("hostel_id") String id, @Query("key") String key, @Query("language_code") String languageCode, @Query("lat") String lat,
                                                    @Query("lng") String lng, @Query("timestamp") String timestamp, @Query("user_id") String user_id);
 
-        //        http://34.199.202.75/pets/api/PetsApi/reviews_by_type?
-        // key=f8173a2d89b1dd8e57070ff8a4ca974c&language_code=EN&next_offset=0&
-        // timestamp=1515672430190.93&type=HOSTEL&type_id=2&user_id=20
         @GET("reviews_by_type")
         Call<ReviewsResponse> reviewsByType(@Query("key") String key, @Query("language_code") String languageCode, @Query("next_offset") int nextOffset,
                                             @Query("timestamp") String timeStamp, @Query("type") String type, @Query("type_id") String type_id, @Query("user_id") String user_id);

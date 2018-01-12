@@ -97,10 +97,15 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
     private fun getHostelList() {
         val timeStamp = TimeStamp.getTimeStamp()
         val key = TimeStamp.getMd5(timeStamp + "10" + Constants.TIME_STAMP_KEY)
+        val language = Enums.Language.EN.name.toUpperCase()
+        val lat = AppPreferenceManager.getUser().lat
+        val lng = AppPreferenceManager.getUser().lng
+        val userId = AppPreferenceManager.getUserID()
+
         viewFlipper!!.displayedChild = 0
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-            val call = apiClient.hostelList(key, keyWord, "EN", latitude.toString(), longitude.toString(), nextOffset, timeStamp, "10")
+            val call = apiClient.hostelList(key, keyWord, language, lat, lng, nextOffset, timeStamp, userId)
             call.enqueue(object : Callback<FindHostelResponse> {
                 override fun onResponse(call: Call<FindHostelResponse>, response: Response<FindHostelResponse>?) {
                     if (response != null) {
@@ -232,7 +237,8 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
         val timeStamp = TimeStamp.getTimeStamp()
         val key = TimeStamp.getMd5(timeStamp + 10 + Enums.Favourite.HOSTEL.name + findHostel?.hostelId + Constants.TIME_STAMP_KEY)
         val request = FavouriteHostel()
-        request.setUserId("10")
+        val userId = AppPreferenceManager.getUserID()
+        request.setUserId(userId)
         request.setTimestamp(timeStamp)
         request.setType(Enums.Favourite.HOSTEL.name)
         request.setTypeId(findHostel?.hostelId)

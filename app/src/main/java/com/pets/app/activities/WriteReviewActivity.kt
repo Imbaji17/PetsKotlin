@@ -11,8 +11,10 @@ import android.widget.EditText
 import android.widget.RatingBar
 import com.google.gson.GsonBuilder
 import com.pets.app.R
+import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
+import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.NormalResponse
 import com.pets.app.model.Reviews
@@ -101,17 +103,17 @@ class WriteReviewActivity : BaseActivity(), View.OnClickListener {
 
         val comment = etReview?.text.toString().trim()
         val rating = ratingBar!!.rating
+        val userId = AppPreferenceManager.getUserID()
 
         if (rating < 0) {
             Utils.showToast(getString(R.string.please_give_ratings))
         } else if (TextUtils.isEmpty(comment)) {
             Utils.showToast(getString(R.string.please_write_your_review))
         } else {
-
             val timeStamp = TimeStamp.getTimeStamp()
-            val key = TimeStamp.getMd5(timeStamp + 10 + typeId + Constants.TIME_STAMP_KEY)
+            val key = TimeStamp.getMd5(timeStamp + userId + typeId + Constants.TIME_STAMP_KEY)
             val request = WriteReview()
-            request.setUserId("10")
+            request.setUserId(userId)
             request.setKey(key)
             request.setTimestamp(timeStamp)
             request.setType(type)

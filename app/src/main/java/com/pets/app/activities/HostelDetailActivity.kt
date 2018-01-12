@@ -12,6 +12,7 @@ import android.widget.*
 import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.adapters.ImageAdapter
+import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
@@ -107,7 +108,9 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
     private fun getHostelDetails() {
         setLoadingLayout()
         val timeStamp = TimeStamp.getTimeStamp()
-        val key = TimeStamp.getMd5(timeStamp + "10" + hostelId + Constants.TIME_STAMP_KEY)
+        val userId = AppPreferenceManager.getUserID()
+
+        val key = TimeStamp.getMd5(timeStamp + userId + hostelId + Constants.TIME_STAMP_KEY)
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
             val call = apiClient.hostelDetailsById(hostelId, key, "EN", "18.499666", "73.865377", timeStamp, "10")

@@ -26,8 +26,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.GsonBuilder
 import com.pets.app.R
+import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
+import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.FindHostel
 import com.pets.app.model.FindHostelResponse
@@ -205,10 +207,13 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
     private fun getHostelList() {
         val timeStamp = TimeStamp.getTimeStamp()
         val key = TimeStamp.getMd5(timeStamp + "10" + Constants.TIME_STAMP_KEY)
+        val language = Enums.Language.EN.name.toUpperCase()
+        val userId = AppPreferenceManager.getUserID()
+
         viewFlipper!!.displayedChild = 0
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-            val call = apiClient.hostelList(key, "", "EN", latitude.toString(), longitude.toString(), nextOffset, timeStamp, "10")
+            val call = apiClient.hostelList(key, "", language, latitude.toString(), longitude.toString(), nextOffset, timeStamp, userId)
             call.enqueue(object : Callback<FindHostelResponse> {
                 override fun onResponse(call: Call<FindHostelResponse>, response: Response<FindHostelResponse>?) {
                     if (response != null) {
