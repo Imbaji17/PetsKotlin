@@ -1,5 +1,6 @@
 package com.pets.app.initialsetup
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -57,6 +58,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var isBack: Boolean = false
     private val RC_AUTOCOMPLETE: Int = 100
     private val RC_OTP: Int = 200
+    private val RC_COUNTRY_CODE: Int = 300
     private var userObj: LoginDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,8 +121,8 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         when (v?.id) {
 
             R.id.edtCountryCode -> {
-                val signUp = Intent(this, ForgotPasswordActivity::class.java)
-                startActivity(signUp)
+                val countryCode = Intent(this, SelectCountryCodeActivity::class.java)
+                startActivityForResult(countryCode, RC_COUNTRY_CODE)
             }
             R.id.edtLocation -> {
                 openAutocompleteActivity()
@@ -221,6 +223,13 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
                         isBack = true
+                    }
+                }
+            }
+            RC_COUNTRY_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data != null) {
+
                     }
                 }
             }

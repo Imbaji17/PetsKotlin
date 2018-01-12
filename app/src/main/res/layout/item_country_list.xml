@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_fade"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dimen_size_5">
+
+    <RelativeLayout
+        android:id="@+id/rel_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_size_40"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dimen_size_20"
+        android:paddingRight="@dimen/dimen_size_20">
+
+        <TextView
+            android:id="@+id/tvCountry"
+            style="@style/TextViewStyle"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/tvCountryCode"
+            style="@style/TextViewStyle"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/app_name" />
+    </RelativeLayout>
+</RelativeLayout>

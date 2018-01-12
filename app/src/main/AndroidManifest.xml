@@ -24,21 +24,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <!--Google Maps Integration-->
+
+        <!-- Google Maps Integration -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key" />
-        <!--Facebook Integration-->
+        <!-- Facebook Integration -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
         <activity
             android:name=".initialsetup.SplashScreenActivity"
-            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -49,19 +49,16 @@
         </activity>
         <activity
             android:name=".initialsetup.LoginActivity"
-            android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".initialsetup.ForgotPasswordActivity"
-            android:label="@string/title_activity_forgot_password"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".initialsetup.SignUpActivity"
-            android:label="@string/title_activity_sign_up"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
@@ -80,7 +77,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".initialsetup.LandingActivity"
-            android:label="@string/title_activity_landing"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -95,7 +91,13 @@
             android:name=".activities.FullImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.ReviewActivity"></activity>
+        <activity
+            android:name=".activities.ReviewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".initialsetup.SelectCountryCodeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
-
 </manifest>
