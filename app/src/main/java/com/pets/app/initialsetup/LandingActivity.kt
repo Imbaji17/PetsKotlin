@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.pets.app.R
+import com.pets.app.activities.ProfileActivity
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.DialogManager
 import com.pets.app.utilities.Utils
@@ -58,7 +59,8 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
         when (v?.id) {
             R.id.nav_header -> {
-                Utils.showToast("xxxxxxxxxxxxxx")
+                val mIntent = Intent(this, ProfileActivity::class.java)
+                this.startActivity(mIntent)
             }
             R.id.imgHeader -> {
                 Utils.showToast("zzzzzzzzzzzzzz")

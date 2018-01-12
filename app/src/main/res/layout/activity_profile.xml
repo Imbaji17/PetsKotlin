@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.pets.app.initialsetup.SignUpActivity">
+    tools:context="com.pets.app.activities.ProfileActivity">
 
     <include layout="@layout/app_toolbar" />
 
@@ -19,6 +18,22 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="@dimen/dimen_size_20">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:src="@drawable/add_pet1" />
+
+            <TextView
+                android:id="@+id/tvForgotPassword"
+                style="@style/TextViewStyle"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/dimen_size_10"
+                android:text="@string/change_photo"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_12" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

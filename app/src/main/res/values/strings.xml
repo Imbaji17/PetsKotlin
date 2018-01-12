@@ -93,5 +93,7 @@
     <string name="write_comment">Write Comment</string>
     <string name="are_you_sure_you_want_to_delete_review">Are you sure you want to delete review?</string>
     <string name="instagram">Instagram</string>
+    <string name="change_photo"><u>Change Photo</u></string>
+    <string name="profile">Profile</string>
 
 </resources>
