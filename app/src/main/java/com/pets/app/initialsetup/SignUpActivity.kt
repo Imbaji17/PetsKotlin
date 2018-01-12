@@ -180,8 +180,9 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 if (isTrue) {
                     this@SignUpActivity.finish()
                 } else {
-                    val signUp = Intent(this@SignUpActivity, WebViewActivity::class.java)
-                    startActivity(signUp)
+                    val web = Intent(this@SignUpActivity, WebViewActivity::class.java)
+                    web.putExtra(ApplicationsConstants.NAVIGATION_TYPE, Constants.TERMS_AND_CONDITIONS_URL)
+                    this@SignUpActivity.startActivity(web)
                 }
             }
 

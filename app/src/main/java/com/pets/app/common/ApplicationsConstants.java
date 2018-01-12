@@ -12,4 +12,5 @@ public class ApplicationsConstants {
     public static final String NAME = "name";
     public static final String USER_OBJECT = "USER_OBJECT";
     public static final String ID = "id";
+    public static final String TERMS_AND_CONDITION = "TERMS_AND_CONDITION";
 }
