@@ -310,8 +310,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             AppPreferenceManager.saveUserPassword(edtPassword?.text.toString())
         }
 
-        val mIntent = Intent(this, LandingActivity::class.java)
-        mIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        val mIntent: Intent?
+        if (details!!.isMobileVerified) {
+            mIntent = Intent(this, LandingActivity::class.java)
+            mIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        } else {
+            mIntent = Intent(this, OtpVerificationActivity::class.java)
+        }
         this.startActivity(mIntent)
     }
 }
