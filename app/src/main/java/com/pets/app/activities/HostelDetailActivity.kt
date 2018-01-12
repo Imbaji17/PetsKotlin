@@ -162,12 +162,12 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
             llAddress?.visibility = View.GONE
         }
 
-//        if (!TextUtils.isEmpty(result.address)) {
+//        if (result.lat > 0 && result.lng > 0) {
 //            llDistance?.visibility = View.VISIBLE
+//            Utils.getDistance(this, result.lat.toString(), result.lng.toString())
 //            tvDistance?.text = result.address
-//        } else {
-//            llDistance?.visibility = View.GONE
-//        }
+//        } else llDistance?.visibility = View.GONE
+
 
         if (!TextUtils.isEmpty(result.description)) {
             llDescription?.visibility = View.VISIBLE

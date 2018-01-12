@@ -80,8 +80,11 @@ public class WebServiceBuilder {
         Call<ReviewsResponse> reviewsByType(@Query("key") String key, @Query("language_code") String languageCode, @Query("next_offset") int nextOffset,
                                             @Query("timestamp") String timeStamp, @Query("type") String type, @Query("type_id") String type_id, @Query("user_id") String user_id);
 
-        @POST("write_review_by_type/")
+        @POST("write_review_by_type")
         Call<NormalResponse> writeReview(@Body WriteReview writeReview);
+
+        @POST("delete_review_by_type")
+        Call<NormalResponse> deleteReview(@Body WriteReview writeReview);
 
     }
 }

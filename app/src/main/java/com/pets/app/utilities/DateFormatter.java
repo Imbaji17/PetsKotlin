@@ -23,6 +23,8 @@ public class DateFormatter {
     public static final String MMM_yyyy_str = "MMM yyyy";
     public static final String CHAT_DATE_AND_TIME_FORMAT = "dd/MM/yyyy hh:mm a";
     public static final String CHAT_TIME_FORMAT = "hh:mm a";
+    public static final String REVIEW_DATE_FORMAT = "dd/MM/yyyy";
+
     private static final String TAG = DateFormatter.class.getName();
 
     public static String getFormattedDate(String inFormat, String strDate, String outFormat) {

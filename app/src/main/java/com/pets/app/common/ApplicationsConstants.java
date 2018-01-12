@@ -12,4 +12,7 @@ public class ApplicationsConstants {
     public static final String NAME = "name";
     public static final String USER_OBJECT = "USER_OBJECT";
     public static final String ID = "id";
+    public static final String FROM = "from";
+    public static final String REVIEW_ID = "review_id";
+    public static final String TYPE = "type";
 }
