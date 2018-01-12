@@ -1,5 +1,7 @@
 package com.pets.app.initialsetup
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.pets.app.R
 import com.pets.app.adapters.CountryListAdapter
+import com.pets.app.common.ApplicationsConstants
 import com.pets.app.interfaces.SimpleItemClickListener
 import com.pets.app.mediator.AppTextWatcher
 import com.pets.app.model.`object`.Country
@@ -92,7 +95,10 @@ class SelectCountryCodeActivity : BaseActivity(), View.OnClickListener, SimpleIt
 
         if (`object` is Country) {
             val country = `object`
-            Utils.showToast(countryList?.get(countryList?.indexOf(country)!!)?.countryName)
+            val mIntent = Intent()
+            mIntent.putExtra(ApplicationsConstants.DATA, country.phoneCode)
+            setResult(Activity.RESULT_OK, mIntent)
+            finish()
         }
     }
 }

@@ -7,7 +7,7 @@
     android:paddingBottom="@dimen/dimen_size_5">
 
     <RelativeLayout
-        android:id="@+id/rel_main_layout"
+        android:id="@+id/relMain"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_size_40"
         android:background="@color/white"
