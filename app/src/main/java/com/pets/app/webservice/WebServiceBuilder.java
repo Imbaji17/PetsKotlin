@@ -2,6 +2,7 @@ package com.pets.app.webservice;
 
 import com.pets.app.model.FindHostelResponse;
 import com.pets.app.model.LoginResponse;
+import com.pets.app.model.NormalResponse;
 import com.pets.app.model.request.UpdateUserRequest;
 
 import retrofit2.Call;
@@ -38,11 +39,10 @@ public class WebServiceBuilder {
         @POST("updateProfile/")
         Call<LoginResponse> updateUser(@Body UpdateUserRequest userRequest);
 
-//        @FormUrlEncoded
-//        @POST("forget_password/")
-//        Call<NormalResponse> forgetPassword(@Field("mobile") String mobile, @Field("timestamp") String timestamp, @Field("key") String key);
-//
-//
+        @FormUrlEncoded
+        @POST("forgot_password/")
+        Call<NormalResponse> forgetPassword(@Field("email_id") String email_id, @Field("timestamp") String timestamp, @Field("key") String key);
+
 //        @POST("update_user/")
 //        Call<SignUpResponse> updateUser(@Body UpdateUserRequest signUpRequest);
 //
