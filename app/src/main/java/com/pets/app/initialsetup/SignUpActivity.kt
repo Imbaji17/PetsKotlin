@@ -300,6 +300,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 hideProgressBar()
                 if (response != null) {
                     if (response.body() != null && response.isSuccessful) {
+                        Utils.showToast(response.body().message)
                         checkResponse(response.body().result)
                     } else if (response.code() == 403) {
                         val gson = GsonBuilder().create()
@@ -356,6 +357,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 hideProgressBar()
                 if (response != null) {
                     if (response.body() != null && response.isSuccessful) {
+                        Utils.showToast(response.body().message)
                         checkResponse(response.body().result)
                     } else if (response.code() == 403) {
                         val gson = GsonBuilder().create()

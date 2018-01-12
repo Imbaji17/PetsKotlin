@@ -39,10 +39,6 @@ public class WebServiceBuilder {
         Call<LoginResponse> updateUser(@Body UpdateUserRequest userRequest);
 
 //        @FormUrlEncoded
-//        @POST("sociallogin/")
-//        Call<LoginResponse> socialLogin(@Field("timestamp") String timestamp, @Field("key") String key, @Field("social_id") String social_id, @Field("social_type") String social_type, @Field("email") String email, @Field("device_id") String device_id, @Field("device_type") String device_type, @Field("type") String type);
-//
-//        @FormUrlEncoded
 //        @POST("forget_password/")
 //        Call<NormalResponse> forgetPassword(@Field("mobile") String mobile, @Field("timestamp") String timestamp, @Field("key") String key);
 //
