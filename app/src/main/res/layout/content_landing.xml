@@ -8,5 +8,4 @@
     tools:context="com.pets.app.initialsetup.LandingActivity"
     tools:showIn="@layout/app_bar_landing">
 
-    <include layout="@layout/app_search_layout" />
 </RelativeLayout>

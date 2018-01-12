@@ -1,6 +1,5 @@
 package com.pets.app.initialsetup
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -122,7 +121,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
 
             R.id.edtCountryCode -> {
                 val countryCode = Intent(this, SelectCountryCodeActivity::class.java)
-                startActivityForResult(countryCode, RC_COUNTRY_CODE)
+                this.startActivityForResult(countryCode, RC_COUNTRY_CODE)
             }
             R.id.edtLocation -> {
                 openAutocompleteActivity()
@@ -181,8 +180,9 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 if (isTrue) {
                     this@SignUpActivity.finish()
                 } else {
-                    val signUp = Intent(this@SignUpActivity, WebViewActivity::class.java)
-                    startActivity(signUp)
+                    val web = Intent(this@SignUpActivity, WebViewActivity::class.java)
+                    web.putExtra(ApplicationsConstants.NAVIGATION_TYPE, Constants.TERMS_AND_CONDITIONS_URL)
+                    this@SignUpActivity.startActivity(web)
                 }
             }
 
@@ -196,7 +196,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         return outString
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             RC_AUTOCOMPLETE -> {
@@ -227,9 +227,10 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             RC_COUNTRY_CODE -> {
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     if (data != null) {
-
+                        val countryCode: String = data.getStringExtra(ApplicationsConstants.DATA)
+                        edtCountryCode?.setText("+".plus(countryCode))
                     }
                 }
             }

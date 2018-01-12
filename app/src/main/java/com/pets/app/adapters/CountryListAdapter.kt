@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import com.pets.app.R
 import com.pets.app.interfaces.SimpleItemClickListener
@@ -40,7 +41,7 @@ class CountryListAdapter(mActivity: Activity, countryList: ArrayList<Country>) :
 
         holder?.tvCountryName?.text = country.countryName
         holder?.tvCountryCode?.text = "+".plus(country.phoneCode)
-        holder?.tvCountryName?.setOnClickListener({
+        holder?.relMain?.setOnClickListener({
             itemClick?.onItemClick(country)
         })
     }
@@ -53,10 +54,12 @@ class CountryListAdapter(mActivity: Activity, countryList: ArrayList<Country>) :
 
         internal var tvCountryName: TextView? = null
         internal var tvCountryCode: TextView? = null
+        internal var relMain: RelativeLayout? = null
 
         init {
             tvCountryName = itemView?.findViewById(R.id.tvCountry)
             tvCountryCode = itemView?.findViewById(R.id.tvCountryCode)
+            relMain = itemView?.findViewById(R.id.relMain)
         }
     }
 

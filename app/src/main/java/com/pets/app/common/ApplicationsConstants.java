@@ -15,4 +15,5 @@ public class ApplicationsConstants {
     public static final String FROM = "from";
     public static final String REVIEW_ID = "review_id";
     public static final String TYPE = "type";
+    public static final String TERMS_AND_CONDITION = "TERMS_AND_CONDITION";
 }

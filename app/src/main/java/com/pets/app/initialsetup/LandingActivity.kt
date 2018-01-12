@@ -1,6 +1,5 @@
 package com.pets.app.initialsetup
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -8,12 +7,21 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.DialogManager
+import com.pets.app.utilities.Utils
 import kotlinx.android.synthetic.main.activity_landing.*
+import kotlinx.android.synthetic.main.app_toolbar.*
+import kotlinx.android.synthetic.main.nav_header_landing.*
 
-class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+
+    private var tvUserName: TextView? = null
+    private var imgProfile: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,17 +29,41 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
         isHeaderImage = true
         initializeToolbar("")
+        setUpDrawerMenu()
         initView()
+        clickListeners()
+    }
+
+    private fun setUpDrawerMenu() {
+
+        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer_layout.addDrawerListener(toggle)
+        toggle.syncState()
+        nav_view.setNavigationItemSelectedListener(this)
     }
 
     private fun initView() {
 
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
+        tvUserName = findViewById(R.id.tvName)
+        imgProfile = findViewById(R.id.imageView)
+    }
 
-        nav_view.setNavigationItemSelectedListener(this)
+    private fun clickListeners() {
+
+        nav_header.setOnClickListener(this)
+        imgHeader.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+
+        when (v?.id) {
+            R.id.nav_header -> {
+                Utils.showToast("xxxxxxxxxxxxxx")
+            }
+            R.id.imgHeader -> {
+                Utils.showToast("zzzzzzzzzzzzzz")
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -77,7 +109,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
             }
             R.id.nav_logout -> {
-                DialogManager.showDialogWithYesAndNo(this, this.getString(R.string.are_you_sure_you_want_to_exit), DialogInterface.OnClickListener { dialogInterface, i ->
+                DialogManager.showDialogWithYesAndNo(this, this.getString(R.string.are_you_sure_you_want_to_exit), { dialogInterface, i ->
                     AppPreferenceManager.saveUser(null)
                     AppPreferenceManager.setSignIn(false)
                     val mIntent = Intent(this, LoginActivity::class.java)

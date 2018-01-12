@@ -25,6 +25,7 @@ class SplashScreenActivity : BaseActivity() {
             val mIntent: Intent?
             if (!AppPreferenceManager.isSignIn()) {
                 mIntent = Intent(this, LoginActivity::class.java);
+//                mIntent = Intent(this, FindHostelActivity::class.java);
             } else {
                 mIntent = Intent(this, LandingActivity::class.java);
             }
