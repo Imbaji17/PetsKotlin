@@ -2,7 +2,6 @@ package com.pets.app.webservice;
 
 import com.pets.app.model.FindHostelResponse;
 import com.pets.app.model.LoginResponse;
-import com.pets.app.model.NormalResponse;
 import com.pets.app.model.request.UpdateUserRequest;
 
 import retrofit2.Call;
@@ -29,7 +28,7 @@ public class WebServiceBuilder {
         Call<LoginResponse> login(@Field("email_id") String email_id, @Field("password") String password, @Field("language_code") String language_code, @Field("device_type") String device_type, @Field("device_token") String device_token, @Field("timestamp") String timestamp, @Field("key") String key);
 
         @FormUrlEncoded
-        @POST("login/")
+        @POST("registerUser/")
         Call<LoginResponse> signUp(@Field("name") String name, @Field("email_id") String email_id, @Field("password") String password, @Field("phone_code") String phone_code, @Field("phone_number") String phone_number, @Field("location") String location, @Field("lat") String lat, @Field("lng") String lng,
                                    @Field("language_code") String language_code, @Field("device_type") String device_type, @Field("device_token") String device_token, @Field("timestamp") String timestamp, @Field("key") String key);
 
