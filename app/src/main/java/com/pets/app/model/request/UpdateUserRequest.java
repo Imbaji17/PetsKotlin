@@ -42,7 +42,7 @@ public class UpdateUserRequest implements Serializable {
     private String device_token;
     @SerializedName("profile_image")
     private String profile_image;
-    @SerializedName("v")
+    @SerializedName("device_type")
     private String device_type;
     @SerializedName("social_type")
     private String social_type;
