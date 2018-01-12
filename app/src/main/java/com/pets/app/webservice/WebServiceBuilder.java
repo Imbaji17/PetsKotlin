@@ -6,6 +6,7 @@ import com.pets.app.model.NormalResponse;
 import com.pets.app.model.ReviewsResponse;
 import com.pets.app.model.request.FavouriteHostel;
 import com.pets.app.model.request.UpdateUserRequest;
+import com.pets.app.model.request.WriteReview;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -78,6 +79,9 @@ public class WebServiceBuilder {
         @GET("reviews_by_type")
         Call<ReviewsResponse> reviewsByType(@Query("key") String key, @Query("language_code") String languageCode, @Query("next_offset") int nextOffset,
                                             @Query("timestamp") String timeStamp, @Query("type") String type, @Query("type_id") String type_id, @Query("user_id") String user_id);
+
+        @POST("write_review_by_type/")
+        Call<NormalResponse> writeReview(@Body WriteReview writeReview);
 
     }
 }

@@ -33,8 +33,7 @@ class ReviewsVH(itemView: View, clickListener: View.OnClickListener) : RecyclerV
             } else {
                 tvName.text = ""
             }
-
-            ImageSetter.loadImage(context, review.user.profile_image, R.drawable.alert_placeholder, ivReview)
+            ImageSetter.loadRoundedImage(context, review.user.profile_image, R.drawable.alert_placeholder, ivReview)
         }
         tvDate.text = review.createdDate
         ratingBar.rating = review.rating.toFloat()
