@@ -1,15 +1,33 @@
 package com.pets.app.activities
 
-import android.support.v7.app.AppCompatActivity
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.RecyclerView
-import android.widget.LinearLayout
-import android.widget.RatingBar
-import android.widget.TextView
+import android.text.TextUtils
+import android.view.View
+import android.widget.*
+import com.google.gson.GsonBuilder
 import com.pets.app.R
+import com.pets.app.adapters.ImageAdapter
+import com.pets.app.common.ApplicationsConstants
+import com.pets.app.common.Constants
+import com.pets.app.initialsetup.BaseActivity
+import com.pets.app.model.FindHostel
+import com.pets.app.model.FindHostelResponse
+import com.pets.app.model.NormalResponse
+import com.pets.app.utilities.TimeStamp
+import com.pets.app.utilities.Utils
+import com.pets.app.webservice.RestClient
+import com.pets.app.webservice.WebServiceBuilder
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.IOException
 
-class HostelDetailActivity : AppCompatActivity() {
+class HostelDetailActivity : BaseActivity(), View.OnClickListener {
 
     private var viewPager: ViewPager? = null
     private var tvName: TextView? = null
@@ -25,22 +43,43 @@ class HostelDetailActivity : AppCompatActivity() {
     private var tvDescription: TextView? = null
     private var llImages: LinearLayout? = null
     private var recyclerView: RecyclerView? = null
-    var hostelId: String? = null
+    private var hostelId: String? = null
+    private var viewFlipper: ViewFlipper? = null
+    private var btnRetry: Button? = null
+    private var rlForLoadingScreen: RelativeLayout? = null
+    private var mainLayout: NestedScrollView? = null
+    private var llForNoResult: LinearLayout? = null
+    private var llForOfflineScreen: LinearLayout? = null
+    private var llAddress: LinearLayout? = null
+    private var tvAddress: TextView? = null
+
+    companion object {
+        private val TAG = HostelDetailActivity::class.java.simpleName
+        fun startActivity(activity: Activity, hostelId: String) {
+            val intent = Intent(activity, HostelDetailActivity::class.java)
+            intent.putExtra(ApplicationsConstants.ID, hostelId)
+            activity.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hostel_detail)
+        initializeToolbar(getString(R.string.hostel))
+        init()
+        initView()
+        getHostelDetails()
     }
 
     private fun init() {
-
+        hostelId = intent.getStringExtra(ApplicationsConstants.ID)
     }
 
     private fun initView() {
-//        viewPager = findViewById(R.id.viewPager)
-//        tvName = findViewById(R.id.tvName)
-//        ratingBar = findViewById(R.id.ratingBar)
-//        tvReview = findViewById(R.id.tvReview)
+        viewPager = findViewById(R.id.viewPager)
+        tvName = findViewById(R.id.tvName)
+        ratingBar = findViewById(R.id.ratingBar)
+        tvReview = findViewById(R.id.tvReview)
         llContactPerson = findViewById(R.id.llContactPerson)
         tvContactPerson = findViewById(R.id.tvContactPerson)
         llContact = findViewById(R.id.llContact)
@@ -51,9 +90,132 @@ class HostelDetailActivity : AppCompatActivity() {
         tvDescription = findViewById(R.id.tvDescription)
         llImages = findViewById(R.id.llImages)
         recyclerView = findViewById(R.id.recyclerView)
+        llAddress = findViewById(R.id.llAddress)
+        tvAddress = findViewById(R.id.tvAddress)
+
+        viewFlipper = findViewById(R.id.viewFlipper)
+        rlForLoadingScreen = findViewById(R.id.rlForLoadingScreen)
+        mainLayout = findViewById(R.id.mainLayout)
+        llForNoResult = findViewById(R.id.llForNoResult)
+        llForOfflineScreen = findViewById(R.id.llForOfflineScreen)
+        btnRetry = findViewById(R.id.btnRetry)
+        btnRetry?.setOnClickListener(this)
+        tvReview?.setOnClickListener(this)
     }
 
-    private fun setValues() {
+    private fun getHostelDetails() {
+        setLoadingLayout()
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + "10" + hostelId + Constants.TIME_STAMP_KEY)
+        viewFlipper!!.displayedChild = 0
+        if (Utils.isOnline(this)) {
+            val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+            val call = apiClient.hostelDetailsById(hostelId, key, "EN", "18.499666", "73.865377", timeStamp, "10")
+            call.enqueue(object : Callback<FindHostelResponse> {
+                override fun onResponse(call: Call<FindHostelResponse>, response: Response<FindHostelResponse>?) {
+                    if (response != null && response.isSuccessful() && response.body() != null && response.body().result != null) {
+                        setMainLayout()
+                        setValues(response.body().result)
+                    } else {
+                        setNoDataLayout()
+                        val gson = GsonBuilder().create()
+                        val mError: NormalResponse
+                        try {
+                            mError = gson.fromJson(response!!.errorBody().string(), NormalResponse::class.java)
+                            Utils.showToast("" + mError.getMessage())
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
 
+                override fun onFailure(call: Call<FindHostelResponse>, t: Throwable) {
+                    setNoDataLayout()
+                }
+            })
+
+        } else {
+            setOfflineLayout()
+        }
     }
+
+    private fun setValues(result: FindHostel) {
+
+        if (!TextUtils.isEmpty(result.contactPerson)) {
+            llContactPerson?.visibility = View.VISIBLE
+            tvContactPerson?.text = result.contactPerson
+        } else {
+            llContactPerson?.visibility = View.GONE
+        }
+
+        if (!TextUtils.isEmpty(result.contactNumber)) {
+            llContact?.visibility = View.VISIBLE
+            tvContact?.text = result.contactNumber
+        } else {
+            llContact?.visibility = View.GONE
+        }
+
+        if (!TextUtils.isEmpty(result.address)) {
+            llAddress?.visibility = View.VISIBLE
+            tvAddress?.text = result.address
+        } else {
+            llAddress?.visibility = View.GONE
+        }
+
+//        if (!TextUtils.isEmpty(result.address)) {
+//            llDistance?.visibility = View.VISIBLE
+//            tvDistance?.text = result.address
+//        } else {
+//            llDistance?.visibility = View.GONE
+//        }
+
+        if (!TextUtils.isEmpty(result.description)) {
+            llDescription?.visibility = View.VISIBLE
+            tvDescription?.text = result.description
+        } else {
+            llDescription?.visibility = View.GONE
+        }
+
+        if (!result.hostelImages.isEmpty()) {
+            val adapter = ImageAdapter(this, result.hostelImages)
+            viewPager?.adapter = adapter
+        }
+
+        ratingBar?.rating = result.avgRating.toFloat();
+        tvReview?.text = resources.getQuantityString(R.plurals.reviews, result.reviewsCount, result.reviewsCount)
+        tvName?.text = if (!TextUtils.isEmpty(result.hostelName)) {
+            result.hostelName
+        } else {
+            ""
+        }
+    }
+
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            R.id.btnRetry -> {
+                getHostelDetails()
+            }
+            R.id.tvReview -> {
+
+            }
+        }
+    }
+
+
+    private fun setOfflineLayout() {
+        viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(llForOfflineScreen)
+    }
+
+    private fun setLoadingLayout() {
+        viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(rlForLoadingScreen)
+    }
+
+    private fun setMainLayout() {
+        viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(mainLayout)
+    }
+
+    private fun setNoDataLayout() {
+        viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(llForNoResult)
+    }
+
 }

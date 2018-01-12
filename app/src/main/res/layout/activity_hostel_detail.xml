@@ -1,206 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.pets.app.activities.HostelDetailActivity">
 
+    <include layout="@layout/app_toolbar" />
 
-    <LinearLayout
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <!--<include layout="@layout/app_loading_screen" />-->
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="200dp">
-
-            </android.support.v4.view.ViewPager>
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:padding="@dimen/dimen_size_10">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvName"
-                    style="@style/TextViewStyle"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/text_size_14"
-                    tools:text="@string/name" />
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
 
+                </android.support.v4.view.ViewPager>
 
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    style="@style/StarRatingBarSmall"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:clickable="false"
-                    android:isIndicator="true"
-                    android:rating="0"
-                    android:stepSize="0.5" />
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/blue_wood"
+                    android:padding="@dimen/dimen_size_10">
 
-                <TextView
-                    android:id="@+id/tvReview"
-                    style="@style/TextViewStyle"
-                    android:layout_gravity="center_vertical"
-                    android:text="review"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/text_size_14" />
+                    <TextView
+                        android:id="@+id/tvName"
+                        style="@style/TextViewStyle"
+                        android:layout_width="0dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14"
+                        tools:text="@string/name" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <RatingBar
+                            android:id="@+id/ratingBar"
+                            style="@style/StarRatingBarSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/dimen_size_10"
+                            android:layout_marginRight="@dimen/dimen_size_10"
+                            android:layout_toLeftOf="@+id/tvReview"
+                            android:layout_toStartOf="@+id/tvReview"
+                            android:clickable="false"
+                            android:isIndicator="true"
+                            android:rating="0"
+                            android:stepSize="0.5" />
+
+                        <TextView
+                            android:id="@+id/tvReview"
+                            style="@style/TextViewStyle"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_14"
+                            tools:text="review" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llContactPerson"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/contact_person"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/tvContactPerson"
+                        style="@style/TextViewStyle"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/text_size_15"
+                        tools:text="@string/app_name" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:background="@color/light_grey" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llContact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/contact"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/tvContact"
+                        style="@style/TextViewStyle"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/text_size_16"
+                        tools:text="@string/app_name" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:background="@color/light_grey" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/address"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/tvAddress"
+                        style="@style/TextViewStyle"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/text_size_16"
+                        tools:text="@string/app_name" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:background="@color/light_grey" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/distance"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/tvDistance"
+                        style="@style/TextViewStyle"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/text_size_16"
+                        tools:text="@string/app_name" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:background="@color/light_grey" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/description"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/tvDescription"
+                        style="@style/TextViewStyle"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/text_size_16"
+                        tools:text="@string/app_name" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:background="@color/light_grey" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/images"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
 
             </LinearLayout>
-        </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/llContactPerson"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_size_10"
-            android:layout_marginRight="@dimen/dimen_size_10"
-            android:layout_marginTop="@dimen/dimen_size_5"
-            android:orientation="vertical">
+        </android.support.v4.widget.NestedScrollView>
 
-            <TextView
-                style="@style/TextViewStyle"
-                android:text="@string/contact_person"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_14" />
+        <include layout="@layout/app_no_result_found" />
 
-            <TextView
-                android:id="@+id/tvContactPerson"
-                style="@style/TextViewStyle"
-                android:layout_marginTop="@dimen/dimen_size_5"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_15"
-                tools:text="@string/app_name" />
+        <include layout="@layout/app_no_internet_connection" />
+    </ViewFlipper>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/dimen_size_5"
-                android:background="@color/light_grey" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llContact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_size_10"
-            android:layout_marginRight="@dimen/dimen_size_10"
-            android:layout_marginTop="@dimen/dimen_size_5"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle"
-                android:text="@string/contact"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_14" />
-
-            <TextView
-                android:id="@+id/tvContact"
-                style="@style/TextViewStyle"
-                android:layout_marginTop="@dimen/dimen_size_5"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_16"
-                tools:text="@string/app_name" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/dimen_size_5"
-                android:background="@color/light_grey" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llDistance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_size_10"
-            android:layout_marginRight="@dimen/dimen_size_10"
-            android:layout_marginTop="@dimen/dimen_size_5"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle"
-                android:text="@string/distance"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_14" />
-
-            <TextView
-                android:id="@+id/tvDistance"
-                style="@style/TextViewStyle"
-                android:layout_marginTop="@dimen/dimen_size_5"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_16"
-                tools:text="@string/app_name" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/dimen_size_5"
-                android:background="@color/light_grey" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_size_10"
-            android:layout_marginRight="@dimen/dimen_size_10"
-            android:layout_marginTop="@dimen/dimen_size_5"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle"
-                android:text="@string/description"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_14" />
-
-            <TextView
-                android:id="@+id/tvDescription"
-                style="@style/TextViewStyle"
-                android:layout_marginTop="@dimen/dimen_size_5"
-                android:textColor="@color/dark_grey"
-                android:textSize="@dimen/text_size_16"
-                tools:text="@string/app_name" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/dimen_size_5"
-                android:background="@color/light_grey" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llImages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_size_10"
-            android:layout_marginRight="@dimen/dimen_size_10"
-            android:layout_marginTop="@dimen/dimen_size_5"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/TextViewStyle"
-                android:text="@string/images"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_14" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
-
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</LinearLayout>

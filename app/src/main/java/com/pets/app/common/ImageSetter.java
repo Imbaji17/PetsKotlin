@@ -1,6 +1,7 @@
 package com.pets.app.common;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.pets.app.utilities.CircleTransform;
@@ -12,10 +13,14 @@ import com.squareup.picasso.Picasso;
 public class ImageSetter {
 
     public static void loadImage(Context mContext, String mUrl, int placeHolder, ImageView mImageView) {
-        Picasso.with(mContext)
-                .load(mUrl)
-                .placeholder(placeHolder)
-                .into(mImageView);
+        if (!TextUtils.isEmpty(mUrl)) {
+            Picasso.with(mContext)
+                    .load(mUrl)
+                    .placeholder(placeHolder)
+                    .into(mImageView);
+        } else {
+            mImageView.setImageResource(placeHolder);
+        }
     }
 
     public static void loadRoundedImage(Context mContext, String mUrl, int placeHolder, ImageView mImageView) {
