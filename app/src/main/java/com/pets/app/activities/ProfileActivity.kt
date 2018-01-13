@@ -231,6 +231,7 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
 
         val name = edtName?.text.toString().trim()
         val email = edtEmail?.text.toString().trim()
+        val desc = edtDescription?.text.toString().trim()
         val location = edtLocation?.text.toString().trim()
         val languageCode = Enums.Language.EN.name
         val timeStamp = TimeStamp.getTimeStamp()
@@ -239,6 +240,7 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
         val request = UpdateUserRequest()
         request.setUser_id(AppPreferenceManager.getUserID())
         request.setName(name)
+        request.setDescription(desc)
         request.setEmail_id(email)
         request.setLocation(location)
         request.setLat(latitude)
