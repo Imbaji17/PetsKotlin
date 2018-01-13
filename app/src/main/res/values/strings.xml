@@ -97,5 +97,6 @@
     <string name="profile">Profile</string>
     <string name="change_password">Change Password</string>
     <string name="update">UPDATE</string>
+    <string name="change_number">Change Number</string>
 
 </resources>

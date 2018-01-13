@@ -163,7 +163,6 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             Log.e("Tag", message)
             Utils.showToast(message)
         }
-
     }
 
     private fun generateSpannableString(string: String?, string1: String?, isTrue: Boolean): SpannableString {

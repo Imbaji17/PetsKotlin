@@ -104,6 +104,15 @@
                 </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/tvChangeNumber"
+                style="@style/TextViewStyle"
+                android:layout_gravity="end"
+                android:padding="@dimen/dimen_size_5"
+                android:text="@string/change_number"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_12" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
