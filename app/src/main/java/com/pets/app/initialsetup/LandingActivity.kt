@@ -15,7 +15,6 @@ import com.pets.app.R
 import com.pets.app.activities.ProfileActivity
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.DialogManager
-import com.pets.app.utilities.Utils
 import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 
@@ -48,7 +47,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
         tvUserName = findViewById(R.id.tvName)
         imgProfile = findViewById(R.id.imageView)
-        linHeader = findViewById(R.id.nav_header)
+        linHeader = nav_view.findViewById(R.id.nav_header)
     }
 
     private fun clickListeners() {
@@ -65,7 +64,8 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
                 this.startActivity(mIntent)
             }
             R.id.imgHeader -> {
-                Utils.showToast("zzzzzzzzzzzzzz")
+                val mIntent = Intent(this, ProfileActivity::class.java)
+                this.startActivity(mIntent)
             }
         }
     }
