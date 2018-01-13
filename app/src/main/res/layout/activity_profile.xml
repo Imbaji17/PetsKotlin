@@ -20,6 +20,7 @@
             android:padding="@dimen/dimen_size_20">
 
             <ImageView
+                android:id="@+id/imgProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -27,7 +28,7 @@
                 android:src="@drawable/profile" />
 
             <TextView
-                android:id="@+id/tvForgotPassword"
+                android:id="@+id/tvChangePhoto"
                 style="@style/TextViewStyle"
                 android:layout_gravity="center_horizontal"
                 android:padding="@dimen/dimen_size_10"
@@ -57,36 +58,6 @@
                     android:id="@+id/edtEmail"
                     style="@style/EditTextStyle"
                     android:hint="@string/email" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_size_5"
-                app:hintTextAppearance="@style/FloatingLabel"
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/edtPassword"
-                    style="@style/EditTextStyle"
-                    android:hint="@string/password"
-                    android:inputType="textPassword" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/confirmPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_size_5"
-                app:hintTextAppearance="@style/FloatingLabel"
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/edtConfirmPassword"
-                    style="@style/EditTextStyle"
-                    android:hint="@string/confirm_password"
-                    android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 
             <RelativeLayout
@@ -144,24 +115,37 @@
                     android:hint="@string/location" />
             </android.support.design.widget.TextInputLayout>
 
-            <CheckBox
-                android:id="@+id/checkTerms"
-                style="@style/CheckBoxStyle"
-                android:layout_marginTop="@dimen/dimen_size_10"
-                android:text="@string/remember_me" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/FloatingLabel">
 
-            <Button
-                android:id="@+id/btnRegister"
-                style="@style/ButtonStyle"
-                android:layout_marginTop="@dimen/dimen_size_20"
-                android:text="@string/register" />
+                <EditText
+                    android:id="@+id/edtDescription"
+                    style="@style/EditTextStyle"
+                    android:gravity="start|top"
+                    android:hint="@string/description"
+                    android:inputType="textMultiLine"
+                    android:maxLength="100"
+                    android:minHeight="@dimen/dimen_size_80"
+                    android:singleLine="false" />
+            </android.support.design.widget.TextInputLayout>
 
             <TextView
-                android:id="@+id/tvLogin"
+                android:id="@+id/tvChangePassword"
                 style="@style/TextViewStyle"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_size_15"
+                android:padding="@dimen/dimen_size_5"
+                android:text="@string/change_password"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_12" />
+
+            <Button
+                android:id="@+id/btnUpdate"
+                style="@style/ButtonStyle"
                 android:layout_marginTop="@dimen/dimen_size_20"
-                android:text="@string/register" />
+                android:text="@string/update" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

@@ -5,7 +5,9 @@ import android.content.Context;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
@@ -168,6 +170,14 @@ public class Utils {
         int width = displayMetrics.widthPixels;
 
         return width;
+    }
+
+    public static SpannableString getUnderlineString(String mString) {
+
+        SpannableString content = new SpannableString(mString);
+        content.setSpan(new UnderlineSpan(), 0, mString.length(), 0);
+
+        return content;
     }
 
     public static int getNotificationIcon() {
