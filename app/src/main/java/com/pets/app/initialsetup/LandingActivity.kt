@@ -32,7 +32,6 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         initializeToolbar("")
         setUpDrawerMenu()
         initView()
-        clickListeners()
     }
 
     private fun setUpDrawerMenu() {
@@ -48,11 +47,12 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         tvUserName = findViewById(R.id.tvName)
         imgProfile = findViewById(R.id.imageView)
         linHeader = nav_view.findViewById(R.id.nav_header)
-    }
 
-    private fun clickListeners() {
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val headerView = navigationView.getHeaderView(0)
+        val header = headerView.findViewById<LinearLayout>(R.id.nav_header)
 
-        linHeader?.setOnClickListener(this)
+        header?.setOnClickListener(this)
         imgHeader?.setOnClickListener(this)
     }
 
