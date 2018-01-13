@@ -62,6 +62,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             R.id.nav_header -> {
                 val mIntent = Intent(this, ProfileActivity::class.java)
                 this.startActivity(mIntent)
+                drawer_layout.closeDrawer(GravityCompat.START)
             }
             R.id.imgHeader -> {
                 val mIntent = Intent(this, ProfileActivity::class.java)
