@@ -75,7 +75,10 @@
                         android:id="@+id/edtCountryCode"
                         style="@style/EditTextStyle"
                         android:layout_width="@dimen/dimen_size_50"
+                        android:editable="false"
+                        android:ellipsize="end"
                         android:focusable="false"
+                        android:focusableInTouchMode="true"
                         android:inputType="textShortMessage"
                         android:text="+91" />
                 </android.support.design.widget.TextInputLayout>
@@ -90,6 +93,10 @@
                     <EditText
                         android:id="@+id/edtContact"
                         style="@style/EditTextStyle"
+                        android:editable="false"
+                        android:ellipsize="end"
+                        android:focusable="false"
+                        android:focusableInTouchMode="true"
                         android:hint="@string/contact"
                         android:imeOptions="actionDone"
                         android:inputType="number"
@@ -123,7 +130,7 @@
                 <EditText
                     android:id="@+id/edtDescription"
                     style="@style/EditTextStyle"
-                    android:gravity="start|top"
+                    android:gravity="start"
                     android:hint="@string/description"
                     android:inputType="textMultiLine"
                     android:maxLength="100"

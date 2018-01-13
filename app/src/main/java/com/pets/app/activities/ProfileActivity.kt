@@ -1,6 +1,7 @@
 package com.pets.app.activities
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -9,7 +10,7 @@ import com.pets.app.R
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.utilities.Utils
 
-class ProfileActivity : BaseActivity() {
+class ProfileActivity : BaseActivity(), View.OnClickListener {
 
     private var imgProfile: ImageView? = null
     private var tvChangePhoto: TextView? = null
@@ -54,8 +55,13 @@ class ProfileActivity : BaseActivity() {
 
     private fun clickListeners() {
 
-//        edtCountryCode?.setOnClickListener(this)
-//        edtLocation?.setOnClickListener(this)
-//        btnRegister?.setOnClickListener(this)
+        tvChangePhoto?.setOnClickListener(this)
+        edtLocation?.setOnClickListener(this)
+        btnUpdate?.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+
+
     }
 }
