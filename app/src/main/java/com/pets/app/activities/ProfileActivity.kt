@@ -136,7 +136,8 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
                 openAutocompleteActivity()
             }
             R.id.tvChangePassword -> {
-
+                val changePassword = Intent(this, ChangePasswordActivity::class.java)
+                this.startActivity(changePassword)
             }
             R.id.btnUpdate -> {
                 if (checkValidations()) {

@@ -98,5 +98,9 @@
     <string name="change_password">Change Password</string>
     <string name="update">UPDATE</string>
     <string name="change_number">Change Number</string>
-
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="enter_old_password">Enter old password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="please_enter_confirm_password_match_new">Password and Confirm password did\'nt matched</string>
 </resources>
