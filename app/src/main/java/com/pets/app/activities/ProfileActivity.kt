@@ -13,12 +13,25 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
+import com.pets.app.common.Constants
+import com.pets.app.common.Enums
 import com.pets.app.common.ImageSetter
 import com.pets.app.initialsetup.BaseActivity
+import com.pets.app.model.LoginResponse
+import com.pets.app.model.`object`.LoginDetails
+import com.pets.app.model.request.UpdateUserRequest
 import com.pets.app.utilities.Logger
+import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
+import com.pets.app.webservice.RestClient
+import com.pets.app.webservice.WebServiceBuilder
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.IOException
 
 class ProfileActivity : BaseActivity(), View.OnClickListener {
 
@@ -126,7 +139,13 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
 
             }
             R.id.btnUpdate -> {
-
+                if (checkValidations()) {
+                    if (Utils.isOnline(this)) {
+                        updateUserApiCall()
+                    } else {
+                        Utils.showToast(this.getString(R.string.device_is_offline))
+                    }
+                }
             }
         }
     }
@@ -178,5 +197,88 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun checkValidations(): Boolean {
+
+        if (TextUtils.isEmpty(edtName?.text.toString().trim())) {
+            edtName?.error = this.getString(R.string.please_enter_name)
+            edtName?.requestFocus()
+            return false
+        } else if (TextUtils.isEmpty(edtEmail?.text.toString().trim())) {
+            edtEmail?.error = this.getString(R.string.please_enter_email)
+            edtEmail?.requestFocus()
+            return false
+        } else if (!Utils.isEmailValid(edtEmail?.text.toString().trim())) {
+            edtEmail?.error = this.getString(R.string.please_enter_valid_email)
+            edtEmail?.requestFocus()
+            return false
+        }
+
+        if (TextUtils.isEmpty(edtContact?.text.toString().trim())) {
+            edtContact?.error = this.getString(R.string.please_enter_contact)
+            edtContact?.requestFocus()
+            return false
+        } else if (TextUtils.isEmpty(edtLocation?.text.toString().trim())) {
+            Utils.showToast(this.getString(R.string.please_select_location))
+            return false
+        }
+
+        return true
+    }
+
+    private fun updateUserApiCall() {
+
+        val name = edtName?.text.toString().trim()
+        val email = edtEmail?.text.toString().trim()
+        val location = edtLocation?.text.toString().trim()
+        val languageCode = Enums.Language.EN.name
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + AppPreferenceManager.getUserID() + email + Constants.TIME_STAMP_KEY)
+
+        val request = UpdateUserRequest()
+        request.setUser_id(AppPreferenceManager.getUserID())
+        request.setName(name)
+        request.setEmail_id(email)
+        request.setLocation(location)
+        request.setLat(latitude)
+        request.setLng(longitude)
+        request.setLanguage_code(languageCode)
+        request.setTimestamp(timeStamp)
+        request.setKey(key)
+
+        showProgressBar()
+        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = api.updateUser(request)
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.body() != null && response.isSuccessful) {
+                        Utils.showToast(response.body().message)
+                        checkResponse(response.body().result)
+                    } else if (response.code() == 403) {
+                        val gson = GsonBuilder().create()
+                        val mError: LoginResponse
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
+                            Utils.showToast("" + mError.message)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>?, t: Throwable?) {
+                hideProgressBar()
+            }
+        })
+    }
+
+    private fun checkResponse(details: LoginDetails?) {
+
+        AppPreferenceManager.saveUser(details)
+        this.finish()
     }
 }
