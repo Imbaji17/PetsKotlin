@@ -116,7 +116,7 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener {
                     if (response.body() != null && response.isSuccessful) {
                         Utils.showToast(response.body().message)
                         this@ChangePasswordActivity.finish()
-                    } else if (response.code() == 403) {
+                    } else {
                         val gson = GsonBuilder().create()
                         val mError: NormalResponse
                         try {
