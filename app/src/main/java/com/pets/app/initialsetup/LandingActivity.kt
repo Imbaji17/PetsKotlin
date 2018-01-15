@@ -17,16 +17,20 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.pets.app.R
+import com.pets.app.activities.FindHostelActivity
 import com.pets.app.activities.ProfileActivity
+import com.pets.app.activities.adoption.AdoptionListActivity
+import com.pets.app.adapters.LandingMenuAdapter
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.DialogManager
 import com.pets.app.common.ImageSetter
+import com.pets.app.interfaces.SimpleItemClickListener
 import com.pets.app.model.`object`.LandingDetails
 import com.viewpagerindicator.CirclePageIndicator
 import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 
-class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SimpleItemClickListener {
 
     /*Drawer Menu*/
     private var tvUserName: TextView? = null
@@ -87,6 +91,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
         val mGridLayoutManager = GridLayoutManager(this, 3)
         mGridLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        mRecyclerView?.isNestedScrollingEnabled = false
         mRecyclerView?.layoutManager = mGridLayoutManager
 
         val mList = ArrayList<LandingDetails>()
@@ -99,6 +104,10 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         mList.add(object : LandingDetails(this.getString(R.string.adoption), R.drawable.adoption) {})
         mList.add(object : LandingDetails(this.getString(R.string.buy_and_sell), R.drawable.buyandsell) {})
         mList.add(object : LandingDetails(this.getString(R.string.buddy_alert), R.drawable.alert1) {})
+
+        val adapter = LandingMenuAdapter(this, mList)
+        mRecyclerView?.adapter = adapter
+        adapter.setItemClick(this)
 
 //        val adapter = ImageAdapter(this,)
 //        viewPager?.adapter = adapter
@@ -175,5 +184,50 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+
+    override fun onItemClick(`object`: Any?) {
+
+        when (`object` as Int) {
+
+            0 -> {
+                val mIntent = Intent(this, ProfileActivity::class.java)
+                this.startActivity(mIntent)
+            }
+            1 -> {
+//                val mIntent = Intent(this, ProfileActivity::class.java)
+//                this.startActivity(mIntent)
+            }
+            2 -> {
+//                val mIntent = Intent(this, ProfileActivity::class.java)
+//                this.startActivity(mIntent)
+            }
+            3 -> {
+                val mIntent = Intent(this, FindHostelActivity::class.java)
+                this.startActivity(mIntent)
+            }
+            4 -> {
+                val mIntent = Intent(this, ProfileActivity::class.java)
+                this.startActivity(mIntent)
+            }
+            5 -> {
+//                val mIntent = Intent(this, ProfileActivity::class.java)
+//                this.startActivity(mIntent)
+            }
+            6 -> {
+                val mIntent = Intent(this, AdoptionListActivity::class.java)
+                this.startActivity(mIntent)
+            }
+            7 -> {
+//                val mIntent = Intent(this, ProfileActivity::class.java)
+//                this.startActivity(mIntent)
+            }
+            8 -> {
+//                val mIntent = Intent(this, ProfileActivity::class.java)
+//                this.startActivity(mIntent)
+            }
+        }
+
     }
 }

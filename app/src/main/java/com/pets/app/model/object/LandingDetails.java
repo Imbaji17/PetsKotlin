@@ -13,6 +13,14 @@ public class LandingDetails {
         this.image = image;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
     @Override
     public String toString() {
         return "LandingDetails{" +
