@@ -64,8 +64,8 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
 
         tvNumber?.text = this.getString(R.string.enter_verification_code_sent_on)
                 .plus(Constants.SPACE)
-                .plus(AppPreferenceManager.getUser().phone_code)
-                .plus(AppPreferenceManager.getUser().phone_number)
+                .plus(intent.getStringExtra(ApplicationsConstants.COUNTRY_CODE))
+                .plus(intent.getStringExtra(ApplicationsConstants.MOBILE_NUMBER))
 
         edtText1!!.addTextChangedListener(object : AppTextWatcher() {
             override fun afterTextChanged(s: Editable?) {

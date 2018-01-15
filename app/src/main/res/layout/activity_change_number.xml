@@ -58,7 +58,7 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/btnRegister"
+                android:id="@+id/btnUpdate"
                 style="@style/ButtonStyle"
                 android:layout_marginTop="@dimen/dimen_size_20"
                 android:text="@string/update" />

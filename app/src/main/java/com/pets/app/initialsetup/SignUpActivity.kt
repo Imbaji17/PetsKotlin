@@ -392,6 +392,8 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         AppPreferenceManager.saveUser(details)
 
         val signUp = Intent(this, OtpVerificationActivity::class.java)
+        signUp.putExtra(ApplicationsConstants.COUNTRY_CODE, AppPreferenceManager.getUser().phone_code)
+        signUp.putExtra(ApplicationsConstants.MOBILE_NUMBER, AppPreferenceManager.getUser().phone_number)
         this.startActivityForResult(signUp, RC_OTP)
     }
 }

@@ -32,7 +32,6 @@ class ChangeNumberActivity : BaseActivity(), View.OnClickListener {
     private var btnUpdate: Button? = null
     private val RC_OTP: Int = 200
     private val RC_COUNTRY_CODE: Int = 300
-    private var isBack: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,9 +66,7 @@ class ChangeNumberActivity : BaseActivity(), View.OnClickListener {
             R.id.btnUpdate -> {
                 if (checkValidations()) {
                     if (Utils.isOnline(this)) {
-                        if (isBack) {
-                            changeNumberApiCall()
-                        }
+                        changeNumberApiCall()
                     } else {
                         Utils.showToast(this.getString(R.string.device_is_offline))
                     }
@@ -81,13 +78,6 @@ class ChangeNumberActivity : BaseActivity(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            RC_OTP -> {
-                if (resultCode == RESULT_OK) {
-                    if (data != null) {
-                        isBack = true
-                    }
-                }
-            }
             RC_COUNTRY_CODE -> {
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
@@ -149,9 +139,9 @@ class ChangeNumberActivity : BaseActivity(), View.OnClickListener {
 
     private fun checkResponse(details: LoginDetails?) {
 
-//        AppPreferenceManager.saveUser(details)
-
         val signUp = Intent(this, OtpVerificationActivity::class.java)
+        signUp.putExtra(ApplicationsConstants.COUNTRY_CODE, edtCountryCode?.text.toString().trim())
+        signUp.putExtra(ApplicationsConstants.MOBILE_NUMBER, edtContact?.text.toString().trim())
         this.startActivityForResult(signUp, RC_OTP)
     }
 }
