@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linMain"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen_size_5">
+
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/mypets1" />
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/TextViewStyle"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dimen_size_5"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="@string/app_name" />
+</LinearLayout>
