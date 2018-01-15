@@ -82,6 +82,7 @@
         <item quantity="one">(%d review)</item>
         <item quantity="other">(%d reviews)</item>
     </plurals>
+    <string name="x_miles">%s miles</string>
 
     <!--REVIEWS-->
     <string name="reviews">Reviews</string>
@@ -108,4 +109,5 @@
     <string name="open_camera">Open Camera</string>
     <string name="select_photo">Select Photo</string>
     <string name="image_uploded">Image updated Successfully</string>
+    <string name="save">save</string>
 </resources>
