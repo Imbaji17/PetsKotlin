@@ -293,11 +293,14 @@ class ProfileActivity : ImagePicker(), View.OnClickListener {
                 hideProgressBar()
                 Logger.errorLog("Response ### " + result!!)
                 print("Response #### " + result)
-                Utils.showToast(this@ProfileActivity.getString(R.string.image_uploded))
                 if (result != null) {
-//                    val normalResponse = Utils.getResponse(result.toString(), NormalResponse::class.java)
-//                    if (normalResponse != null) {
-//                    }
+                    val normalResponse: LoginResponse = Utils.getResponse(result.toString(), LoginResponse::class.java)
+                    if (normalResponse.result != null) {
+                        Utils.showToast(normalResponse.message)
+                        val user: LoginDetails = AppPreferenceManager.getUser()
+                        user.profile_image = normalResponse.result.profile_image
+                        AppPreferenceManager.saveUser(user)
+                    }
                 }
             }
         }.execute()
