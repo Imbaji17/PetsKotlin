@@ -20,7 +20,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/dimen_size_10"
         android:layout_marginRight="@dimen/dimen_size_10"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/menu_profile" />
 
     <LinearLayout
         android:layout_width="match_parent"

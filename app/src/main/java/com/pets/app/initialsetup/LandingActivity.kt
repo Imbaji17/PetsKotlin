@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.pets.app.R
+import com.pets.app.activities.AddPetActivity
 import com.pets.app.activities.FindHostelActivity
 import com.pets.app.activities.ProfileActivity
 import com.pets.app.activities.adoption.AdoptionListActivity
@@ -123,7 +124,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
                 drawer_layout.closeDrawer(GravityCompat.START)
             }
             R.id.imgHeader -> {
-                val mIntent = Intent(this, ProfileActivity::class.java)
+                val mIntent = Intent(this, AddPetActivity::class.java)
                 this.startActivity(mIntent)
             }
         }
