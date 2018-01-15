@@ -46,13 +46,13 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
     private fun initView() {
 
-        tvUserName = findViewById(R.id.tvName)
-        imgProfile = findViewById(R.id.imageView)
-        linHeader = nav_view.findViewById(R.id.nav_header)
-
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val headerView = navigationView.getHeaderView(0)
         val header = headerView.findViewById<LinearLayout>(R.id.nav_header)
+
+        tvUserName = headerView.findViewById(R.id.tvName)
+        imgProfile = headerView.findViewById(R.id.imageView)
+        linHeader = nav_view.findViewById(R.id.nav_header)
 
         header?.setOnClickListener(this)
         imgHeader?.setOnClickListener(this)
