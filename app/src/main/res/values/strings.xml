@@ -109,5 +109,13 @@
     <string name="open_camera">Open Camera</string>
     <string name="select_photo">Select Photo</string>
     <string name="image_uploded">Image updated Successfully</string>
+
+    <!--ADOPTION-->
+    <string name="adoption">Adoption</string>
+    <string name="filter">Filter</string>
+    <string name="type">Type</string>
+    <string name="breed">breed</string>
+    <string name="gender">Gender</string>
     <string name="save">save</string>
+    
 </resources>
