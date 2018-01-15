@@ -23,6 +23,7 @@ import com.pets.app.mediator.AppTextWatcher
 import com.pets.app.model.NormalResponse
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
+import com.pets.app.webservice.CommonServices
 import com.pets.app.webservice.RestClient
 import com.pets.app.webservice.WebServiceBuilder
 import retrofit2.Call
@@ -260,6 +261,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
         if (isVerifyOTP) {
             AppPreferenceManager.setSignIn(true)
             Utils.showToast(this.getString(R.string.otp_verified))
+            CommonServices.getUserDetail(this)
             val mIntent = Intent(this, LandingActivity::class.java)
             mIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             this.startActivity(mIntent)
