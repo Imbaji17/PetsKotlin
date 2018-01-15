@@ -2,6 +2,7 @@ package com.pets.app.activities
 
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -28,7 +29,12 @@ import com.pets.app.utilities.Logger
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
+import com.pets.app.webservice.UploadImage
 import com.pets.app.webservice.WebServiceBuilder
+import khandroid.ext.apache.http.entity.mime.HttpMultipartMode
+import khandroid.ext.apache.http.entity.mime.MultipartEntity
+import khandroid.ext.apache.http.entity.mime.content.FileBody
+import khandroid.ext.apache.http.entity.mime.content.StringBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -210,6 +216,7 @@ class ProfileActivity : ImagePicker(), View.OnClickListener {
                         imageFlag = 1
 //                        imgProfile?.setImageBitmap(bitmap)
                         ImageSetter.loadRoundedImage(this, updatedImageFile, R.drawable.profile, imgProfile)
+                        callAsyncForUploadUserPhotoApi()
                     }
                 }
             }
@@ -242,6 +249,57 @@ class ProfileActivity : ImagePicker(), View.OnClickListener {
         }
 
         return true
+    }
+
+    private fun callAsyncForUploadUserPhotoApi() {
+
+        object : AsyncTask<Void, Void, String>() {
+
+            private var actionName: String? = null
+            private var userId: String? = null
+            private var languageCode: String? = null
+            private var timestamp: String? = null
+            private var key: String? = null
+            private var response: String? = null
+
+            override fun onPreExecute() {
+                super.onPreExecute()
+                showProgressBar()
+                actionName = "updateUserImage"
+                userId = AppPreferenceManager.getUserID()
+                timestamp = TimeStamp.getTimeStamp()
+                languageCode = Enums.Language.EN.name
+                key = TimeStamp.getMd5(timestamp + userId + Constants.TIME_STAMP_KEY)
+            }
+
+            override fun doInBackground(vararg params: Void): String? {
+                try {
+                    val multipartEntity = MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
+                    multipartEntity.addPart("user_id", StringBody(userId!!))
+                    multipartEntity.addPart("profile_image", FileBody(updatedImageFile, "userFile1/jpg"))
+                    multipartEntity.addPart("language_code", StringBody(languageCode))
+                    multipartEntity.addPart("timestamp", StringBody(timestamp!!))
+                    multipartEntity.addPart("key", StringBody(key!!))
+
+                    response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName!!, multipartEntity)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                return response
+            }
+
+            override fun onPostExecute(result: String?) {
+                hideProgressBar()
+                Logger.errorLog("Response ### " + result!!)
+                print("Response #### " + result)
+                if (result != null) {
+//                    val normalResponse = Utils.getResponse(result.toString(), NormalResponse::class.java)
+//                    if (normalResponse != null) {
+//                    }
+                }
+            }
+        }.execute()
     }
 
     private fun updateUserApiCall() {
