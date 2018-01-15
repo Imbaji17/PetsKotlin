@@ -245,9 +245,10 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
 
     private fun favourite() {
         val timeStamp = TimeStamp.getTimeStamp()
-        val key = TimeStamp.getMd5(timeStamp + 10 + Enums.Favourite.HOSTEL.name + findHostel?.hostelId + Constants.TIME_STAMP_KEY)
-        val request = FavouriteHostel()
         val userId = AppPreferenceManager.getUserID()
+        val key = TimeStamp.getMd5(timeStamp + userId + Enums.Favourite.HOSTEL.name + findHostel?.hostelId + Constants.TIME_STAMP_KEY)
+        val request = FavouriteHostel()
+
         request.setUserId(userId)
         request.setTimestamp(timeStamp)
         request.setType(Enums.Favourite.HOSTEL.name)

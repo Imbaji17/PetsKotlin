@@ -44,8 +44,8 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
     private var tvDistance: TextView? = null
     private var llDescription: LinearLayout? = null
     private var tvDescription: TextView? = null
-    private var llImages: LinearLayout? = null
-    private var recyclerView: RecyclerView? = null
+    //    private var llImages: LinearLayout? = null
+//    private var recyclerView: RecyclerView? = null
     private var hostelId: String? = null
     private var viewFlipper: ViewFlipper? = null
     private var btnRetry: Button? = null
@@ -92,8 +92,6 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
         tvDistance = findViewById(R.id.tvDistance)
         llDescription = findViewById(R.id.llDescription)
         tvDescription = findViewById(R.id.tvDescription)
-        llImages = findViewById(R.id.llImages)
-        recyclerView = findViewById(R.id.recyclerView)
         llAddress = findViewById(R.id.llAddress)
         tvAddress = findViewById(R.id.tvAddress)
         cvp = findViewById(R.id.cvp)

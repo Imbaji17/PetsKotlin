@@ -45,17 +45,19 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
     private var recyclerView: RecyclerView? = null
     private var nextOffset = 0
     private var gridLayoutManager: GridLayoutManager? = null
-    private var latitude: Double? = 0.0
-    private var longitude: Double? = 0.0
 
-
-    private val RC_MAP_ACTIVITY: Int = 2
+    private val RC_FILTER: Int = 2
     private var adoption: Adoption? = null
 
     private var petsTypeId: String? = ""
+    private var petsTypeStr: String? = ""
     private var breedId: String? = ""
+    private var breedStr: String? = ""
     private var gender: String? = ""
-    private var distance: String? = ""
+    private var distance: Int? = 0
+    private var latitude: Double? = 0.0
+    private var longitude: Double? = 0.0
+    private var location: String? = ""
 
     private var viewFlipper: ViewFlipper? = null
     private var rlForLoadingScreen: RelativeLayout? = null
@@ -123,7 +125,6 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
         recyclerView = findViewById(R.id.recyclerView)
         linLoadMore = findViewById(R.id.linLoadMore)
 
-
         btnRetry!!.setOnClickListener(this)
     }
 
@@ -155,7 +156,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
             val call = apiClient.adoptionList(userId, timeStamp, key, language, nextOffset, latitude.toString(), longitude.toString(),
-                    petsTypeId, breedId, gender, distance)
+                    petsTypeId, breedId, gender, distance!!)
             call.enqueue(object : Callback<AdoptionResponse> {
                 override fun onResponse(call: Call<AdoptionResponse>, response: Response<AdoptionResponse>?) {
                     loading = true
@@ -216,7 +217,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.btnRetry -> {
-
+                getAdoptionList()
             }
         }
     }
@@ -239,7 +240,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.action_filter -> {
-
+                FilterAdoptionActivity.startActivity(this, RC_FILTER, petsTypeId!!, petsTypeStr!!, breedId!!, breedStr!!, gender!!, distance!!, latitude!!, longitude!!, location!!)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -248,14 +249,22 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            RC_MAP_ACTIVITY -> if (resultCode == Activity.RESULT_OK) {
+            RC_FILTER -> if (resultCode == Activity.RESULT_OK) {
                 latitude = data!!.getDoubleExtra(ApplicationsConstants.LATITUDE, 0.0);
                 longitude = data!!.getDoubleExtra(ApplicationsConstants.LONGITUDE, 0.0);
-//                keyWord = data.getStringExtra(ApplicationsConstants.NAME)
-//                if (!TextUtils.isEmpty(keyWord)) {
-//                    edtSearch!!.setText(keyWord)
-//                }
-//                listItems.clear()
+                petsTypeId = data.getStringExtra(ApplicationsConstants.PETS_TYPE_ID)
+                petsTypeStr = data.getStringExtra(ApplicationsConstants.PETS_TYPE_NAME)
+                breedId = data.getStringExtra(ApplicationsConstants.BREED_ID)
+                breedStr = data.getStringExtra(ApplicationsConstants.BREED_NAME)
+                gender = data.getStringExtra(ApplicationsConstants.GENDER)
+                distance = data.getIntExtra(ApplicationsConstants.DISTANCE, 0)
+                latitude = data.getDoubleExtra(ApplicationsConstants.LATITUDE, 0.0)
+                longitude = data.getDoubleExtra(ApplicationsConstants.LONGITUDE, 0.0)
+                location = data.getStringExtra(ApplicationsConstants.LOCATION)
+                listItems.clear()
+                adapter!!.notifyDataSetChanged()
+                nextOffset = 0
+                getAdoptionList()
             }
         }
     }
@@ -263,9 +272,10 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
 
     private fun favourite() {
         val timeStamp = TimeStamp.getTimeStamp()
-        val key = TimeStamp.getMd5(timeStamp + 10 + Enums.Favourite.ADOPTION.name + adoption?.adoptionId + Constants.TIME_STAMP_KEY)
-        val request = FavouriteHostel()
         val userId = AppPreferenceManager.getUserID()
+        val key = TimeStamp.getMd5(timeStamp + userId + Enums.Favourite.ADOPTION.name + adoption?.adoptionId + Constants.TIME_STAMP_KEY)
+        val request = FavouriteHostel()
+
         request.setUserId(userId)
         request.setTimestamp(timeStamp)
         request.setType(Enums.Favourite.ADOPTION.name)
@@ -315,7 +325,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setNoDataLayout() {
-        tvNoResult?.text = getString(R.string.no_review_found)
+        tvNoResult?.text = getString(R.string.no_result_found)
         viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(llForNoResult)
     }
 }

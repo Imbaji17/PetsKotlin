@@ -1,9 +1,11 @@
 package com.pets.app.webservice;
 
 import com.pets.app.model.AdoptionResponse;
+import com.pets.app.model.BreedResponse;
 import com.pets.app.model.FindHostelResponse;
 import com.pets.app.model.LoginResponse;
 import com.pets.app.model.NormalResponse;
+import com.pets.app.model.PetsTypeResponse;
 import com.pets.app.model.ReviewsResponse;
 import com.pets.app.model.request.FavouriteHostel;
 import com.pets.app.model.request.UpdateUserRequest;
@@ -98,7 +100,17 @@ public class WebServiceBuilder {
         Call<AdoptionResponse> adoptionList(@Query("user_id") String user_id, @Query("timestamp") String timestamp, @Query("key") String key,
                                             @Query("language_code") String languageCode, @Query("next_offset") int next_offset, @Query("lat") String lat,
                                             @Query("lng") String lng, @Query("pets_type_id") String petsTypeId, @Query("breed_id") String breedId,
-                                            @Query("gender") String gender, @Query("distance") String distance);
+                                            @Query("gender") String gender, @Query("distance") int distance);
+
+        @GET("petTypeList")
+        Call<PetsTypeResponse> getPetTypeList(@Query("key") String key, @Query("language_code") String languageCode,
+                                              @Query("timestamp") String timeStamp, @Query("user_id") String user_id);
+
+        //        http://192.168.2.195/pets/api/PetsApi/breedList?user_id=2&timestamp=1&key=bba65d24dea389615ef6205938c9720c&language_code=EN&pet_type_id=1
+        @GET("breedList")
+        Call<BreedResponse> getBreedList(@Query("key") String key, @Query("language_code") String languageCode,
+                                         @Query("timestamp") String timeStamp, @Query("user_id") String user_id,
+                                         @Query("pet_type_id") String pet_type_id);
 
     }
 }

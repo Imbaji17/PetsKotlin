@@ -82,7 +82,7 @@
         <item quantity="one">(%d review)</item>
         <item quantity="other">(%d reviews)</item>
     </plurals>
-    <string name="x_miles">%s miles</string>
+
 
     <!--REVIEWS-->
     <string name="reviews">Reviews</string>
@@ -117,5 +117,15 @@
     <string name="breed">breed</string>
     <string name="gender">Gender</string>
     <string name="save">save</string>
-    
+    <string name="x_miles">%s miles</string>
+    <string name="miles">miles</string>
+    <string name="zero_mile">0 Mile</string>
+    <string name="fifty_miles">50 Miles</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string-array name="gender_arr">
+        <item>@string/male</item>
+        <item>@string/female</item>
+    </string-array>
+
 </resources>
