@@ -1,6 +1,8 @@
 package com.pets.app.activities
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -19,21 +21,27 @@ import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.common.ImageSetter
-import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.LoginResponse
 import com.pets.app.model.`object`.LoginDetails
 import com.pets.app.model.request.UpdateUserRequest
+import com.pets.app.utilities.ImagePicker
 import com.pets.app.utilities.Logger
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
+import com.pets.app.webservice.UploadImage
 import com.pets.app.webservice.WebServiceBuilder
+import khandroid.ext.apache.http.entity.mime.HttpMultipartMode
+import khandroid.ext.apache.http.entity.mime.MultipartEntity
+import khandroid.ext.apache.http.entity.mime.content.FileBody
+import khandroid.ext.apache.http.entity.mime.content.StringBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.io.IOException
 
-class ProfileActivity : BaseActivity(), View.OnClickListener {
+class ProfileActivity : ImagePicker(), View.OnClickListener {
 
     private var imgProfile: ImageView? = null
     private var tvChangePhoto: TextView? = null
@@ -127,7 +135,7 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
         when (v?.id) {
 
             R.id.tvChangePhoto -> {
-
+                showTakeImagePopup()
             }
             R.id.tvChangeNumber -> {
 
@@ -197,6 +205,21 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
                     // the user pressed the back button.
                 }
             }
+
+            RC_CROP_ACTIVITY -> {
+                if (data != null) {
+                    val result = com.theartofdev.edmodo.cropper.CropImage.getActivityResult(data)
+                    val mCurrentPhotoPath = result.uri.path
+                    val bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath)
+                    updatedImageFile = File(mCurrentPhotoPath)
+                    if (updatedImageFile.exists()) {
+                        imageFlag = 1
+//                        imgProfile?.setImageBitmap(bitmap)
+                        ImageSetter.loadRoundedImage(this, updatedImageFile, R.drawable.profile, imgProfile)
+                        callAsyncForUploadUserPhotoApi()
+                    }
+                }
+            }
         }
     }
 
@@ -226,6 +249,61 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
         }
 
         return true
+    }
+
+    private fun callAsyncForUploadUserPhotoApi() {
+
+        object : AsyncTask<Void, Void, String>() {
+
+            private var actionName: String? = null
+            private var userId: String? = null
+            private var languageCode: String? = null
+            private var timestamp: String? = null
+            private var key: String? = null
+            private var response: String? = null
+
+            override fun onPreExecute() {
+                super.onPreExecute()
+                showProgressBar()
+                actionName = "updateUserImage"
+                userId = AppPreferenceManager.getUserID()
+                timestamp = TimeStamp.getTimeStamp()
+                languageCode = Enums.Language.EN.name
+                key = TimeStamp.getMd5(timestamp + userId + Constants.TIME_STAMP_KEY)
+            }
+
+            override fun doInBackground(vararg params: Void): String? {
+                try {
+                    val multipartEntity = MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
+                    multipartEntity.addPart("user_id", StringBody(userId!!))
+                    multipartEntity.addPart("profile_image", FileBody(updatedImageFile, "userFile1/jpg"))
+                    multipartEntity.addPart("language_code", StringBody(languageCode))
+                    multipartEntity.addPart("timestamp", StringBody(timestamp!!))
+                    multipartEntity.addPart("key", StringBody(key!!))
+
+                    response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName!!, multipartEntity)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                return response
+            }
+
+            override fun onPostExecute(result: String?) {
+                hideProgressBar()
+                Logger.errorLog("Response ### " + result!!)
+                print("Response #### " + result)
+                if (result != null) {
+                    val normalResponse: LoginResponse = Utils.getResponse(result.toString(), LoginResponse::class.java)
+                    if (normalResponse.result != null) {
+                        Utils.showToast(normalResponse.message)
+                        val user: LoginDetails = AppPreferenceManager.getUser()
+                        user.profile_image = normalResponse.result.profile_image
+                        AppPreferenceManager.saveUser(user)
+                    }
+                }
+            }
+        }.execute()
     }
 
     private fun updateUserApiCall() {

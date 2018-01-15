@@ -21,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/imgProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dimen_size_100"
+                android:layout_height="@dimen/dimen_size_100"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_size_10"
                 android:src="@drawable/profile" />
@@ -142,7 +142,8 @@
                     android:gravity="start"
                     android:hint="@string/description"
                     android:inputType="textMultiLine"
-                    android:maxLength="100"
+                    android:maxLength="500"
+                    android:maxLines="5"
                     android:minHeight="@dimen/dimen_size_80"
                     android:singleLine="false" />
             </android.support.design.widget.TextInputLayout>
