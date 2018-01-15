@@ -4,7 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -17,14 +21,23 @@ import com.pets.app.activities.ProfileActivity
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.DialogManager
 import com.pets.app.common.ImageSetter
+import com.pets.app.model.`object`.LandingDetails
+import com.viewpagerindicator.CirclePageIndicator
 import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 
 class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
+    /*Drawer Menu*/
     private var tvUserName: TextView? = null
     private var imgProfile: ImageView? = null
     private var linHeader: LinearLayout? = null
+    /*Landing*/
+    private var viewPager: ViewPager? = null
+    private var pageIndicator: CirclePageIndicator? = null
+    private var tvName: TextView? = null
+    private var tvBirthDate: TextView? = null
+    private var mRecyclerView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +78,31 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         if (!TextUtils.isEmpty(user.name)) {
             tvUserName?.text = user.name
         }
+
+        viewPager = findViewById(R.id.viewPager)
+        tvName = findViewById(R.id.tvName)
+        tvBirthDate = findViewById(R.id.tvBirthDate)
+        mRecyclerView = findViewById(R.id.recyclerView)
+
+
+        val mGridLayoutManager = GridLayoutManager(this, 3)
+        mGridLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        mRecyclerView?.layoutManager = mGridLayoutManager
+
+        val mList = ArrayList<LandingDetails>()
+        mList.add(object : LandingDetails(this.getString(R.string.my_pets), R.drawable.mypets1) {})
+        mList.add(object : LandingDetails(this.getString(R.string.fun_zone), R.drawable.funzone) {})
+        mList.add(object : LandingDetails(this.getString(R.string.find_match), R.drawable.find_match) {})
+        mList.add(object : LandingDetails(this.getString(R.string.find_hostel), R.drawable.find_hostel) {})
+        mList.add(object : LandingDetails(this.getString(R.string.pet_sitters), R.drawable.pet_sitter) {})
+        mList.add(object : LandingDetails(this.getString(R.string.find_vet), R.drawable.find_vet) {})
+        mList.add(object : LandingDetails(this.getString(R.string.adoption), R.drawable.adoption) {})
+        mList.add(object : LandingDetails(this.getString(R.string.buy_and_sell), R.drawable.buyandsell) {})
+        mList.add(object : LandingDetails(this.getString(R.string.buddy_alert), R.drawable.alert1) {})
+
+//        val adapter = ImageAdapter(this,)
+//        viewPager?.adapter = adapter
+//        pageIndicator?.setViewPager(viewPager)
     }
 
     override fun onClick(v: View?) {

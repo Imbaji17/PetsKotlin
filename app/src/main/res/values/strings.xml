@@ -117,5 +117,11 @@
     <string name="breed">breed</string>
     <string name="gender">Gender</string>
     <string name="save">save</string>
-    
+    <string name="fun_zone">Fun Zone</string>
+    <string name="find_match">Find Match</string>
+    <string name="pet_sitters">Pet Sitters</string>
+    <string name="buy_and_sell"><![CDATA[Buy & Sell]]></string>
+    <string name="buddy_alert">Buddy Alert</string>
+    <string name="find_vet">Find Vet</string>
+
 </resources>
