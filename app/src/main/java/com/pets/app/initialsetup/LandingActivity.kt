@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,6 +16,7 @@ import com.pets.app.R
 import com.pets.app.activities.ProfileActivity
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.DialogManager
+import com.pets.app.common.ImageSetter
 import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 
@@ -54,6 +56,15 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
         header?.setOnClickListener(this)
         imgHeader?.setOnClickListener(this)
+
+        /*Setting Data To View*/
+        val user = AppPreferenceManager.getUser()
+        if (!TextUtils.isEmpty(user.profile_image)) {
+            ImageSetter.loadRoundedImage(this, user.profile_image, R.drawable.profile, imgProfile)
+        }
+        if (!TextUtils.isEmpty(user.name)) {
+            tvUserName?.text = user.name
+        }
     }
 
     override fun onClick(v: View?) {
