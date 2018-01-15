@@ -103,4 +103,8 @@
     <string name="enter_old_password">Enter old password</string>
     <string name="enter_new_password">Enter new password</string>
     <string name="please_enter_confirm_password_match_new">Password and Confirm password did\'nt matched</string>
+    <string name="camera_permission">Camera permission needed. Please allow in App Settings for additional functionality.</string>
+    <string name="select_image_from_gallery">Select Image From Gallery</string>
+    <string name="open_camera">Open Camera</string>
+    <string name="select_photo">Select Photo</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.pets.app.activities
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -19,10 +20,10 @@ import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.common.ImageSetter
-import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.LoginResponse
 import com.pets.app.model.`object`.LoginDetails
 import com.pets.app.model.request.UpdateUserRequest
+import com.pets.app.utilities.ImagePicker
 import com.pets.app.utilities.Logger
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
@@ -31,9 +32,10 @@ import com.pets.app.webservice.WebServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.io.IOException
 
-class ProfileActivity : BaseActivity(), View.OnClickListener {
+class ProfileActivity : ImagePicker(), View.OnClickListener {
 
     private var imgProfile: ImageView? = null
     private var tvChangePhoto: TextView? = null
@@ -127,7 +129,7 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
         when (v?.id) {
 
             R.id.tvChangePhoto -> {
-
+                showTakeImagePopup()
             }
             R.id.tvChangeNumber -> {
 
@@ -195,6 +197,20 @@ class ProfileActivity : BaseActivity(), View.OnClickListener {
                 } else if (resultCode == RESULT_CANCELED) {
                     // Indicates that the activity closed before a selection was made. For example if
                     // the user pressed the back button.
+                }
+            }
+
+            RC_CROP_ACTIVITY -> {
+                if (data != null) {
+                    val result = com.theartofdev.edmodo.cropper.CropImage.getActivityResult(data)
+                    val mCurrentPhotoPath = result.uri.path
+                    val bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath)
+                    updatedImageFile = File(mCurrentPhotoPath)
+                    if (updatedImageFile.exists()) {
+                        imageFlag = 1
+//                        imgProfile?.setImageBitmap(bitmap)
+                        ImageSetter.loadRoundedImage(this, updatedImageFile, R.drawable.profile, imgProfile)
+                    }
                 }
             }
         }
