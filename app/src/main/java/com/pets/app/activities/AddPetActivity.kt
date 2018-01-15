@@ -1,6 +1,9 @@
 package com.pets.app.activities
 
+import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Button
@@ -8,9 +11,14 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RadioGroup
 import com.pets.app.R
-import com.pets.app.initialsetup.BaseActivity
+import com.pets.app.adapters.PhotosAdapter
+import com.pets.app.common.ImageSetter
+import com.pets.app.interfaces.AddPhotoCallback
+import com.pets.app.model.`object`.PhotosInfo
+import com.pets.app.utilities.ImagePicker
+import java.io.File
 
-class AddPetActivity : BaseActivity(), View.OnClickListener {
+class AddPetActivity : ImagePicker(), View.OnClickListener {
 
     private var imgPet: ImageView? = null
     private var edtName: EditText? = null
@@ -22,6 +30,9 @@ class AddPetActivity : BaseActivity(), View.OnClickListener {
     private var edtDesc: EditText? = null
     private var mRecyclerView: RecyclerView? = null
     private var btnAddPet: Button? = null
+    private var selectedType: Int = 0
+    private var adapter: PhotosAdapter? = null
+    private var photoList: ArrayList<Any>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +45,8 @@ class AddPetActivity : BaseActivity(), View.OnClickListener {
 
     private fun initView() {
 
+        photoList = ArrayList()
+
         imgPet = findViewById(R.id.imgView)
         edtName = findViewById(R.id.edtName)
         edtType = findViewById(R.id.edtType)
@@ -44,6 +57,38 @@ class AddPetActivity : BaseActivity(), View.OnClickListener {
         edtDesc = findViewById(R.id.edtDescription)
         mRecyclerView = findViewById(R.id.recyclerView)
         btnAddPet = findViewById(R.id.btnAddPet)
+
+        val mGridLayoutManager = GridLayoutManager(this, 3)
+        mGridLayoutManager.orientation = GridLayoutManager.VERTICAL
+        mRecyclerView?.layoutManager = mGridLayoutManager
+
+        adapter = PhotosAdapter(this, photoList, false)
+        mRecyclerView?.adapter = adapter
+        adapter?.setItemClickListener(object : AddPhotoCallback {
+            override fun onAddPhotoClick(position: Int) {
+                selectedType = 2
+                showTakeImagePopup()
+            }
+
+            override fun onDeleteClick(position: Int) {
+                if (position != -1 && position < photoList!!.size) {
+                    val photo = photoList!!.get(position) as PhotosInfo
+                    if (photoList!!.get(photoList!!.size - 1) is PhotosInfo) {
+                        photoList!!.add(getString(R.string.add_photo))
+                    }
+                    if (photo.url.contains("http")) {
+//                        if (Utils.isOnline(this@AddPetActivity))
+//                            deleteImageApiCall(position)
+                    } else {
+                        photoList!!.removeAt(position)
+                        adapter!!.notifyDataSetChanged()
+                    }
+                }
+            }
+        })
+
+        photoList!!.add("")
+        adapter!!.notifyDataSetChanged()
     }
 
     private fun clickListeners() {
@@ -56,8 +101,52 @@ class AddPetActivity : BaseActivity(), View.OnClickListener {
         btnAddPet?.setOnClickListener(this)
     }
 
-    override fun onClick(p0: View?) {
+    override fun onClick(v: View?) {
 
+        when (v?.id) {
 
+            R.id.imgView -> {
+                selectedType = 1
+                showTakeImagePopup()
+            }
+            R.id.edtType -> {
+            }
+            R.id.edtBreed -> {
+            }
+            R.id.edtDOB -> {
+            }
+            R.id.btnUpload -> {
+            }
+            R.id.btnAddPet -> {
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            RC_CROP_ACTIVITY -> {
+                if (data != null) {
+                    val result = com.theartofdev.edmodo.cropper.CropImage.getActivityResult(data)
+                    val mCurrentPhotoPath = result.uri.path
+                    val bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath)
+                    updatedImageFile = File(mCurrentPhotoPath)
+                    if (updatedImageFile.exists()) {
+                        imageFlag = 1
+                        if (selectedType == 1) {
+                            ImageSetter.loadRoundedImage(this, updatedImageFile, R.drawable.profile, imgPet)
+                        } else {
+                            val photo = PhotosInfo()
+                            photo.url = mCurrentPhotoPath
+                            photoList?.size?.minus(1)?.let { photoList!!.add(it, photo) }
+                            if (photoList!!.size >= 3) {
+                                photoList!!.removeAt(photoList!!.size - 1)
+                            }
+                            adapter!!.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+        }
     }
 }
