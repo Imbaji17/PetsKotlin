@@ -138,7 +138,8 @@ class ProfileActivity : ImagePicker(), View.OnClickListener {
                 showTakeImagePopup()
             }
             R.id.tvChangeNumber -> {
-
+                val changeNumber = Intent(this, ChangeNumberActivity::class.java)
+                this.startActivity(changeNumber)
             }
             R.id.edtLocation -> {
                 openAutocompleteActivity()

@@ -59,6 +59,9 @@ public class WebServiceBuilder {
         @POST("changePassword/")
         Call<NormalResponse> changePassword(@Field("user_id") String user_id, @Field("old") String old, @Field("new") String newP, @Field("language_code") String language_code, @Field("timestamp") String timestamp, @Field("key") String key);
 
+        @FormUrlEncoded
+        @POST("change_mobile/")
+        Call<LoginResponse> changeMobile(@Field("user_id") String user_id, @Field("phone_code") String phone_code, @Field("phone_number") String phone_number, @Field("timestamp") String timestamp, @Field("key") String key);
 
 //        @POST("update_user/")
 //        Call<SignUpResponse> updateUser(@Body UpdateUserRequest signUpRequest);
