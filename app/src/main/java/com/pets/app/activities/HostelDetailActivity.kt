@@ -24,6 +24,7 @@ import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
 import com.pets.app.webservice.WebServiceBuilder
+import com.viewpagerindicator.CirclePageIndicator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,6 +55,7 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
     private var llForOfflineScreen: LinearLayout? = null
     private var llAddress: LinearLayout? = null
     private var tvAddress: TextView? = null
+    private var cvp: CirclePageIndicator? = null
 
     companion object {
         private val TAG = HostelDetailActivity::class.java.simpleName
@@ -94,6 +96,7 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
         recyclerView = findViewById(R.id.recyclerView)
         llAddress = findViewById(R.id.llAddress)
         tvAddress = findViewById(R.id.tvAddress)
+        cvp = findViewById(R.id.cvp)
 
         viewFlipper = findViewById(R.id.viewFlipper)
         rlForLoadingScreen = findViewById(R.id.rlForLoadingScreen)
@@ -109,11 +112,13 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
         setLoadingLayout()
         val timeStamp = TimeStamp.getTimeStamp()
         val userId = AppPreferenceManager.getUserID()
+        val lat = AppPreferenceManager.getUser().lat
+        val lng = AppPreferenceManager.getUser().lng
 
         val key = TimeStamp.getMd5(timeStamp + userId + hostelId + Constants.TIME_STAMP_KEY)
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-            val call = apiClient.hostelDetailsById(hostelId, key, "EN", "18.499666", "73.865377", timeStamp, "10")
+            val call = apiClient.hostelDetailsById(hostelId, key, "EN", lat, lng, timeStamp, userId)
             call.enqueue(object : Callback<FindHostelResponse> {
                 override fun onResponse(call: Call<FindHostelResponse>, response: Response<FindHostelResponse>?) {
                     if (response != null && response.isSuccessful() && response.body() != null && response.body().result != null) {
@@ -165,11 +170,11 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
             llAddress?.visibility = View.GONE
         }
 
-//        if (result.lat > 0 && result.lng > 0) {
-//            llDistance?.visibility = View.VISIBLE
-//            Utils.getDistance(this, result.lat.toString(), result.lng.toString())
-//            tvDistance?.text = result.address
-//        } else llDistance?.visibility = View.GONE
+        if (result.lat > 0 && result.lng > 0) {
+            llDistance?.visibility = View.VISIBLE
+            var distance = Utils.getDistance(this, result.lat.toString(), result.lng.toString())
+            tvDistance?.text = String.format(getString(R.string.x_miles), distance);
+        } else llDistance?.visibility = View.GONE
 
 
         if (!TextUtils.isEmpty(result.description)) {
@@ -182,6 +187,7 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
         if (!result.hostelImages.isEmpty()) {
             val adapter = ImageAdapter(this, result.hostelImages)
             viewPager?.adapter = adapter
+            cvp!!.setViewPager(viewPager)
         }
 
         ratingBar?.rating = result.avgRating.toFloat();

@@ -82,6 +82,7 @@
         <item quantity="one">(%d review)</item>
         <item quantity="other">(%d reviews)</item>
     </plurals>
+    <string name="x_miles">%s miles</string>
 
     <!--REVIEWS-->
     <string name="reviews">Reviews</string>
@@ -103,4 +104,5 @@
     <string name="enter_old_password">Enter old password</string>
     <string name="enter_new_password">Enter new password</string>
     <string name="please_enter_confirm_password_match_new">Password and Confirm password did\'nt matched</string>
+    <string name="save">save</string>
 </resources>

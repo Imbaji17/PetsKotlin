@@ -37,22 +37,22 @@
 
                     </android.support.v4.view.ViewPager>
 
-                    <RelativeLayout
+
+                    <com.viewpagerindicator.CirclePageIndicator
+                        android:id="@+id/cvp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="@dimen/dimen_size_5"
+                        android:background="@drawable/rec_transparent_black"
+                        android:paddingBottom="@dimen/dimen_size_5"
+                        android:paddingLeft="@dimen/dimen_size_5"
+                        android:paddingTop="@dimen/dimen_size_5"
+                        app:fillColor="@color/green"
+                        app:pageColor="@color/white"
+                        app:radius="5dp"
+                        app:strokeColor="@android:color/transparent" />
 
-                        <com.viewpagerindicator.CirclePageIndicator
-                            android:id="@+id/cvp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:padding="10dp"
-                            app:fillColor="@color/orange"
-                            app:pageColor="@color/colorPrimary"
-                            app:radius="5dp"
-                            app:strokeColor="@android:color/transparent" />
-
-                    </RelativeLayout>
                 </RelativeLayout>
 
                 <LinearLayout

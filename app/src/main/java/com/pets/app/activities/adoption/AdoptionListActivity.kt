@@ -13,10 +13,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.ViewFlipper
+import android.widget.*
 import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.activities.HostelDetailActivity
@@ -41,26 +38,38 @@ import retrofit2.Response
 import java.io.IOException
 import java.util.*
 
-class AdoptionListActivity : BaseActivity(), View.OnClickListener, TextView.OnEditorActionListener, TextWatcher {
+class AdoptionListActivity : BaseActivity(), View.OnClickListener {
 
     private var adapter: AdoptionListAdapter? = null
     private var listItems = ArrayList<Any>()
     private var recyclerView: RecyclerView? = null
-    private var viewFlipper: ViewFlipper? = null
     private var nextOffset = 0
     private var gridLayoutManager: GridLayoutManager? = null
     private var latitude: Double? = 0.0
     private var longitude: Double? = 0.0
 
+
     private val RC_MAP_ACTIVITY: Int = 2
-    private var edtSearch: EditText? = null
-    private var imgClear: ImageView? = null
     private var adoption: Adoption? = null
 
     private var petsTypeId: String? = ""
     private var breedId: String? = ""
     private var gender: String? = ""
     private var distance: String? = ""
+
+    private var viewFlipper: ViewFlipper? = null
+    private var rlForLoadingScreen: RelativeLayout? = null
+    private var llForNoResult: LinearLayout? = null
+    private var llForOfflineScreen: LinearLayout? = null
+    private var tvNoResult: TextView? = null
+    private var btnRetry: Button? = null
+    private var linLoadMore: LinearLayout? = null
+    private var llForRecyclerView: LinearLayout? = null
+
+    private var loading = true
+    private var pastVisibleItems: Int = 0
+    private var visibleItemCount: Int = 0
+    private var totalItemCount: Int = 0
 
     companion object {
         private val TAG = AdoptionListActivity::class.java.simpleName
@@ -72,21 +81,50 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener, TextView.OnEd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_find_hostel)
+        setContentView(R.layout.activity_adoption)
         initializeToolbar(getString(R.string.find_hostel))
         initView()
         setAdapter()
         getAdoptionList()
+
+        recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    //check for scroll down
+                    if (listItems != null && listItems.size > 0) {
+                        if (nextOffset != -1) {
+                            visibleItemCount = gridLayoutManager!!.getChildCount()
+                            totalItemCount = gridLayoutManager!!.getItemCount()
+                            pastVisibleItems = gridLayoutManager!!.findFirstVisibleItemPosition()
+                            if (loading) {
+                                if (visibleItemCount + pastVisibleItems >= totalItemCount) {
+                                    loading = false
+                                    getAdoptionList()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
     }
 
     private fun initView() {
         recyclerView = findViewById(R.id.recyclerView)
         viewFlipper = findViewById(R.id.viewFlipper)
-        edtSearch = findViewById(R.id.edtSearch)
-        imgClear = findViewById(R.id.imgClear)
-        edtSearch?.setOnEditorActionListener(this)
-        edtSearch?.addTextChangedListener(this)
-        imgClear?.setOnClickListener(this)
+
+        rlForLoadingScreen = findViewById(R.id.rlForLoadingScreen)
+        llForRecyclerView = findViewById(R.id.llForRecyclerView)
+        llForNoResult = findViewById(R.id.llForNoResult)
+        llForOfflineScreen = findViewById(R.id.llForOfflineScreen)
+        btnRetry = findViewById(R.id.btnRetry)
+        tvNoResult = findViewById(R.id.tvNoResult)
+        recyclerView = findViewById(R.id.recyclerView)
+        linLoadMore = findViewById(R.id.linLoadMore)
+
+
+        btnRetry!!.setOnClickListener(this)
     }
 
     private fun setAdapter() {
@@ -113,15 +151,17 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener, TextView.OnEd
 //        @Query("lng") String lng, @Query("pets_type_id") String petsTypeId, @Query("breed_id") String breedId,
 //        @Query("gender") String gender, @Query("distance") String distance
 
-        viewFlipper!!.displayedChild = 0
+        setLoadingLayout()
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
             val call = apiClient.adoptionList(userId, timeStamp, key, language, nextOffset, latitude.toString(), longitude.toString(),
                     petsTypeId, breedId, gender, distance)
             call.enqueue(object : Callback<AdoptionResponse> {
                 override fun onResponse(call: Call<AdoptionResponse>, response: Response<AdoptionResponse>?) {
+                    loading = true
                     if (response != null) {
                         if (response.isSuccessful()) {
+                            nextOffset = response.body().nextOffset
                             if (response.body() != null && response.body().list != null) {
                                 listItems.addAll(response.body().list);
                                 adapter!!.notifyDataSetChanged()
@@ -141,20 +181,21 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener, TextView.OnEd
                 }
 
                 override fun onFailure(call: Call<AdoptionResponse>, t: Throwable) {
+                    loading = true
                     setNoResult()
                 }
             })
 
         } else {
-            viewFlipper!!.displayedChild = 3
+            setOfflineLayout()
         }
     }
 
     fun setNoResult() {
         if (listItems.size > 0) {
-            viewFlipper!!.displayedChild = 1
+            setMainLayout()
         } else {
-            viewFlipper!!.displayedChild = 2
+            setNoDataLayout()
         }
     }
 
@@ -173,8 +214,9 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener, TextView.OnEd
                     favourite()
                 }
             }
-            R.id.imgClear -> {
-                edtSearch?.setText("")
+
+            R.id.btnRetry -> {
+
             }
         }
     }
@@ -215,32 +257,6 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener, TextView.OnEd
 //                }
 //                listItems.clear()
             }
-        }
-    }
-
-
-    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//            keyWord = edtSearch!!.text.toString()
-            nextOffset = 0
-            listItems.clear()
-            getAdoptionList();
-            return true;
-        }
-        return false;
-    }
-
-    override fun afterTextChanged(p0: Editable?) {
-    }
-
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-    }
-
-    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        if (p0?.length!! > 0) {
-            imgClear?.visibility = View.VISIBLE
-        } else {
-            imgClear?.visibility = View.GONE
         }
     }
 
@@ -286,4 +302,20 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener, TextView.OnEd
         })
     }
 
+    private fun setOfflineLayout() {
+        viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(llForOfflineScreen)
+    }
+
+    private fun setLoadingLayout() {
+        viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(rlForLoadingScreen)
+    }
+
+    private fun setMainLayout() {
+        viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(llForRecyclerView)
+    }
+
+    private fun setNoDataLayout() {
+        tvNoResult?.text = getString(R.string.no_review_found)
+        viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(llForNoResult)
+    }
 }

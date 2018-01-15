@@ -203,7 +203,6 @@ public class Utils {
         decimalFormat.applyPattern(pattern);
 
         DecimalFormatSymbols local = DecimalFormatSymbols.getInstance(Locale.ENGLISH);
-
         return "" + new DecimalFormat("#.#", local).format(distance);
     }
 
