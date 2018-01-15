@@ -107,4 +107,5 @@
     <string name="select_image_from_gallery">Select Image From Gallery</string>
     <string name="open_camera">Open Camera</string>
     <string name="select_photo">Select Photo</string>
+    <string name="image_uploded">Image updated Successfully</string>
 </resources>
