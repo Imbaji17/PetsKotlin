@@ -41,4 +41,8 @@ public class AdoptionResponse implements Serializable {
     public ArrayList<Adoption> getList() {
         return list;
     }
+
+    public Adoption getResult() {
+        return result;
+    }
 }
