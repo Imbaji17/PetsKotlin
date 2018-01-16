@@ -98,10 +98,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/dimen_size_5"
-                android:paddingLeft="@dimen/dimen_size_10"
-                android:paddingRight="@dimen/dimen_size_10"
-                android:paddingTop="@dimen/dimen_size_5">
+                android:padding="@dimen/dimen_size_5">
 
                 <TextView
                     style="@style/TextViewStyle"
@@ -155,8 +152,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/dimen_size_10"
                     android:layout_marginRight="@dimen/dimen_size_10"
-                    android:paddingLeft="@dimen/dimen_size_5"
-                    android:paddingStart="@dimen/dimen_size_5"
                     android:text="@string/certificate" />
 
                 <Button
