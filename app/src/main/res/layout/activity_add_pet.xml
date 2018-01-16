@@ -87,13 +87,11 @@
             </android.support.design.widget.TextInputLayout>
 
             <RelativeLayout
-                android:id="@+id/rel_company_type_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:paddingBottom="@dimen/dimen_size_5"
-                android:paddingLeft="@dimen/dimen_size_5"
-                android:paddingRight="@dimen/dimen_size_5"
+                android:paddingLeft="@dimen/dimen_size_10"
+                android:paddingRight="@dimen/dimen_size_10"
                 android:paddingTop="@dimen/dimen_size_5">
 
                 <TextView
@@ -106,7 +104,7 @@
                     android:text="@string/gender" />
 
                 <RadioGroup
-                    android:id="@+id/radio_company_type"
+                    android:id="@+id/radioGender"
                     android:layout_width="@dimen/dimen_size_200"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -136,6 +134,34 @@
                 </RadioGroup>
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_size_5">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:paddingLeft="@dimen/dimen_size_5"
+                    android:paddingStart="@dimen/dimen_size_5"
+                    android:text="@string/certificate" />
+
+                <Button
+                    android:id="@+id/btnUpload"
+                    style="@style/ButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_size_30"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/upload"
+                    android:textAllCaps="false" />
+            </RelativeLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -152,6 +178,27 @@
                     android:minHeight="@dimen/dimen_size_80"
                     android:singleLine="false" />
             </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen_size_5">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:paddingLeft="@dimen/dimen_size_5"
+                    android:paddingStart="@dimen/dimen_size_5"
+                    android:text="@string/gallery" />
+
+                <include
+                    layout="@layout/app_recycler_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_size_5" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnAddPet"

@@ -128,5 +128,8 @@
     <string name="dob">DOB</string>
     <string name="female">Female</string>
     <string name="male">Male</string>
+    <string name="certificate">Certificate</string>
+    <string name="upload">Upload</string>
+    <string name="gallery">Gallery</string>
 
 </resources>
