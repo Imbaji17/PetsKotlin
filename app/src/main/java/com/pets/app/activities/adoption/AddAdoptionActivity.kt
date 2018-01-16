@@ -1,13 +1,10 @@
 package com.pets.app.activities.adoption
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -18,26 +15,29 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import com.google.gson.GsonBuilder
 import com.pets.app.R
+import com.pets.app.activities.SelectTypeActivity
 import com.pets.app.adapters.PhotosAdapter
-import com.pets.app.common.AppPreferenceManager
-import com.pets.app.common.Constants
-import com.pets.app.common.Enums
-import com.pets.app.common.ImageSetter
+import com.pets.app.common.*
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.interfaces.AddPhotoCallback
-import com.pets.app.model.LoginResponse
-import com.pets.app.model.`object`.LoginDetails
+import com.pets.app.model.*
 import com.pets.app.model.`object`.PhotosInfo
 import com.pets.app.utilities.ImagePicker
 import com.pets.app.utilities.Logger
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
+import com.pets.app.webservice.RestClient
 import com.pets.app.webservice.UploadImage
+import com.pets.app.webservice.WebServiceBuilder
 import khandroid.ext.apache.http.entity.mime.HttpMultipartMode
 import khandroid.ext.apache.http.entity.mime.MultipartEntity
 import khandroid.ext.apache.http.entity.mime.content.FileBody
 import khandroid.ext.apache.http.entity.mime.content.StringBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.io.IOException
 
@@ -64,12 +64,14 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
     private val RC_AUTOCOMPLETE: Int = 100
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
-    private var petsTypeStr: String? = ""
+    private var petsTypeId: String? = ""
     private var breedId: String? = "";
+    private val RC_BREED: Int = 101
+    private val RC_TYPE: Int = 102
 
     companion object {
         private val TAG = AddAdoptionActivity::class.java.simpleName
-        fun startActivity(activity: Activity) {
+        fun startActivity(activity: Activity, resultCode: Int) {
             val intent = Intent(activity, AddAdoptionActivity::class.java)
 //            intent.putExtra(ApplicationsConstants.PETS_TYPE_ID, petsTypeId)
 //            intent.putExtra(ApplicationsConstants.PETS_TYPE_NAME, petsTypeStr)
@@ -80,7 +82,7 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
 //            intent.putExtra(ApplicationsConstants.LATITUDE, latitude)
 //            intent.putExtra(ApplicationsConstants.LONGITUDE, longitude)
 //            intent.putExtra(ApplicationsConstants.LOCATION, location)
-            activity.startActivity(intent)
+            activity.startActivityForResult(intent, resultCode)
         }
     }
 
@@ -112,6 +114,8 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
         btnUpload!!.setOnClickListener(this)
         btnAddAdoption!!.setOnClickListener(this)
         rlAddress!!.setOnClickListener(this)
+        rlType!!.setOnClickListener(this)
+        rlBreed!!.setOnClickListener(this)
         setPhotoAdapter()
     }
 
@@ -163,9 +167,19 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
                 openAutocompleteActivity()
             }
             R.id.btnAddAdoption -> {
-//                addAdoption()
+                addAdoption()
             }
 
+            R.id.rlType -> {
+                val mIntent = Intent(this, SelectTypeActivity::class.java)
+                mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, true)
+                this.startActivityForResult(mIntent, RC_TYPE)
+            }
+            R.id.rlBreed -> {
+                val mIntent = Intent(this, SelectTypeActivity::class.java)
+                mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, false)
+                this.startActivityForResult(mIntent, RC_BREED)
+            }
         }
     }
 
@@ -242,10 +256,36 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
                     // the user pressed the back button.
                 }
             }
+
+            RC_TYPE -> {
+                if (data != null) {
+                    val petsType = data!!.getSerializableExtra(ApplicationsConstants.DATA) as PetsType
+                    if (petsType != null) {
+                        petsTypeId = petsType.petsTypeId
+                        tvType!!.text = petsType.typeName
+                    }
+                }
+            }
+            RC_BREED -> {
+                if (data != null) {
+                    val breed = data!!.getSerializableExtra(ApplicationsConstants.DATA) as Breed
+                    if (breed != null) {
+                        breedId = breed.breed_id
+                        tvBreed!!.text = breed.breed_name
+                    }
+                }
+            }
         }
     }
 
     private fun addAdoption() {
+
+        var actionName = "add_edit_adoption"
+        var userId = AppPreferenceManager.getUserID()
+        var timestamp = TimeStamp.getTimeStamp()
+        var languageCode = Enums.Language.EN.name
+        var key = TimeStamp.getMd5(timestamp + userId + Constants.TIME_STAMP_KEY)
+        var user = AppPreferenceManager.getUser()
 
         var petName = etPetName!!.text.toString().trim()
         var type = tvType!!.text.toString().trim()
@@ -254,86 +294,200 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
         var address = tvAddress!!.text.toString().trim()
         var description = etDescription!!.text.toString().trim()
         var gender = ""
-        if (!TextUtils.isEmpty(petName)) {
+        if (TextUtils.isEmpty(petName)) {
             Utils.showToast(getString(R.string.please_enter_pet_name))
-        } else if (!TextUtils.isEmpty(type)) {
+        } else if (TextUtils.isEmpty(type)) {
             Utils.showToast(getString(R.string.please_select_pet_type))
-        } else if (!TextUtils.isEmpty(breed)) {
+        } else if (TextUtils.isEmpty(breed)) {
             Utils.showToast(getString(R.string.please_select_breed))
         } else if (rgGender!!.checkedRadioButtonId == -1) {
             Utils.showToast(getString(R.string.please_select_gender))
-        } else if (!TextUtils.isEmpty(description)) {
+        } else if (TextUtils.isEmpty(description)) {
             Utils.showToast(getString(R.string.please_enter_pet_description))
         } else {
 
-            if (rgGender!!.checkedRadioButtonId == R.id.rbMale) {
-                gender = "M"
+            gender = if (rgGender!!.checkedRadioButtonId == R.id.rbMale) {
+                "M"
             } else {
-                gender = "F"
+                "F"
             }
 
-            object : AsyncTask<Void, Void, String>() {
+            if (updatedImageFile != null || certificateFile != null) {
 
-                private var actionName: String? = null
-                private var userId: String? = null
-                private var languageCode: String? = null
-                private var timestamp: String? = null
-                private var key: String? = null
-                private var response: String? = null
-
-                override fun onPreExecute() {
-                    super.onPreExecute()
-                    showProgressBar()
-                    actionName = "add_edit_adoption"
-                    userId = AppPreferenceManager.getUserID()
-                    timestamp = TimeStamp.getTimeStamp()
-                    languageCode = Enums.Language.EN.name
-                    key = TimeStamp.getMd5(timestamp + userId + Constants.TIME_STAMP_KEY)
-                }
-
-                override fun doInBackground(vararg params: Void): String? {
-                    try {
-                        val multipartEntity = MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
-                        multipartEntity.addPart("user_id", StringBody(userId!!))
-                        multipartEntity.addPart("key", StringBody(key!!))
-                        multipartEntity.addPart("timestamp", StringBody(timestamp!!))
-                        multipartEntity.addPart("language_code", StringBody(languageCode))
-//                        multipartEntity.addPart("adoption_id", StringBody(languageCode))
-                        multipartEntity.addPart("contact_person", StringBody(""))
-                        multipartEntity.addPart("contact_no", StringBody(""))
-                        multipartEntity.addPart("certificate_image", FileBody(certificateFile, "userFile2/jpg"))
-                        multipartEntity.addPart("address", StringBody(address))
-                        multipartEntity.addPart("description", StringBody(description))
-                        multipartEntity.addPart("lat", StringBody(latitude.toString()))
-                        multipartEntity.addPart("lng", StringBody(longitude.toString()))
-                        multipartEntity.addPart("pets_type_id", StringBody(petsTypeStr))
-                        multipartEntity.addPart("pet_name", StringBody(petName))
-                        multipartEntity.addPart("breed_id", StringBody(breedId))
-                        multipartEntity.addPart("profile_image", FileBody(updatedImageFile, "userFile1/jpg"))
-                        multipartEntity.addPart("age", StringBody(age))
-                        multipartEntity.addPart("gender", StringBody(gender))
-                        response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName!!, multipartEntity)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
+                object : AsyncTask<Void, Void, String>() {
+                    private var response: String? = null
+                    override fun onPreExecute() {
+                        super.onPreExecute()
+                        showProgressBar()
                     }
-                    return response
-                }
 
-                override fun onPostExecute(result: String?) {
-                    hideProgressBar()
-                    Logger.errorLog("Response ### " + result!!)
-                    print("Response #### " + result)
-                    if (result != null) {
-                        val normalResponse: LoginResponse = Utils.getResponse(result.toString(), LoginResponse::class.java)
-                        if (normalResponse.result != null) {
-                            Utils.showToast(normalResponse.message)
-                            val user: LoginDetails = AppPreferenceManager.getUser()
-                            user.profile_image = normalResponse.result.profile_image
-                            AppPreferenceManager.saveUser(user)
+                    override fun doInBackground(vararg params: Void): String? {
+                        try {
+                            val multipartEntity = MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
+                            multipartEntity.addPart("user_id", StringBody(userId!!))
+                            multipartEntity.addPart("key", StringBody(key!!))
+                            multipartEntity.addPart("timestamp", StringBody(timestamp!!))
+                            multipartEntity.addPart("language_code", StringBody(languageCode))
+//                        multipartEntity.addPart("adoption_id", StringBody(languageCode))
+                            multipartEntity.addPart("contact_person", StringBody(user.name))
+                            multipartEntity.addPart("contact_no", StringBody(user.phone_number))
+                            if (certificateFile != null)
+                                multipartEntity.addPart("certificate_image", FileBody(certificateFile, "userFile1/jpg"))
+                            multipartEntity.addPart("address", StringBody(address))
+                            multipartEntity.addPart("description", StringBody(description))
+                            multipartEntity.addPart("lat", StringBody(latitude.toString()))
+                            multipartEntity.addPart("lng", StringBody(longitude.toString()))
+                            multipartEntity.addPart("pets_type_id", StringBody(petsTypeId))
+                            multipartEntity.addPart("pet_name", StringBody(petName))
+                            multipartEntity.addPart("breed_id", StringBody(breedId))
+                            if (updatedImageFile != null)
+                                multipartEntity.addPart("profile_image", FileBody(updatedImageFile, "userFile1/jpg"))
+                            multipartEntity.addPart("age", StringBody(age))
+                            multipartEntity.addPart("gender", StringBody(gender))
+                            response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName!!, multipartEntity)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                        return response
+                    }
+
+                    override fun onPostExecute(result: String?) {
+                        hideProgressBar()
+                        Logger.errorLog("Response ### " + result!!)
+                        print("Response #### " + result)
+                        if (result != null) {
+                            val adoptionResponse: AdoptionResponse = Utils.getResponse(result.toString(), AdoptionResponse::class.java)
+                            if (adoptionResponse.result != null) {
+                                Utils.showToast(adoptionResponse.message)
+//                            val user: LoginDetails = AppPreferenceManager.getUser()
+//                            user.profile_image = normalResponse.result.profile_image
+//                            AppPreferenceManager.saveUser(user)
+                                uploadImages(adoptionResponse.result)
+//                                finish()
+                            }
                         }
                     }
-                }
-            }.execute()
+                }.execute()
+
+            } else {
+                var adoption = Adoption()
+                adoption.userId = userId
+                adoption.key = key
+                adoption.timestamp = timestamp
+//                adoption.adoptionId = ""
+                adoption.contactPerson = user.name
+                adoption.contactNo = user.phone_number
+                adoption.address = address
+                adoption.lat = latitude.toString()
+                adoption.lng = longitude.toString()
+                adoption.description = description
+                adoption.petsTypeId = petsTypeId
+                adoption.petName = petName
+                adoption.breedId = breedId
+                adoption.age = age
+                adoption.gender = gender
+
+                showProgressBar()
+                val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+                val call = api.addEditAdoption(adoption)
+                call.enqueue(object : Callback<AdoptionResponse> {
+                    override fun onResponse(call: Call<AdoptionResponse>?, response: Response<AdoptionResponse>?) {
+                        hideProgressBar()
+                        if (response != null) {
+                            if (response.body() != null && response.isSuccessful()) {
+                                uploadImages(response.body().result)
+                            } else if (response.code() == 403) {
+                                val gson = GsonBuilder().create()
+                                val mError: NormalResponse
+                                try {
+                                    mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
+                                    Utils.showToast("" + mError.getMessage())
+                                } catch (e: IOException) {
+                                    e.printStackTrace()
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<AdoptionResponse>?, t: Throwable?) {
+                        hideProgressBar()
+                    }
+                })
+            }
         }
     }
+
+    fun uploadImages(adoption: Adoption) {
+        if (photoList.size > 0) {
+            for (i in photoList.indices) {
+                var obj = photoList.get(index = i)
+                if (obj is PhotosInfo) {
+                    var file: File = File(obj.url)
+                    addImages(Enums.Favourite.ADOPTION.name, adoption.adoptionId, file)
+                }
+            }
+        }
+
+
+        val mIntent = Intent()
+//        mIntent.putExtra(ApplicationsConstants.DATA, breed)
+        setResult(Activity.RESULT_OK, mIntent)
+        finish()
+
+    }
+
+
+    private fun addImages(type: String, typeId: String, file: File) {
+
+        var actionName = "add_type_wise_images"
+        var userId = AppPreferenceManager.getUserID()
+        var timestamp = TimeStamp.getTimeStamp()
+        var languageCode = Enums.Language.EN.name
+        var key = TimeStamp.getMd5(timestamp + userId + type + typeId + Constants.TIME_STAMP_KEY)
+
+
+        object : AsyncTask<Void, Void, String>() {
+            private var response: String? = null
+            override fun onPreExecute() {
+                super.onPreExecute()
+                showProgressBar()
+            }
+
+            override fun doInBackground(vararg params: Void): String? {
+                try {
+                    val multipartEntity = MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
+                    multipartEntity.addPart("user_id", StringBody(userId!!))
+                    multipartEntity.addPart("key", StringBody(key!!))
+                    multipartEntity.addPart("timestamp", StringBody(timestamp!!))
+                    multipartEntity.addPart("language_code", StringBody(languageCode))
+                    multipartEntity.addPart("type", StringBody(type))
+                    multipartEntity.addPart("type_id", StringBody(typeId))
+                    if (file != null)
+                        multipartEntity.addPart("type_image", FileBody(file, "userFile1/jpg"))
+                    response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName!!, multipartEntity)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                return response
+            }
+
+            override fun onPostExecute(result: String?) {
+                hideProgressBar()
+                Logger.errorLog("Response ### " + result!!)
+                print("Response #### " + result)
+                if (result != null) {
+                    val imageResponse: ImageResponse = Utils.getResponse(result.toString(), ImageResponse::class.java)
+                    if (imageResponse.result != null) {
+                        Utils.showToast(imageResponse.message)
+//                            val user: LoginDetails = AppPreferenceManager.getUser()
+//                            user.profile_image = normalResponse.result.profile_image
+//                            AppPreferenceManager.saveUser(user)
+//                        finish()
+                    }
+                }
+            }
+        }.execute()
+
+    }
+
 }

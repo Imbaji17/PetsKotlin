@@ -47,6 +47,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
     private var gridLayoutManager: GridLayoutManager? = null
 
     private val RC_FILTER: Int = 2
+    private val RC_ADD_ADOPTION: Int = 3
     private var adoption: Adoption? = null
 
     private var petsTypeId: String? = ""
@@ -236,7 +237,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.action_add -> {
-                AddAdoptionActivity.startActivity(this)
+                AddAdoptionActivity.startActivity(this, RC_ADD_ADOPTION)
             }
 
             R.id.action_filter -> {
@@ -266,9 +267,15 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
                 nextOffset = 0
                 getAdoptionList()
             }
+
+            RC_ADD_ADOPTION -> if (resultCode == Activity.RESULT_OK) {
+                listItems.clear()
+                adapter!!.notifyDataSetChanged()
+                nextOffset = 0
+                getAdoptionList()
+            }
         }
     }
-
 
     private fun favourite() {
         val timeStamp = TimeStamp.getTimeStamp()

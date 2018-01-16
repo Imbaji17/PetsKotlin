@@ -1,5 +1,6 @@
 package com.pets.app.webservice;
 
+import com.pets.app.model.Adoption;
 import com.pets.app.model.AdoptionResponse;
 import com.pets.app.model.BreedResponse;
 import com.pets.app.model.FindHostelResponse;
@@ -121,6 +122,10 @@ public class WebServiceBuilder {
         Call<FunZoneResponse> getFunZoneList(@Query("user_id") String user_id, @Query("timestamp") String timeStamp, @Query("key") String key,
                                              @Query("language_code") String languageCode, @Query("next_offset") int nextOffset,
                                              @Query("lat") String lat, @Query("lng") String lng);
+
+        @POST("add_edit_adoption")
+        Call<AdoptionResponse> addEditAdoption(@Body Adoption adoption);
+
 
     }
 }

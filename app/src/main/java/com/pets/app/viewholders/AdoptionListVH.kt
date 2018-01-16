@@ -36,11 +36,12 @@ class AdoptionListVH(itemView: View, clickListener: View.OnClickListener) : Recy
 
         tvName.text = if (!TextUtils.isEmpty(adoption.petName)) adoption.petName else ""
         tvLocation.text = if (!TextUtils.isEmpty(adoption.address)) adoption.address else ""
-        if (!adoption.adoptionImages.isEmpty() && !TextUtils.isEmpty(adoption.adoptionImages[0].image)) {
-            ImageSetter.loadImage(context, adoption.adoptionImages[0].image, R.drawable.alert_placeholder, ivFindHostel)
-        } else {
-            ivFindHostel.setImageResource(R.drawable.alert_placeholder)
-        }
+        ImageSetter.loadImage(context, adoption.profileImage, R.drawable.alert_placeholder, ivFindHostel)
+//        if (!adoption.adoptionImages.isEmpty() && !TextUtils.isEmpty(adoption.adoptionImages[0].image)) {
+//            ImageSetter.loadImage(context, adoption.adoptionImages[0].image, R.drawable.alert_placeholder, ivFindHostel)
+//        } else {
+//            ivFindHostel.setImageResource(R.drawable.alert_placeholder)
+//        }
         ivFavourite.setImageResource(if (adoption.isInterest) R.drawable.fav1 else R.drawable.fav2)
     }
 }

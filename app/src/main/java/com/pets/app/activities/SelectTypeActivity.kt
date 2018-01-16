@@ -1,5 +1,7 @@
 package com.pets.app.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -122,7 +124,7 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
 
         val languageCode = Enums.Language.EN.name
         val timeStamp = TimeStamp.getTimeStamp()
-        val key = TimeStamp.getMd5(timeStamp + AppPreferenceManager.getUserID() + Constants.TIME_STAMP_KEY)
+        val key = TimeStamp.getMd5(timeStamp + AppPreferenceManager.getUserID() + petTypeId + Constants.TIME_STAMP_KEY)
 
         showProgressBar()
         val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
@@ -175,16 +177,23 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
                 }
             }
             adapter?.notifyDataSetChanged()
-//            val mIntent = Intent()
-//            mIntent.putExtra(ApplicationsConstants.DATA, type)
-//            setResult(Activity.RESULT_OK, mIntent)
-//            finish()
+            val mIntent = Intent()
+            mIntent.putExtra(ApplicationsConstants.DATA, type)
+            setResult(Activity.RESULT_OK, mIntent)
+            finish()
         } else if (`object` is Breed) {
-            val type = `object`
-//            val mIntent = Intent()
-//            mIntent.putExtra(ApplicationsConstants.DATA, type)
-//            setResult(Activity.RESULT_OK, mIntent)
-//            finish()
+            val breed = `object`
+            breed.isSelected = !breed.isSelected
+            for (i in mList!!.indices) {
+                if (i != mList!!.indexOf(breed)) {
+                    (mList?.get(i) as Breed).isSelected = false
+                }
+            }
+            adapter?.notifyDataSetChanged()
+            val mIntent = Intent()
+            mIntent.putExtra(ApplicationsConstants.DATA, breed)
+            setResult(Activity.RESULT_OK, mIntent)
+            finish()
         }
     }
 }

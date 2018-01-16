@@ -92,8 +92,8 @@
                     android:id="@+id/llContactPerson"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_size_10"
-                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginLeft="@dimen/dimen_size_20"
+                    android:layout_marginRight="@dimen/dimen_size_20"
                     android:layout_marginTop="@dimen/dimen_size_5"
                     android:orientation="vertical">
 
@@ -122,8 +122,8 @@
                     android:id="@+id/llContact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_size_10"
-                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginLeft="@dimen/dimen_size_20"
+                    android:layout_marginRight="@dimen/dimen_size_20"
                     android:layout_marginTop="@dimen/dimen_size_5"
                     android:orientation="vertical">
 
@@ -152,8 +152,8 @@
                     android:id="@+id/llAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_size_10"
-                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginLeft="@dimen/dimen_size_20"
+                    android:layout_marginRight="@dimen/dimen_size_20"
                     android:layout_marginTop="@dimen/dimen_size_5"
                     android:orientation="vertical">
 
@@ -183,8 +183,8 @@
                     android:id="@+id/llType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_size_10"
-                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginLeft="@dimen/dimen_size_20"
+                    android:layout_marginRight="@dimen/dimen_size_20"
                     android:layout_marginTop="@dimen/dimen_size_5"
                     android:orientation="vertical">
 
@@ -213,8 +213,8 @@
                     android:id="@+id/llBreed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_size_10"
-                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginLeft="@dimen/dimen_size_20"
+                    android:layout_marginRight="@dimen/dimen_size_20"
                     android:layout_marginTop="@dimen/dimen_size_5"
                     android:orientation="vertical">
 
@@ -244,11 +244,12 @@
                     android:id="@+id/llCertification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_size_10"
-                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginLeft="@dimen/dimen_size_20"
+                    android:layout_marginRight="@dimen/dimen_size_20"
                     android:layout_marginTop="@dimen/dimen_size_5"
                     android:orientation="vertical"
-                    android:padding="@dimen/dimen_size_5">
+                    android:paddingBottom="@dimen/dimen_size_5"
+                    android:paddingTop="@dimen/dimen_size_5">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -285,8 +286,8 @@
                     android:id="@+id/llDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_size_10"
-                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:layout_marginLeft="@dimen/dimen_size_20"
+                    android:layout_marginRight="@dimen/dimen_size_20"
                     android:layout_marginTop="@dimen/dimen_size_5"
                     android:orientation="vertical">
 

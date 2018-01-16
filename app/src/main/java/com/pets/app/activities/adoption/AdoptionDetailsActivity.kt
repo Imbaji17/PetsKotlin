@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager
 import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import com.google.gson.GsonBuilder
@@ -18,6 +20,7 @@ import com.pets.app.common.Constants
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.Adoption
 import com.pets.app.model.AdoptionResponse
+import com.pets.app.model.HostelImage
 import com.pets.app.model.NormalResponse
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
@@ -204,11 +207,25 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
             llDescription?.visibility = View.GONE
         }
 
+        var imageList = ArrayList<HostelImage>()
+
+        if (!TextUtils.isEmpty(result.profileImage)) {
+            var hostelImage = HostelImage()
+            hostelImage.image = result.profileImage;
+            imageList.add(hostelImage)
+        }
+
         if (!result.adoptionImages.isEmpty()) {
-            val adapter = ImageAdapter(this, result.adoptionImages)
+            imageList.addAll(result.adoptionImages)
+
+        }
+
+        if (imageList.size > 0) {
+            val adapter = ImageAdapter(this, imageList)
             viewPager?.adapter = adapter
             cvp!!.setViewPager(viewPager)
         }
+
         tvName?.text = if (!TextUtils.isEmpty(result.petName)) {
             result.petName
         } else {
@@ -230,6 +247,19 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
 
     private fun setNoDataLayout() {
         viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(llForNoResult)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_chat, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_chat -> return true
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
 }

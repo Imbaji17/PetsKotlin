@@ -147,7 +147,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_chat -> return true
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -165,7 +165,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
             }
             R.id.nav_my_interests -> {
-                MyInterestActivity.startActivity(this)
+//                MyInterestActivity.startActivity(this)
             }
             R.id.nav_sent_feedback -> {
 
@@ -195,7 +195,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
                 this.startActivity(mIntent)
             }
             1 -> {
-                FunZoneActivity.startActivity(this)
+//                FunZoneActivity.startActivity(this)
             }
             2 -> {
 //                val mIntent = Intent(this, ProfileActivity::class.java)
