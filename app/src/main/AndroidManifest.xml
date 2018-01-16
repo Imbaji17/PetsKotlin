@@ -150,6 +150,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.SelectTypeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activities.MyInterestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
