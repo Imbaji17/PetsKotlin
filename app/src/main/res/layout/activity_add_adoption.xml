@@ -1,9 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.pets.app.activities.adoption.AddAdoptionActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include layout="@layout/app_toolbar" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_size_20">
+
+            <ImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="@dimen/dimen_size_100"
+                android:layout_height="@dimen/dimen_size_100"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:src="@drawable/add_pet1" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                app:hintTextAppearance="@style/FloatingLabel">
+
+                <EditText
+                    android:id="@+id/etPetName"
+                    style="@style/EditTextStyle"
+                    android:hint="@string/pet_name"
+                    android:inputType="textPersonName|textCapSentences" />
+            </android.support.design.widget.TextInputLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_20"
+                android:layout_toLeftOf="@+id/ivType"
+                android:layout_toStartOf="@+id/ivType">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/type"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/tvType"
+                        style="@style/TextViewStyle"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textSize="@dimen/text_size_14"
+                        tools:text="@string/type" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/downarrow" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:background="@color/light_grey" />
+
+            <RelativeLayout
+                android:id="@+id/rlBreed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/ivBreed"
+                    android:layout_toStartOf="@+id/ivBreed"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/breed"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/tvBreed"
+                        style="@style/TextViewStyle"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textSize="@dimen/text_size_14"
+                        tools:text="@string/breed" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivBreed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/downarrow" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:background="@color/light_grey" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_5"
+                app:hintTextAppearance="@style/FloatingLabel">
+
+                <EditText
+                    android:id="@+id/edtBreed"
+                    style="@style/EditTextStyle"
+                    android:drawableEnd="@drawable/downarrow"
+                    android:drawableRight="@drawable/downarrow"
+                    android:hint="@string/breed"
+                    android:minHeight="@dimen/dimen_size_40" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                app:hintTextAppearance="@style/FloatingLabel">
+
+                <EditText
+                    android:id="@+id/etAge"
+                    style="@style/EditTextStyle"
+                    android:hint="@string/age"
+                    android:inputType="textPersonName|textCapSentences" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_size_5"
+                android:paddingLeft="@dimen/dimen_size_10"
+                android:paddingRight="@dimen/dimen_size_10"
+                android:paddingTop="@dimen/dimen_size_5">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:text="@string/gender" />
+
+                <RadioGroup
+                    android:id="@+id/rgGender"
+                    android:layout_width="@dimen/dimen_size_200"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rbMale"
+                        style="@style/RadioButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:gravity="start|center_vertical"
+                        android:text="@string/male" />
+
+                    <RadioButton
+                        android:id="@+id/rbFemale"
+                        style="@style/RadioButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:gravity="start|center_vertical"
+                        android:text="@string/female" />
+                </RadioGroup>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_size_5">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:paddingLeft="@dimen/dimen_size_5"
+                    android:paddingStart="@dimen/dimen_size_5"
+                    android:text="@string/certificate" />
+
+                <Button
+                    android:id="@+id/btnUpload"
+                    style="@style/ButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_size_30"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/upload"
+                    android:textAllCaps="false" />
+            </RelativeLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/FloatingLabel">
+
+                <EditText
+                    android:id="@+id/etDescription"
+                    style="@style/EditTextStyle"
+                    android:gravity="start"
+                    android:hint="@string/description"
+                    android:inputType="textMultiLine"
+                    android:maxLength="500"
+                    android:maxLines="5"
+                    android:minHeight="@dimen/dimen_size_80"
+                    android:singleLine="false" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnAddAdoption"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="@dimen/dimen_size_20"
+                android:text="@string/add_adoption" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

@@ -105,6 +105,11 @@ public class WebServiceBuilder {
                                             @Query("lng") String lng, @Query("pets_type_id") String petsTypeId, @Query("breed_id") String breedId,
                                             @Query("gender") String gender, @Query("distance") int distance);
 
+        @GET("adoption_by_id")
+        Call<AdoptionResponse> adoptionDetails(@Query("adoption_id") String id, @Query("key") String key, @Query("language_code") String languageCode, @Query("lat") String lat,
+                                               @Query("lng") String lng, @Query("timestamp") String timestamp, @Query("user_id") String user_id);
+
+
         @GET("petTypeList")
         Call<PetsTypeResponse> getPetTypeList(@Query("key") String key, @Query("language_code") String languageCode,
                                               @Query("timestamp") String timeStamp, @Query("user_id") String user_id);

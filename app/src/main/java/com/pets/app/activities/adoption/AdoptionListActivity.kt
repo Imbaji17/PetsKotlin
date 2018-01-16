@@ -205,7 +205,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
             R.id.llFindHostel -> {
                 adoption = view.tag as Adoption
                 if (adoption != null) {
-                    HostelDetailActivity.startActivity(this, adoption!!.adoptionId)
+                    AdoptionDetailsActivity.startActivity(this, adoption!!.adoptionId)
                 }
             }
 
@@ -236,7 +236,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.action_add -> {
-//                FindHostelMapActivity.startActivity(this, listItems, RC_MAP_ACTIVITY)
+                AddAdoptionActivity.startActivity(this)
             }
 
             R.id.action_filter -> {

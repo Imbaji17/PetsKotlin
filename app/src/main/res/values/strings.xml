@@ -125,6 +125,9 @@
         <item>@string/male</item>
         <item>@string/female</item>
     </string-array>
+    <string name="add_adoption">Add Adoption</string>
+    <string name="certification">Certification</string>
+    <string name="view">View</string>
 
     <string name="fun_zone">Fun Zone</string>
     <string name="find_match">Find Match</string>
@@ -142,6 +145,7 @@
     <string name="gallery">Gallery</string>
     <string name="add_photo">Add Photo</string>
     <string name="select_date">Select Date</string>
+    <string name="age">Age</string>
 
 
 </resources>
