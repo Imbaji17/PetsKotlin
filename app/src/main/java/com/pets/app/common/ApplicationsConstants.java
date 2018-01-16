@@ -16,6 +16,14 @@ public class ApplicationsConstants {
     public static final String REVIEW_ID = "review_id";
     public static final String TYPE = "type";
     public static final String TERMS_AND_CONDITION = "TERMS_AND_CONDITION";
+    public static final String PETS_TYPE_ID = "pets_type_id";
+    public static final String PETS_TYPE_NAME = "pets_type_name";
+    public static final String BREED_ID = "breed_id";
+    public static final String BREED_NAME = "breed_name";
+    public static final String GENDER = "gender";
+    public static final String DISTANCE = "distance";
+    public static final String LOCATION = "location";
+
     public static final String MOBILE_NUMBER = "MOBILE_NUMBER";
     public static final String COUNTRY_CODE = "COUNTRY_CODE";
 }

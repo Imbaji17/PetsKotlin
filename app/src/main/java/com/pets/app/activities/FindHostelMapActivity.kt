@@ -206,9 +206,10 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
 
     private fun getHostelList() {
         val timeStamp = TimeStamp.getTimeStamp()
-        val key = TimeStamp.getMd5(timeStamp + "10" + Constants.TIME_STAMP_KEY)
-        val language = Enums.Language.EN.name.toUpperCase()
         val userId = AppPreferenceManager.getUserID()
+
+        val key = TimeStamp.getMd5(timeStamp + userId + Constants.TIME_STAMP_KEY)
+        val language = Enums.Language.EN.name.toUpperCase()
 
         viewFlipper!!.displayedChild = 0
         if (Utils.isOnline(this)) {

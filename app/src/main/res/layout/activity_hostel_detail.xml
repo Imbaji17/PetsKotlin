@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--<include layout="@layout/app_loading_screen" />-->
+        <include layout="@layout/app_loading_screen" />
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/mainLayout"
@@ -255,28 +255,6 @@
                         android:background="@color/light_grey" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/llImages"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_size_10"
-                    android:layout_marginRight="@dimen/dimen_size_10"
-                    android:layout_marginTop="@dimen/dimen_size_5"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/TextViewStyle"
-                        android:text="@string/images"
-                        android:textColor="@color/grey"
-                        android:textSize="@dimen/text_size_14" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    </android.support.v7.widget.RecyclerView>
-                </LinearLayout>
 
             </LinearLayout>
 

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:rsb="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.pets.app.activities.adoption.FilterAdoptionActivity">
+
+    <include layout="@layout/app_toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,8 +23,12 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rlType"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_20"
+                android:layout_toLeftOf="@+id/ivType"
+                android:layout_toStartOf="@+id/ivType">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -29,23 +38,207 @@
 
                     <TextView
                         style="@style/TextViewStyle"
-                        android:text="@string/please_login_to_continue"
-                        android:textSize="@dimen/text_size_18" />
+                        android:text="@string/type"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
 
                     <TextView
+                        android:id="@+id/tvType"
                         style="@style/TextViewStyle"
-                        android:text="@string/please_login_to_continue"
-                        android:textSize="@dimen/text_size_18" />
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textSize="@dimen/text_size_14"
+                        tools:text="@string/type" />
                 </LinearLayout>
 
                 <ImageView
+                    android:id="@+id/ivType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/downarrow" />
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:background="@color/light_grey" />
+
+            <RelativeLayout
+                android:id="@+id/rlBreed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/ivBreed"
+                    android:layout_toStartOf="@+id/ivBreed"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/breed"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/tvBreed"
+                        style="@style/TextViewStyle"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textSize="@dimen/text_size_14"
+                        tools:text="@string/breed" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivBreed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/downarrow" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:background="@color/light_grey" />
+
+            <RelativeLayout
+                android:id="@+id/rlLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/ivLocation"
+                    android:layout_toStartOf="@+id/ivLocation"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/location"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        style="@style/TextViewStyle"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textSize="@dimen/text_size_14"
+                        tools:text="@string/location" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/location2" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:background="@color/light_grey" />
+
+            <RelativeLayout
+                android:id="@+id/rlDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <com.pets.app.widgets.RangeSeekBar
+                        android:id="@+id/rsbDistance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        rsb:absoluteMaxValue="51"
+                        rsb:absoluteMinValue="0"
+                        rsb:singleThumb="true"
+                        rsb:textAboveThumbsColor="@color/green"
+                        rsb:thumbDisabled="@drawable/slider"
+                        rsb:thumbNormal="@drawable/slider"
+                        rsb:thumbPressed="@drawable/slider"
+                        rsb:thumbShadow="true"
+                        rsb:valuesAboveThumbs="true" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_size_5">
+
+                        <TextView
+                            style="@style/TextViewStyle"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:text="@string/zero_mile"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <TextView
+                            style="@style/TextViewStyle"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:text="@string/fifty_miles"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/text_size_14" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/dimen_size_10"
+                android:background="@color/light_grey" />
+
+            <RelativeLayout
+                android:id="@+id/rlGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_size_10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/gender"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/tvGender"
+                        style="@style/TextViewStyle"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textSize="@dimen/text_size_14"
+                        tools:text="@string/gender" />
+                </LinearLayout>
+
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
@@ -57,4 +250,4 @@
         android:layout_margin="@dimen/dimen_size_20"
         android:text="@string/save" />
 
-</RelativeLayout>
+</LinearLayout>

@@ -107,4 +107,8 @@
         <item name="android:maxHeight">30dip</item> 
     </style>
 
+    <style name="dialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>

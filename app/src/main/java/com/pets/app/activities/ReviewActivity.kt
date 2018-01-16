@@ -161,7 +161,7 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
         val key = TimeStamp.getMd5(timeStamp + userId + typeId + Constants.TIME_STAMP_KEY)
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-            val call = apiClient.reviewsByType(key, language, nextOffset, timeStamp, type, typeId, "10")
+            val call = apiClient.reviewsByType(key, language, nextOffset, timeStamp, type, typeId, userId)
             call.enqueue(object : Callback<ReviewsResponse> {
                 override fun onResponse(call: Call<ReviewsResponse>, response: Response<ReviewsResponse>?) {
                     loading = true
