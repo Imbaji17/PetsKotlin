@@ -1,5 +1,6 @@
 package com.pets.app.activities
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -15,6 +16,8 @@ import com.pets.app.adapters.PhotosAdapter
 import com.pets.app.common.ImageSetter
 import com.pets.app.interfaces.AddPhotoCallback
 import com.pets.app.model.`object`.PhotosInfo
+import com.pets.app.utilities.DateFormatter
+import com.pets.app.utilities.DatePickerDialogFragment
 import com.pets.app.utilities.ImagePicker
 import java.io.File
 
@@ -110,12 +113,20 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 showTakeImagePopup()
             }
             R.id.edtType -> {
+
             }
             R.id.edtBreed -> {
             }
             R.id.edtDOB -> {
+                DatePickerDialogFragment(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                    val date = "$dayOfMonth-$month-$year"
+                    val strDate = DateFormatter.getFormattedDate(DateFormatter.dd_MM_yyyy_str, date, DateFormatter.dd_MMM_yyyy_str)
+                    edtDOB?.setText(strDate)
+                }).show(supportFragmentManager, this.getString(R.string.select_date))
             }
             R.id.btnUpload -> {
+                selectedType = 3
+                showTakeImagePopup()
             }
             R.id.btnAddPet -> {
             }
@@ -135,7 +146,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                         imageFlag = 1
                         if (selectedType == 1) {
                             ImageSetter.loadRoundedImage(this, updatedImageFile, R.drawable.profile, imgPet)
-                        } else {
+                        } else if (selectedType == 2) {
                             val photo = PhotosInfo()
                             photo.url = mCurrentPhotoPath
                             photoList?.size?.minus(1)?.let { photoList!!.add(it, photo) }
@@ -143,6 +154,8 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                                 photoList!!.removeAt(photoList!!.size - 1)
                             }
                             adapter!!.notifyDataSetChanged()
+                        } else {
+
                         }
                     }
                 }

@@ -68,7 +68,7 @@ public class PhotosViewHolder extends RecyclerViewViewHolder {
 //                resize(70, 70).
                 if (!photos.getUrl().contains("http")) {
                     File file = new File(photos.getUrl());
-                    Picasso.with(context).load(file).resize(100, 100).placeholder(R.drawable.gallery).into(new Target() {
+                    Picasso.with(context).load(file).resize(100, 100).placeholder(R.drawable.gallery_placeholder).into(new Target() {
 
                         @Override
                         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -93,7 +93,7 @@ public class PhotosViewHolder extends RecyclerViewViewHolder {
     }
 
     private void loadImage(String url) {
-        Picasso.with(context).load(url).resize(100, 100).placeholder(R.drawable.gallery).into(new Target() {
+        Picasso.with(context).load(url).resize(100, 100).placeholder(R.drawable.gallery_placeholder).into(new Target() {
 
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {

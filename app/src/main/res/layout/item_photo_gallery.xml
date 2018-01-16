@@ -11,12 +11,12 @@
         android:layout_width="@dimen/dimen_size_70"
         android:layout_height="@dimen/dimen_size_70"
         android:scaleType="centerCrop"
-        android:src="@drawable/gallery" />
+        android:src="@drawable/gallery_placeholder" />
 
     <TextView
         android:id="@+id/remove_photo"
-        android:layout_width="@dimen/dimen_size_15"
-        android:layout_height="@dimen/dimen_size_15"
+        android:layout_width="@dimen/dimen_size_25"
+        android:layout_height="@dimen/dimen_size_25"
         android:layout_alignEnd="@+id/photo_img"
         android:layout_alignRight="@+id/photo_img"
         android:layout_alignTop="@+id/photo_img"
