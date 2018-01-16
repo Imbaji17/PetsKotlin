@@ -140,6 +140,7 @@
     <string name="certificate">Certificate</string>
     <string name="upload">Upload</string>
     <string name="gallery">Gallery</string>
+    <string name="add_photo">Add Photo</string>
 
 
 </resources>
