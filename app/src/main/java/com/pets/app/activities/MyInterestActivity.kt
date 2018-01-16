@@ -3,15 +3,16 @@ package com.pets.app.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.pets.app.R
+import com.pets.app.activities.adoption.AdoptionListActivity
 import com.pets.app.adapters.LandingMenuAdapter
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.interfaces.SimpleItemClickListener
 import com.pets.app.model.`object`.LandingDetails
+import com.pets.app.utilities.GridSpacingItemDecoration
 
 class MyInterestActivity : BaseActivity(), SimpleItemClickListener {
 
@@ -35,10 +36,17 @@ class MyInterestActivity : BaseActivity(), SimpleItemClickListener {
 
     fun initView() {
         recyclerView = findViewById(R.id.recyclerView)
-        val mGridLayoutManager = GridLayoutManager(this, 3)
-        mGridLayoutManager.orientation = LinearLayoutManager.VERTICAL
+
+        val spanCount = 2 // 3 columns
+        val spacing = 50 // 50px
+        val includeEdge = true
+        recyclerView!!.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
+        val gridLayoutManager = GridLayoutManager(this, spanCount)
+
+//        val mGridLayoutManager = GridLayoutManager(this, 2)
+//        mGridLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.isNestedScrollingEnabled = false
-        recyclerView?.layoutManager = mGridLayoutManager
+        recyclerView?.layoutManager = gridLayoutManager
         val mList = ArrayList<LandingDetails>()
         mList.add(object : LandingDetails(this.getString(R.string.vets), R.drawable.find_vet) {})
         mList.add(object : LandingDetails(this.getString(R.string.hostel), R.drawable.find_hostel) {})
@@ -51,26 +59,16 @@ class MyInterestActivity : BaseActivity(), SimpleItemClickListener {
 
     override fun onItemClick(`object`: Any?) {
         when (`object` as Int) {
-//            0 -> {
-//                val mIntent = Intent(this, ProfileActivity::class.java)
-//                this.startActivity(mIntent)
-//            }
-//            1 -> {
-//                val mIntent = Intent(this, ProfileActivity::class.java)
-//                this.startActivity(mIntent)
-//            }
-//            2 -> {
-//                val mIntent = Intent(this, ProfileActivity::class.java)
-//                this.startActivity(mIntent)
-//            }
-//            3 -> {
-//                val mIntent = Intent(this, FindHostelActivity::class.java)
-//                this.startActivity(mIntent)
-//            }
-//            4 -> {
-//                val mIntent = Intent(this, ProfileActivity::class.java)
-//                this.startActivity(mIntent)
-//            }
+            0 -> {
+            }
+            1 -> {
+                FindHostelActivity.startActivity(this)
+            }
+            2 -> {
+                AdoptionListActivity.startActivity(this)
+            }
+            3 -> {
+            }
         }
     }
 }

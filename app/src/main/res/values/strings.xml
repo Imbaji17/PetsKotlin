@@ -156,4 +156,20 @@
     <string name="vets">Vets</string>
     <string name="pets_match">Pets Match</string>
 
+    <!--BUY AND SELL-->
+    <string name="buy">Buy</string>
+    <string name="sell">Sell</string>
+    <string name="post_your_product">Post your product</string>
+    <string name="product_name">Product Name</string>
+    <string name="select_category">Select Category</string>
+    <string name="post">Post</string>
+    <string name="add_image">Add Image</string>
+    <string name="apply">Apply</string>
+    <string name="type_of_pet">Type of Pet</string>
+    <string name="category">Category</string>
+    <string name="sort_by">Sort by</string>
+
+    <!--CHAT-->
+    <string name="send">Send</string>
+    <string name="start_typing">Start typing...</string>
 </resources>
