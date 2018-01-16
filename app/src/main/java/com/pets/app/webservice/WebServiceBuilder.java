@@ -3,6 +3,7 @@ package com.pets.app.webservice;
 import com.pets.app.model.AdoptionResponse;
 import com.pets.app.model.BreedResponse;
 import com.pets.app.model.FindHostelResponse;
+import com.pets.app.model.FunZoneResponse;
 import com.pets.app.model.LoginResponse;
 import com.pets.app.model.NormalResponse;
 import com.pets.app.model.PetsTypeResponse;
@@ -120,6 +121,13 @@ public class WebServiceBuilder {
                                          @Query("timestamp") String timeStamp, @Query("user_id") String user_id,
                                          @Query("pet_type_id") String pet_type_id);
 
+//        http://192.168.2.195/pets/api/PetsApi/fun_zone_list?user_id=2&timestamp=1&key=69e5eccd59cc5e48659927fb25554f9a
+// &language_code=EN&next_offset=0&lat&lng
+
+        @GET("fun_zone_list")
+        Call<FunZoneResponse> getFunZoneList(@Query("user_id") String user_id, @Query("timestamp") String timeStamp, @Query("key") String key,
+                                             @Query("language_code") String languageCode, @Query("next_offset") int nextOffset,
+                                             @Query("lat") String lat, @Query("lng") String lng);
 
     }
 }

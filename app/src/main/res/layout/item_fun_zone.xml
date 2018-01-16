@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dimen_size_10"
+    android:background="@color/white"
+    app:cardCornerRadius="@dimen/dimen_size_5"
+    app:cardElevation="@dimen/dimen_size_5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen_size_10">
+
+            <ImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="@dimen/dimen_size_50"
+                android:layout_height="@dimen/dimen_size_50"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/pet_profile_placeholder" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dimen_size_10"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tvName"
+                    style="@style/TextViewStyle"
+                    android:layout_weight="1"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_size_15"
+                    tools:text="@string/app_name" />
+
+                <TextView
+                    android:id="@+id/tvDate"
+                    style="@style/TextViewStyle"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_size_15"
+                    tools:text="@string/app_name" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivFunZone"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/dimen_size_5"
+            android:src="@drawable/img_placeholder" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvHelpful"
+                style="@style/TextViewStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:drawableLeft="@drawable/helpful1"
+                android:drawablePadding="@dimen/dimen_size_10"
+                android:drawableStart="@drawable/helpful1"
+                android:padding="@dimen/dimen_size_10"
+                android:text="@string/helpful"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_14" />
+
+            <TextView
+                android:id="@+id/tvComment"
+                style="@style/TextViewStyle"
+                android:layout_centerHorizontal="true"
+                android:drawableLeft="@drawable/comment1"
+                android:drawablePadding="@dimen/dimen_size_10"
+                android:drawableStart="@drawable/comment1"
+                android:padding="@dimen/dimen_size_10"
+                android:text="@string/comment"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_14" />
+
+            <TextView
+                android:id="@+id/tvShare"
+                style="@style/TextViewStyle"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:drawableLeft="@drawable/share_1"
+                android:drawablePadding="@dimen/dimen_size_10"
+                android:drawableStart="@drawable/share_1"
+                android:padding="@dimen/dimen_size_10"
+                android:text="@string/share"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_14" />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

@@ -17,10 +17,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.pets.app.R
-import com.pets.app.activities.AddPetActivity
-import com.pets.app.activities.FindHostelActivity
-import com.pets.app.activities.MyInterestActivity
-import com.pets.app.activities.ProfileActivity
+import com.pets.app.activities.*
 import com.pets.app.activities.adoption.AdoptionListActivity
 import com.pets.app.adapters.LandingMenuAdapter
 import com.pets.app.common.AppPreferenceManager
@@ -198,8 +195,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
                 this.startActivity(mIntent)
             }
             1 -> {
-//                val mIntent = Intent(this, ProfileActivity::class.java)
-//                this.startActivity(mIntent)
+                FunZoneActivity.startActivity(this)
             }
             2 -> {
 //                val mIntent = Intent(this, ProfileActivity::class.java)
