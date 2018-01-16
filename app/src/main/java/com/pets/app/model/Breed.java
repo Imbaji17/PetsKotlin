@@ -28,6 +28,8 @@ public class Breed implements Serializable {
     @SerializedName("status")
     private String status;
 
+    private boolean isSelected;
+
     public String getBreed_id() {
         return breed_id;
     }
@@ -50,5 +52,26 @@ public class Breed implements Serializable {
 
     public String getStatus() {
         return status;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    @Override
+    public String toString() {
+        return "Breed{" +
+                "breed_id='" + breed_id + '\'' +
+                ", petTypeId='" + petTypeId + '\'' +
+                ", breed_name='" + breed_name + '\'' +
+                ", created_date='" + created_date + '\'' +
+                ", updated_date='" + updated_date + '\'' +
+                ", status='" + status + '\'' +
+                ", isSelected=" + isSelected +
+                '}';
     }
 }

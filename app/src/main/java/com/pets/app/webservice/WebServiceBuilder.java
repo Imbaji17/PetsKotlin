@@ -68,12 +68,6 @@ public class WebServiceBuilder {
         @POST("change_mobile/")
         Call<LoginResponse> changeMobile(@Field("user_id") String user_id, @Field("phone_code") String phone_code, @Field("phone_number") String phone_number, @Field("timestamp") String timestamp, @Field("key") String key);
 
-//        @POST("update_user/")
-//        Call<SignUpResponse> updateUser(@Body UpdateUserRequest signUpRequest);
-//
-//        @GET("getExperianceTitleList")
-//        Call<ExperienceTitleResponse> getExperienceTitleList(@Query("user_id") String user_id, @Query("timestamp") String timestamp, @Query("key") String key);
-
         //http://34.199.202.75/pets/api/PetsApi/hostel_list?key=6b88b734ebb2c9f02ffe2cfdc1f40020&keyword=&language_code=EN&lat=0.000000&lng=0.000000&next_offset=0&timestamp=1515495550497.3&user_id=10
         @GET("hostel_list")
         Call<FindHostelResponse> hostelList(@Query("key") String key, @Query("keyword") String keyword, @Query("language_code") String languageCode, @Query("lat") String lat,
@@ -114,7 +108,6 @@ public class WebServiceBuilder {
         Call<PetsTypeResponse> getPetTypeList(@Query("key") String key, @Query("language_code") String languageCode,
                                               @Query("timestamp") String timeStamp, @Query("user_id") String user_id);
 
-        //        http://192.168.2.195/pets/api/PetsApi/breedList?user_id=2&timestamp=1&key=bba65d24dea389615ef6205938c9720c&language_code=EN&pet_type_id=1
         @GET("breedList")
         Call<BreedResponse> getBreedList(@Query("key") String key, @Query("language_code") String languageCode,
                                          @Query("timestamp") String timeStamp, @Query("user_id") String user_id,

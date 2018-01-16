@@ -21,6 +21,16 @@ public class PetsType implements Serializable {
     @SerializedName("status")
     private String status;
 
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     public String getPetsTypeId() {
         return petsTypeId;
     }
@@ -39,5 +49,17 @@ public class PetsType implements Serializable {
 
     public String getStatus() {
         return status;
+    }
+
+    @Override
+    public String toString() {
+        return "PetsType{" +
+                "petsTypeId='" + petsTypeId + '\'' +
+                ", typeName='" + typeName + '\'' +
+                ", createdDate='" + createdDate + '\'' +
+                ", updatedDate='" + updatedDate + '\'' +
+                ", status='" + status + '\'' +
+                ", isSelected=" + isSelected +
+                '}';
     }
 }

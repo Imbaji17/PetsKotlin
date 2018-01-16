@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.RadioGroup
 import com.pets.app.R
 import com.pets.app.adapters.PhotosAdapter
+import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.ImageSetter
 import com.pets.app.interfaces.AddPhotoCallback
 import com.pets.app.model.`object`.PhotosInfo
@@ -33,9 +34,11 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
     private var edtDesc: EditText? = null
     private var mRecyclerView: RecyclerView? = null
     private var btnAddPet: Button? = null
-    private var selectedType: Int = 0
     private var adapter: PhotosAdapter? = null
     private var photoList: ArrayList<Any>? = null
+    private var selectedType: Int = 0
+    private val RC_BREED: Int = 200
+    private val RC_TYPE: Int = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,9 +116,14 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 showTakeImagePopup()
             }
             R.id.edtType -> {
-
+                val mIntent = Intent(this, SelectTypeActivity::class.java)
+                mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, true)
+                this.startActivityForResult(mIntent, RC_TYPE)
             }
             R.id.edtBreed -> {
+                val mIntent = Intent(this, SelectTypeActivity::class.java)
+                mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, false)
+                this.startActivityForResult(mIntent, RC_BREED)
             }
             R.id.edtDOB -> {
                 DatePickerDialogFragment(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
@@ -159,6 +167,12 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                         }
                     }
                 }
+            }
+            RC_TYPE -> {
+
+            }
+            RC_BREED -> {
+
             }
         }
     }

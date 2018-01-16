@@ -1,39 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rel_top_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white_fade"
     android:paddingBottom="@dimen/dimen_size_5">
 
     <RelativeLayout
-        android:id="@+id/relMain"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_size_40"
         android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
         android:paddingLeft="@dimen/dimen_size_20"
         android:paddingRight="@dimen/dimen_size_20">
 
         <TextView
-            android:id="@+id/tvCountry"
+            android:id="@+id/tvName"
             style="@style/TextViewStyle"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="@color/white"
             android:gravity="center_vertical"
             android:text="@string/app_name" />
 
-        <TextView
-            android:id="@+id/tvCountryCode"
-            style="@style/TextViewStyle"
-            android:layout_height="match_parent"
+        <ImageView
+            android:id="@+id/imgCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:text="@string/app_name" />
+            android:layout_centerVertical="true"
+            android:src="@drawable/chek_box2"
+            android:visibility="gone" />
     </RelativeLayout>
 </RelativeLayout>
