@@ -37,7 +37,6 @@
 
                     </android.support.v4.view.ViewPager>
 
-
                     <com.viewpagerindicator.CirclePageIndicator
                         android:id="@+id/cvp"
                         android:layout_width="wrap_content"
@@ -77,30 +76,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
-                        <RatingBar
-                            android:id="@+id/ratingBar"
-                            style="@style/StarRatingBarSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/dimen_size_10"
-                            android:layout_marginRight="@dimen/dimen_size_10"
-                            android:layout_toLeftOf="@+id/tvReview"
-                            android:layout_toStartOf="@+id/tvReview"
-                            android:clickable="false"
-                            android:isIndicator="true"
-                            android:rating="0"
-                            android:stepSize="0.5" />
-
                         <TextView
-                            android:id="@+id/tvReview"
+                            android:id="@+id/tvAvailable"
                             style="@style/TextViewStyle"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
                             android:layout_gravity="center_vertical"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_14"
-                            tools:text="review" />
+                            tools:text="available" />
                     </RelativeLayout>
                 </LinearLayout>
 

@@ -19,6 +19,7 @@ import android.widget.TextView
 import com.pets.app.R
 import com.pets.app.activities.AddPetActivity
 import com.pets.app.activities.FindHostelActivity
+import com.pets.app.activities.MyInterestActivity
 import com.pets.app.activities.ProfileActivity
 import com.pets.app.activities.adoption.AdoptionListActivity
 import com.pets.app.adapters.LandingMenuAdapter
@@ -158,7 +159,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-                // Handle the camera action
+
             }
             R.id.nav_mypets -> {
 
@@ -167,7 +168,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
             }
             R.id.nav_my_interests -> {
-
+                MyInterestActivity.startActivity(this)
             }
             R.id.nav_sent_feedback -> {
 

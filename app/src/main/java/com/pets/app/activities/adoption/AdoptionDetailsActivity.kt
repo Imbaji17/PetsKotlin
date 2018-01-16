@@ -55,7 +55,7 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
     private var llForNoResult: LinearLayout? = null
     private var llForOfflineScreen: LinearLayout? = null
     private var adoptionId: String? = ""
-
+    private var tvAvailable: TextView? = null
 
     companion object {
         private val TAG = AdoptionDetailsActivity::class.java.simpleName
@@ -97,6 +97,7 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
         tvDescription = findViewById(R.id.tvDescription)
         llAddress = findViewById(R.id.llAddress)
         tvAddress = findViewById(R.id.tvAddress)
+        tvAvailable = findViewById(R.id.tvAvailable)
 
         viewFlipper = findViewById(R.id.viewFlipper)
         rlForLoadingScreen = findViewById(R.id.rlForLoadingScreen)
