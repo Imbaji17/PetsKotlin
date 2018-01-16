@@ -6,6 +6,7 @@
     <ImageView
         android:layout_width="@dimen/dimen_size_70"
         android:layout_height="@dimen/dimen_size_70"
-        android:src="@drawable/img_placeholder" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/gallery1" />
 
 </RelativeLayout>

@@ -13,7 +13,6 @@ import android.widget.ImageView
 import android.widget.RadioGroup
 import com.pets.app.R
 import com.pets.app.adapters.PhotosAdapter
-import com.pets.app.common.Constants
 import com.pets.app.common.ImageSetter
 import com.pets.app.interfaces.AddPhotoCallback
 import com.pets.app.model.`object`.PhotosInfo
@@ -120,7 +119,8 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             }
             R.id.edtDOB -> {
                 DatePickerDialogFragment(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                    val strDate = DateFormatter.getFormattedDate(DateFormatter.dd_MM_yyyy.toString(), (dayOfMonth.toString() + Constants.SPACE + month + Constants.SPACE + year), DateFormatter.dd_MMM_yyyy.toString())
+                    val date = "$dayOfMonth-$month-$year"
+                    val strDate = DateFormatter.getFormattedDate(DateFormatter.dd_MM_yyyy_str, date, DateFormatter.dd_MMM_yyyy_str)
                     edtDOB?.setText(strDate)
                 }).show(supportFragmentManager, this.getString(R.string.select_date))
             }
