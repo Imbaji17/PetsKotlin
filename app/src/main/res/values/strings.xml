@@ -172,4 +172,16 @@
     <!--CHAT-->
     <string name="send">Send</string>
     <string name="start_typing">Start typing...</string>
+
+    <!--FUN ZONE-->
+    <string name="helpful">Helpful</string>
+    <string name="comment">Comment</string>
+    <string name="share">Share</string>
+    <string name="title">Title</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="email_address">Email Address</string>
+    <string name="add_image_video">Add image or video</string>
+    <string name="crate_post">Crate Post</string>
+    <string name="enter_your_comment">Enter your Comment</string>
+
 </resources>
