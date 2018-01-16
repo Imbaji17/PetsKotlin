@@ -34,7 +34,7 @@ class AdoptionListVH(itemView: View, clickListener: View.OnClickListener) : Recy
         llFindHostel.tag = adoption
         ivFavourite.tag = adoption
 
-        tvName.text = if (!TextUtils.isEmpty(adoption.petName)) adoption.petName else ""
+        tvName.text = if (!TextUtils.isEmpty(adoption.contactPerson)) adoption.contactPerson else ""
         tvLocation.text = if (!TextUtils.isEmpty(adoption.address)) adoption.address else ""
         ImageSetter.loadImage(context, adoption.profileImage, R.drawable.alert_placeholder, ivFindHostel)
 //        if (!adoption.adoptionImages.isEmpty() && !TextUtils.isEmpty(adoption.adoptionImages[0].image)) {

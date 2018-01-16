@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.GsonBuilder
 import com.pets.app.R
@@ -113,6 +115,13 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(findHostel.lat, findHostel.lng), 7f))
                     }
                 }
+
+                googleMap.setOnInfoWindowClickListener(GoogleMap.OnInfoWindowClickListener { marker ->
+                    //                    val k = Integer.parseInt(marker.title)
+//                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=" + Utils.getDataFromPreferences(ApplicationsConstants.LoginDetails.LATITUDE, "")
+//                            + "," + Utils.getDataFromPreferences(ApplicationsConstants.LoginDetails.LONGITUDE, "") + "&daddr=" + apiResponse.get(k).geometry.location.lat + "," + apiResponse.get(k).geometry.location.lng))
+//                    startActivity(browserIntent)
+                })
             }
         }
     }

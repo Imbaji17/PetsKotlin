@@ -55,7 +55,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
     private var breedId: String? = ""
     private var breedStr: String? = ""
     private var gender: String? = ""
-    private var distance: Int? = 0
+    private var distance: String? = ""
     private var latitude: Double? = 0.0
     private var longitude: Double? = 0.0
     private var location: String? = ""
@@ -258,7 +258,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
                 breedId = data.getStringExtra(ApplicationsConstants.BREED_ID)
                 breedStr = data.getStringExtra(ApplicationsConstants.BREED_NAME)
                 gender = data.getStringExtra(ApplicationsConstants.GENDER)
-                distance = data.getIntExtra(ApplicationsConstants.DISTANCE, 0)
+                distance = data.getStringExtra(ApplicationsConstants.DISTANCE)
                 latitude = data.getDoubleExtra(ApplicationsConstants.LATITUDE, 0.0)
                 longitude = data.getDoubleExtra(ApplicationsConstants.LONGITUDE, 0.0)
                 location = data.getStringExtra(ApplicationsConstants.LOCATION)

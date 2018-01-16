@@ -39,8 +39,6 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_type)
-
-        initializeToolbar(this.getString(R.string.choose_country))
         initView()
         getIntentData()
     }
@@ -60,12 +58,14 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
     private fun getIntentData() {
 
         if (intent.getBooleanExtra(ApplicationsConstants.NAVIGATION_TYPE, false)) {
+            initializeToolbar(this.getString(R.string.pet_type))
             if (Utils.isOnline(this)) {
                 getPetTypeApiCall()
             } else {
                 viewFlipper?.displayedChild = 2
             }
         } else {
+            initializeToolbar(this.getString(R.string.breed))
             if (Utils.isOnline(this)) {
                 getPetBreedApiCall()
             } else {

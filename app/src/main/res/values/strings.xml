@@ -155,6 +155,7 @@
     <string name="age">Age</string>
     <string name="vets">Vets</string>
     <string name="pets_match">Pets Match</string>
+    <string name="pet_type">Pet Type</string>
 
     <!--BUY AND SELL-->
     <string name="buy">Buy</string>

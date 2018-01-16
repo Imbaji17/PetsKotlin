@@ -61,14 +61,14 @@ class FilterAdoptionActivity : BaseActivity(), View.OnClickListener {
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private var gender: String? = ""
-    private var distance: Int? = 0
+    private var distance: String? = ""
     private var location: String? = ""
 
 
     companion object {
         private val TAG = FilterAdoptionActivity::class.java.simpleName
         fun startActivity(activity: Activity, requestCode: Int, petsTypeId: String, petsTypeStr: String,
-                          breedId: String, breedStr: String, gender: String, distance: Int, latitude: Double,
+                          breedId: String, breedStr: String, gender: String, distance: String, latitude: Double,
                           longitude: Double, location: String) {
             val intent = Intent(activity, FilterAdoptionActivity::class.java)
             intent.putExtra(ApplicationsConstants.PETS_TYPE_ID, petsTypeId)
@@ -100,7 +100,7 @@ class FilterAdoptionActivity : BaseActivity(), View.OnClickListener {
         breedId = intent.getStringExtra(ApplicationsConstants.BREED_ID)
         breedStr = intent.getStringExtra(ApplicationsConstants.BREED_NAME)
         gender = intent.getStringExtra(ApplicationsConstants.GENDER)
-        distance = intent.getIntExtra(ApplicationsConstants.DISTANCE, 0)
+        distance = intent.getStringExtra(ApplicationsConstants.DISTANCE)
         latitude = intent.getDoubleExtra(ApplicationsConstants.LATITUDE, 0.0)
         longitude = intent.getDoubleExtra(ApplicationsConstants.LONGITUDE, 0.0)
         location = intent.getStringExtra(ApplicationsConstants.LOCATION)
@@ -136,10 +136,17 @@ class FilterAdoptionActivity : BaseActivity(), View.OnClickListener {
         if (!TextUtils.isEmpty(location))
             tvLocation!!.text = location
 
-        rsbDistance!!.selectedMaxValue = distance
+        if (!TextUtils.isEmpty(distance))
+            rsbDistance!!.selectedMaxValue = distance?.toInt()
 
-        if (!TextUtils.isEmpty(gender))
-            tvGender!!.text = gender
+        if (!TextUtils.isEmpty(gender)) {
+            if (gender.equals("M", true)) {
+                tvGender!!.text = getString(R.string.male)
+            } else if (gender.equals("F", true)) {
+                tvGender!!.text = getString(R.string.female)
+            }
+        }
+
     }
 
     override fun onClick(p0: View?) {
@@ -168,12 +175,19 @@ class FilterAdoptionActivity : BaseActivity(), View.OnClickListener {
                 if (!TextUtils.isEmpty(tvBreed!!.text.toString().trim()))
                     breedStr = tvBreed!!.text.toString()
 
-                if (!TextUtils.isEmpty(tvGender!!.text.toString().trim()))
-                    gender = tvGender!!.text.toString()
+                if (!TextUtils.isEmpty(tvGender!!.text.toString().trim())) {
+                    gender = if (tvGender!!.text.toString().equals(getString(R.string.male), true)) {
+                        "M"
+                    } else {
+                        "F"
+                    }
+                }
+
                 if (!TextUtils.isEmpty(tvLocation!!.text.toString().trim()))
                     location = tvLocation!!.text.toString()
 
-                distance = rsbDistance!!.selectedMaxValue as Int?
+                if (rsbDistance!!.selectedMaxValue as Int > 1)
+                    distance = rsbDistance!!.selectedMaxValue.toString()
 
                 val intent = Intent()
                 intent.putExtra(ApplicationsConstants.PETS_TYPE_ID, petsTypeId)
@@ -183,7 +197,7 @@ class FilterAdoptionActivity : BaseActivity(), View.OnClickListener {
                 intent.putExtra(ApplicationsConstants.GENDER, gender)
                 intent.putExtra(ApplicationsConstants.DISTANCE, distance)
                 intent.putExtra(ApplicationsConstants.LATITUDE, latitude)
-                intent.putExtra(ApplicationsConstants.LATITUDE, longitude)
+                intent.putExtra(ApplicationsConstants.LONGITUDE, longitude)
                 intent.putExtra(ApplicationsConstants.LOCATION, location)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
