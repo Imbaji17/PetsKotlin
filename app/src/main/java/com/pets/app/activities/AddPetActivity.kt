@@ -114,6 +114,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 showTakeImagePopup()
             }
             R.id.edtType -> {
+
             }
             R.id.edtBreed -> {
             }
