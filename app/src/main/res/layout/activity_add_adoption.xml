@@ -129,21 +129,44 @@
                 android:layout_marginTop="@dimen/dimen_size_10"
                 android:background="@color/light_grey" />
 
-
-            <android.support.design.widget.TextInputLayout
+            <RelativeLayout
+                android:id="@+id/rlAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_size_5"
-                app:hintTextAppearance="@style/FloatingLabel">
+                android:layout_marginTop="@dimen/dimen_size_10">
 
-                <EditText
-                    android:id="@+id/edtBreed"
-                    style="@style/EditTextStyle"
-                    android:drawableEnd="@drawable/downarrow"
-                    android:drawableRight="@drawable/downarrow"
-                    android:hint="@string/breed"
-                    android:minHeight="@dimen/dimen_size_40" />
-            </android.support.design.widget.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/ivAddress"
+                    android:layout_toStartOf="@+id/ivAddress"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:text="@string/address"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <TextView
+                        android:id="@+id/tvAddress"
+                        style="@style/TextViewStyle"
+                        android:layout_marginTop="@dimen/dimen_size_5"
+                        android:textSize="@dimen/text_size_14"
+                        tools:text="@string/address" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/location2" />
+            </RelativeLayout>
+
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -155,7 +178,7 @@
                     android:id="@+id/etAge"
                     style="@style/EditTextStyle"
                     android:hint="@string/age"
-                    android:inputType="textPersonName|textCapSentences" />
+                    android:inputType="number" />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -251,6 +274,27 @@
                     android:minHeight="@dimen/dimen_size_80"
                     android:singleLine="false" />
             </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen_size_5">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:paddingLeft="@dimen/dimen_size_5"
+                    android:paddingStart="@dimen/dimen_size_5"
+                    android:text="@string/gallery" />
+
+                <include
+                    layout="@layout/app_recycler_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_size_5" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnAddAdoption"

@@ -128,6 +128,13 @@
     <string name="add_adoption">Add Adoption</string>
     <string name="certification">Certification</string>
     <string name="view">View</string>
+    <string name="please_enter_pet_name">Please enter pet name</string>
+    <string name="please_select_pet_type">Please select pet type</string>
+    <string name="please_select_breed">Please select breed</string>
+    <string name="please_select_birthdate">Please select birthdate</string>
+    <string name="please_select_gender">Please select gender</string>
+    <string name="please_enter_pet_description">Please enter pet description</string>
+
 
     <string name="fun_zone">Fun Zone</string>
     <string name="find_match">Find Match</string>
@@ -146,6 +153,35 @@
     <string name="add_photo">Add Photo</string>
     <string name="select_date">Select Date</string>
     <string name="age">Age</string>
+    <string name="vets">Vets</string>
+    <string name="pets_match">Pets Match</string>
 
+    <!--BUY AND SELL-->
+    <string name="buy">Buy</string>
+    <string name="sell">Sell</string>
+    <string name="post_your_product">Post your product</string>
+    <string name="product_name">Product Name</string>
+    <string name="select_category">Select Category</string>
+    <string name="post">Post</string>
+    <string name="add_image">Add Image</string>
+    <string name="apply">Apply</string>
+    <string name="type_of_pet">Type of Pet</string>
+    <string name="category">Category</string>
+    <string name="sort_by">Sort by</string>
+
+    <!--CHAT-->
+    <string name="send">Send</string>
+    <string name="start_typing">Start typing...</string>
+
+    <!--FUN ZONE-->
+    <string name="helpful">Helpful</string>
+    <string name="comment">Comment</string>
+    <string name="share">Share</string>
+    <string name="title">Title</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="email_address">Email Address</string>
+    <string name="add_image_video">Add image or video</string>
+    <string name="crate_post">Crate Post</string>
+    <string name="enter_your_comment">Enter your Comment</string>
 
 </resources>
