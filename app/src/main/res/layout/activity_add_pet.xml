@@ -52,6 +52,9 @@
                     style="@style/EditTextStyle"
                     android:drawableEnd="@drawable/downarrow"
                     android:drawableRight="@drawable/downarrow"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:hint="@string/type"
                     android:minHeight="@dimen/dimen_size_40" />
             </android.support.design.widget.TextInputLayout>
@@ -67,6 +70,9 @@
                     style="@style/EditTextStyle"
                     android:drawableEnd="@drawable/downarrow"
                     android:drawableRight="@drawable/downarrow"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:hint="@string/breed"
                     android:minHeight="@dimen/dimen_size_40" />
             </android.support.design.widget.TextInputLayout>
@@ -82,6 +88,9 @@
                     style="@style/EditTextStyle"
                     android:drawableEnd="@drawable/calendar_green"
                     android:drawableRight="@drawable/calendar_green"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:hint="@string/dob"
                     android:minHeight="@dimen/dimen_size_40" />
             </android.support.design.widget.TextInputLayout>

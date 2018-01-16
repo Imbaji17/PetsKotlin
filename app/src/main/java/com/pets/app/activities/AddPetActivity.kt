@@ -1,5 +1,6 @@
 package com.pets.app.activities
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -12,9 +13,12 @@ import android.widget.ImageView
 import android.widget.RadioGroup
 import com.pets.app.R
 import com.pets.app.adapters.PhotosAdapter
+import com.pets.app.common.Constants
 import com.pets.app.common.ImageSetter
 import com.pets.app.interfaces.AddPhotoCallback
 import com.pets.app.model.`object`.PhotosInfo
+import com.pets.app.utilities.DateFormatter
+import com.pets.app.utilities.DatePickerDialogFragment
 import com.pets.app.utilities.ImagePicker
 import java.io.File
 
@@ -114,8 +118,14 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             R.id.edtBreed -> {
             }
             R.id.edtDOB -> {
+                DatePickerDialogFragment(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                    val strDate = DateFormatter.getFormattedDate(DateFormatter.dd_MM_yyyy.toString(), (dayOfMonth.toString() + Constants.SPACE + month + Constants.SPACE + year), DateFormatter.dd_MMM_yyyy.toString())
+                    edtDOB?.setText(strDate)
+                }).show(supportFragmentManager, this.getString(R.string.select_date))
             }
             R.id.btnUpload -> {
+                selectedType = 3
+                showTakeImagePopup()
             }
             R.id.btnAddPet -> {
             }

@@ -32,8 +32,7 @@ public class DateFormatter {
         try {
             Date date = sdf.parse(strDate);
             sdf = new SimpleDateFormat(outFormat, Locale.ENGLISH);
-            String formattedDate = sdf.format(date);
-            return formattedDate;
+            return sdf.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
             return " ";
