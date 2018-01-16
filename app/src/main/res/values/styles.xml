@@ -84,6 +84,17 @@
         <item name="android:fontFamily">@font/lato_regular</item>
     </style>
 
+    <style name="RadioButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:checked">true</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
     <style name="StarRatingBarSmall" parent="@android:style/Widget.RatingBar">
          <item name="android:progressDrawable">@drawable/start_rating_bar_small</item> 
         <item name="android:minHeight">11dip</item> 

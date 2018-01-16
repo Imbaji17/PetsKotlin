@@ -52,7 +52,8 @@
                     style="@style/EditTextStyle"
                     android:drawableEnd="@drawable/downarrow"
                     android:drawableRight="@drawable/downarrow"
-                    android:hint="@string/type" />
+                    android:hint="@string/type"
+                    android:minHeight="@dimen/dimen_size_40" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -66,7 +67,8 @@
                     style="@style/EditTextStyle"
                     android:drawableEnd="@drawable/downarrow"
                     android:drawableRight="@drawable/downarrow"
-                    android:hint="@string/breed" />
+                    android:hint="@string/breed"
+                    android:minHeight="@dimen/dimen_size_40" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -78,10 +80,61 @@
                 <EditText
                     android:id="@+id/edtDOB"
                     style="@style/EditTextStyle"
-                    android:drawableEnd="@drawable/downarrow"
-                    android:drawableRight="@drawable/downarrow"
-                    android:hint="@string/dob" />
+                    android:drawableEnd="@drawable/calendar_green"
+                    android:drawableRight="@drawable/calendar_green"
+                    android:hint="@string/dob"
+                    android:minHeight="@dimen/dimen_size_40" />
             </android.support.design.widget.TextInputLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_company_type_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dimen_size_5"
+                android:paddingLeft="@dimen/dimen_size_5"
+                android:paddingRight="@dimen/dimen_size_5"
+                android:paddingTop="@dimen/dimen_size_5">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:text="@string/gender" />
+
+                <RadioGroup
+                    android:id="@+id/radio_company_type"
+                    android:layout_width="@dimen/dimen_size_200"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rbMale"
+                        style="@style/RadioButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:gravity="start|center_vertical"
+                        android:text="@string/male" />
+
+                    <RadioButton
+                        android:id="@+id/rbFemale"
+                        style="@style/RadioButtonStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:gravity="start|center_vertical"
+                        android:text="@string/female" />
+                </RadioGroup>
+            </RelativeLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

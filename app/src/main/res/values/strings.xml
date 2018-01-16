@@ -126,5 +126,7 @@
     <string name="add_pet">Add Pet</string>
     <string name="pet_name">Pet Name</string>
     <string name="dob">DOB</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
 
 </resources>
