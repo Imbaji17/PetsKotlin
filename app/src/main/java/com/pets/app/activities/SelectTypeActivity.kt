@@ -168,15 +168,12 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
 
         if (`object` is PetsType) {
             val type = `object`
-
             type.isSelected = !type.isSelected
-
             for (i in mList!!.indices) {
                 if (i != mList!!.indexOf(type)) {
                     (mList?.get(i) as PetsType).isSelected = false
                 }
             }
-
             adapter?.notifyDataSetChanged()
 //            val mIntent = Intent()
 //            mIntent.putExtra(ApplicationsConstants.DATA, type)
