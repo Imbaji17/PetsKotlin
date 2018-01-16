@@ -15,6 +15,7 @@ import com.pets.app.adapters.ImageAdapter
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
+import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.Adoption
 import com.pets.app.model.AdoptionResponse
 import com.pets.app.model.NormalResponse
@@ -28,7 +29,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 
-class AdoptionDetailsActivity : AppCompatActivity(), View.OnClickListener {
+class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
 
     private var cvp: CirclePageIndicator? = null
     private var viewPager: ViewPager? = null
@@ -68,6 +69,7 @@ class AdoptionDetailsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_adoption_details)
+        initializeToolbar(getString(R.string.adoption))
         init()
         initView()
         getAdoptionDetails()

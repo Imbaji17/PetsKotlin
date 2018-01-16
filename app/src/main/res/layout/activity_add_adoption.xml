@@ -252,6 +252,27 @@
                     android:singleLine="false" />
             </android.support.design.widget.TextInputLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen_size_5">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:layout_marginEnd="@dimen/dimen_size_10"
+                    android:layout_marginRight="@dimen/dimen_size_10"
+                    android:paddingLeft="@dimen/dimen_size_5"
+                    android:paddingStart="@dimen/dimen_size_5"
+                    android:text="@string/gallery" />
+
+                <include
+                    layout="@layout/app_recycler_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_size_5" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/btnAddAdoption"
                 style="@style/ButtonStyle"

@@ -128,6 +128,13 @@
     <string name="add_adoption">Add Adoption</string>
     <string name="certification">Certification</string>
     <string name="view">View</string>
+    <string name="please_enter_pet_name">Please enter pet name</string>
+    <string name="please_select_pet_type">Please select pet type</string>
+    <string name="please_select_breed">Please select breed</string>
+    <string name="please_select_birthdate">Please select birthdate</string>
+    <string name="please_select_gender">Please select gender</string>
+    <string name="please_enter_pet_description">Please enter pet description</string>
+    
 
     <string name="fun_zone">Fun Zone</string>
     <string name="find_match">Find Match</string>

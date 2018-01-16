@@ -84,7 +84,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_adoption)
-        initializeToolbar(getString(R.string.find_hostel))
+        initializeToolbar(getString(R.string.adoption))
         initView()
         setAdapter()
         getAdoptionList()

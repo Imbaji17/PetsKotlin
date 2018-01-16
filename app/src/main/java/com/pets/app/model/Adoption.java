@@ -75,6 +75,19 @@ public class Adoption implements Serializable {
     @SerializedName("adoption_images")
     private ArrayList<HostelImage> adoptionImages;
 
+    //for add update adoption
+    @SerializedName("key")
+    private String key;
+
+    @SerializedName("timestamp")
+    private String timestamp;
+
+    @SerializedName("pets_type_id")
+    private String petsTypeId;
+
+    @SerializedName("breed_id")
+    private String breedId;
+
     public String getAdoptionId() {
         return adoptionId;
     }
