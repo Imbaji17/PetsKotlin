@@ -146,7 +146,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                         imageFlag = 1
                         if (selectedType == 1) {
                             ImageSetter.loadRoundedImage(this, updatedImageFile, R.drawable.profile, imgPet)
-                        } else {
+                        } else if (selectedType == 2) {
                             val photo = PhotosInfo()
                             photo.url = mCurrentPhotoPath
                             photoList?.size?.minus(1)?.let { photoList!!.add(it, photo) }
@@ -154,6 +154,8 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                                 photoList!!.removeAt(photoList!!.size - 1)
                             }
                             adapter!!.notifyDataSetChanged()
+                        } else {
+
                         }
                     }
                 }
