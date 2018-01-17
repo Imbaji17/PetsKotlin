@@ -191,4 +191,5 @@
     <string name="please_enter_contact_person">Please enter contact person</string>
     <string name="please_enter_contact_number">Please enter contact number</string>
     <string name="please_enter_description">Please enter description</string>
+    <string name="please_add_pet_image">Please add pet image</string>
 </resources>

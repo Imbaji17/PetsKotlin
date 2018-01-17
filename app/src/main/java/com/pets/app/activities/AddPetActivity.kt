@@ -3,6 +3,7 @@ package com.pets.app.activities
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -20,11 +21,18 @@ import com.pets.app.common.Constants
 import com.pets.app.common.ImageSetter
 import com.pets.app.interfaces.AddPhotoCallback
 import com.pets.app.model.Breed
+import com.pets.app.model.NormalResponse
 import com.pets.app.model.PetsType
 import com.pets.app.model.`object`.PhotosInfo
 import com.pets.app.utilities.*
+import com.pets.app.webservice.UploadImage
+import khandroid.ext.apache.http.entity.mime.HttpMultipartMode
+import khandroid.ext.apache.http.entity.mime.MultipartEntity
+import khandroid.ext.apache.http.entity.mime.content.FileBody
+import khandroid.ext.apache.http.entity.mime.content.StringBody
 import kotlinx.android.synthetic.main.activity_add_pet.*
 import java.io.File
+import java.io.IOException
 
 class AddPetActivity : ImagePicker(), View.OnClickListener {
 
@@ -218,20 +226,20 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             edtName?.requestFocus()
             return false
         } else if (TextUtils.isEmpty(edtType?.text.toString().trim())) {
-            edtType?.error = this.getString(R.string.please_select_pet_type)
-            edtType?.requestFocus()
+            Utils.showToast(this.getString(R.string.please_select_pet_type))
             return false
-        } else if (!Utils.isEmailValid(edtBreed?.text.toString().trim())) {
-            edtBreed?.error = this.getString(R.string.please_select_breed)
-            edtBreed?.requestFocus()
+        } else if (TextUtils.isEmpty(edtBreed?.text.toString().trim())) {
+            Utils.showToast(this.getString(R.string.please_select_breed))
             return false
         } else if (TextUtils.isEmpty(edtDOB?.text.toString().trim())) {
-            edtDOB?.error = this.getString(R.string.please_select_dob)
-            edtDOB?.requestFocus()
+            Utils.showToast(this.getString(R.string.please_select_dob))
             return false
         } else if (TextUtils.isEmpty(edtDesc?.text.toString().trim())) {
             edtDesc?.error = this.getString(R.string.please_enter_pet_description)
             edtDesc?.requestFocus()
+            return false
+        } else if (updatedImageFile == null) {
+            Utils.showToast(this.getString(R.string.please_add_pet_image))
             return false
         }
         return true
@@ -252,6 +260,52 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         var timestamp = TimeStamp.getTimeStamp()
         var key = TimeStamp.getMd5(timestamp + userId + Constants.TIME_STAMP_KEY)
 
+        if (updatedImageFile != null || certificateFile != null) {
 
+            object : AsyncTask<Void, Void, String>() {
+                private var response: String? = null
+                override fun onPreExecute() {
+                    super.onPreExecute()
+                    showProgressBar()
+                }
+
+                override fun doInBackground(vararg params: Void): String? {
+                    try {
+                        val multipartEntity = MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
+                        multipartEntity.addPart("user_id", StringBody(userId!!))
+                        multipartEntity.addPart("key", StringBody(key!!))
+                        multipartEntity.addPart("timestamp", StringBody(timestamp!!))
+                        multipartEntity.addPart("pet_name", StringBody(petName))
+                        multipartEntity.addPart("pets_type_id", StringBody(petsTypeId))
+                        multipartEntity.addPart("breed_id", StringBody(breedId))
+                        multipartEntity.addPart("dob", StringBody(dob))
+                        multipartEntity.addPart("gender", StringBody(gender))
+                        multipartEntity.addPart("description", StringBody(desc))
+                        if (certificateFile != null)
+                            multipartEntity.addPart("certificate_image", FileBody(certificateFile, "userFile1/jpg"))
+                        if (updatedImageFile != null)
+                            multipartEntity.addPart("pet_image", FileBody(updatedImageFile, "userFile1/jpg"))
+                        response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName, multipartEntity)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                    return response
+                }
+
+                override fun onPostExecute(result: String?) {
+                    hideProgressBar()
+                    Logger.errorLog("Response ### " + result!!)
+                    print("Response #### " + result)
+                    if (result != null) {
+                        val adoptionResponse: NormalResponse = Utils.getResponse(result.toString(), NormalResponse::class.java)
+                        this@AddPetActivity.finish()
+//                        if (adoptionResponse.result != null) {
+//                            Utils.showToast(adoptionResponse.message)
+//                            uploadImages(adoptionResponse.result)
+//                        }
+                    }
+                }
+            }.execute()
+        }
     }
 }
