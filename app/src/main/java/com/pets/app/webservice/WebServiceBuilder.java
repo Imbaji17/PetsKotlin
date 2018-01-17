@@ -4,6 +4,7 @@ import com.pets.app.model.Adoption;
 import com.pets.app.model.AdoptionResponse;
 import com.pets.app.model.BreedResponse;
 import com.pets.app.model.FindHostelResponse;
+import com.pets.app.model.FunZone;
 import com.pets.app.model.FunZoneResponse;
 import com.pets.app.model.LoginResponse;
 import com.pets.app.model.NormalResponse;
@@ -126,6 +127,8 @@ public class WebServiceBuilder {
         @POST("add_edit_adoption")
         Call<AdoptionResponse> addEditAdoption(@Body Adoption adoption);
 
+        @POST("add_edit_fun_zone")
+        Call<FunZoneResponse> addEditFunZone(@Body FunZone funZone);
 
     }
 }

@@ -19,6 +19,8 @@ public class FunZoneResponse implements Serializable {
     private int nextOffset;
     @SerializedName("list")
     private ArrayList<FunZone> list;
+    @SerializedName("result")
+    private FunZone result;
 
     public String getStatus() {
         return status;
@@ -34,5 +36,9 @@ public class FunZoneResponse implements Serializable {
 
     public ArrayList<FunZone> getList() {
         return list;
+    }
+
+    public FunZone getResult() {
+        return result;
     }
 }

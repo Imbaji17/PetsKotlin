@@ -195,7 +195,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
                 this.startActivity(mIntent)
             }
             1 -> {
-//                FunZoneActivity.startActivity(this)
+                FunZoneActivity.startActivity(this)
             }
             2 -> {
 //                val mIntent = Intent(this, ProfileActivity::class.java)

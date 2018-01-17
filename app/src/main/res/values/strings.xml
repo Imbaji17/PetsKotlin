@@ -184,5 +184,9 @@
     <string name="add_image_video">Add image or video</string>
     <string name="crate_post">Crate Post</string>
     <string name="enter_your_comment">Enter your Comment</string>
-
+    <string name="add_video">Add Video</string>
+    <string name="please_enter_title">Please enter title</string>
+    <string name="please_enter_contact_person">Please enter contact person</string>
+    <string name="please_enter_contact_number">Please enter contact number</string>
+    <string name="please_enter_description">Please enter description</string>
 </resources>

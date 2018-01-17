@@ -7,10 +7,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import com.google.gson.GsonBuilder
 import com.pets.app.R
+import com.pets.app.activities.adoption.AddAdoptionActivity
+import com.pets.app.activities.adoption.FilterAdoptionActivity
 import com.pets.app.adapters.FunZoneAdapter
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.Constants
@@ -45,6 +49,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
 
     private var nextOffset = 0
     private var loading = true
+    private val RC_POST: Int = 2
 
     companion object {
         private val TAG = FunZoneActivity::class.java.simpleName
@@ -159,5 +164,20 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
         viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(llForNoResult)
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_post, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val id = item!!.itemId
+        when (id) {
+            R.id.action_post -> {
+                AddFunZoneActivity.startActivity(this, RC_POST)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
 }
