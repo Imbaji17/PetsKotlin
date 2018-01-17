@@ -134,7 +134,7 @@
     <string name="please_select_birthdate">Please select birthdate</string>
     <string name="please_select_gender">Please select gender</string>
     <string name="please_enter_pet_description">Please enter pet description</string>
-
+    <string name="please_select_pet_type_first">Please select pet type first</string>
 
     <string name="fun_zone">Fun Zone</string>
     <string name="find_match">Find Match</string>

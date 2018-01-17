@@ -16,10 +16,13 @@ import com.pets.app.adapters.PhotosAdapter
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.ImageSetter
 import com.pets.app.interfaces.AddPhotoCallback
+import com.pets.app.model.Breed
+import com.pets.app.model.PetsType
 import com.pets.app.model.`object`.PhotosInfo
 import com.pets.app.utilities.DateFormatter
 import com.pets.app.utilities.DatePickerDialogFragment
 import com.pets.app.utilities.ImagePicker
+import com.pets.app.utilities.Utils
 import java.io.File
 
 class AddPetActivity : ImagePicker(), View.OnClickListener {
@@ -39,6 +42,8 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
     private var selectedType: Int = 0
     private val RC_BREED: Int = 200
     private val RC_TYPE: Int = 100
+    private var petsTypeId: String? = ""
+    private var breedId: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,9 +126,14 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 this.startActivityForResult(mIntent, RC_TYPE)
             }
             R.id.edtBreed -> {
-                val mIntent = Intent(this, SelectTypeActivity::class.java)
-                mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, false)
-                this.startActivityForResult(mIntent, RC_BREED)
+                if (petsTypeId!!.isNotEmpty()) {
+                    val mIntent = Intent(this, SelectTypeActivity::class.java)
+                    mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, false)
+                    mIntent.putExtra(ApplicationsConstants.DATA, petsTypeId)
+                    this.startActivityForResult(mIntent, RC_BREED)
+                } else {
+                    Utils.showToast(this.getString(R.string.please_select_pet_type_first))
+                }
             }
             R.id.edtDOB -> {
                 DatePickerDialogFragment(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
@@ -169,10 +179,22 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 }
             }
             RC_TYPE -> {
-
+                if (data != null) {
+                    val petsType = data.getSerializableExtra(ApplicationsConstants.DATA) as PetsType
+                    if (petsType != null) {
+                        petsTypeId = petsType.petsTypeId
+                        edtType!!.setText(petsType.typeName)
+                    }
+                }
             }
             RC_BREED -> {
-
+                if (data != null) {
+                    val breed = data.getSerializableExtra(ApplicationsConstants.DATA) as Breed
+                    if (breed != null) {
+                        breedId = breed.breed_id
+                        edtBreed!!.setText(breed.breed_name)
+                    }
+                }
             }
         }
     }

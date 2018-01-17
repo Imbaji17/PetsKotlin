@@ -34,7 +34,7 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
     private var mRecyclerView: RecyclerView? = null
     private var mList: ArrayList<Any>? = null
     private var adapter: CommonAdapter? = null
-    private val petTypeId: String? = "1"
+    private var petTypeId: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +65,7 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
                 viewFlipper?.displayedChild = 2
             }
         } else {
+            petTypeId = intent.getStringExtra(ApplicationsConstants.DATA)
             initializeToolbar(this.getString(R.string.breed))
             if (Utils.isOnline(this)) {
                 getPetBreedApiCall()
