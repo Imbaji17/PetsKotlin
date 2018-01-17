@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -147,6 +148,13 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 showTakeImagePopup()
             }
             R.id.btnAddPet -> {
+                if (checkValidations()) {
+                    if (Utils.isOnline(this)) {
+                        addPetApiCall()
+                    } else {
+                        Utils.showToast(this.getString(R.string.device_is_offline))
+                    }
+                }
             }
         }
     }
@@ -197,5 +205,36 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun checkValidations(): Boolean {
+
+        if (TextUtils.isEmpty(edtName?.text.toString().trim())) {
+            edtName?.error = this.getString(R.string.please_enter_pet_name)
+            edtName?.requestFocus()
+            return false
+        } else if (TextUtils.isEmpty(edtType?.text.toString().trim())) {
+            edtType?.error = this.getString(R.string.please_select_pet_type)
+            edtType?.requestFocus()
+            return false
+        } else if (!Utils.isEmailValid(edtBreed?.text.toString().trim())) {
+            edtBreed?.error = this.getString(R.string.please_select_breed)
+            edtBreed?.requestFocus()
+            return false
+        } else if (TextUtils.isEmpty(edtDOB?.text.toString().trim())) {
+            edtDOB?.error = this.getString(R.string.please_select_dob)
+            edtDOB?.requestFocus()
+            return false
+        } else if (TextUtils.isEmpty(edtDesc?.text.toString().trim())) {
+            edtDesc?.error = this.getString(R.string.please_enter_pet_description)
+            edtDesc?.requestFocus()
+            return false
+        }
+        return true
+    }
+
+    private fun addPetApiCall() {
+
+
     }
 }
