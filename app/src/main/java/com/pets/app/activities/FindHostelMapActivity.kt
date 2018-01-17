@@ -116,12 +116,12 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
                     }
                 }
 
-                googleMap.setOnInfoWindowClickListener(GoogleMap.OnInfoWindowClickListener { marker ->
-                    //                    val k = Integer.parseInt(marker.title)
+//                googleMap.setOnInfoWindowClickListener(GoogleMap.OnInfoWindowClickListener { marker ->
+//                                        val k = Integer.parseInt(marker.title)
 //                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=" + Utils.getDataFromPreferences(ApplicationsConstants.LoginDetails.LATITUDE, "")
 //                            + "," + Utils.getDataFromPreferences(ApplicationsConstants.LoginDetails.LONGITUDE, "") + "&daddr=" + apiResponse.get(k).geometry.location.lat + "," + apiResponse.get(k).geometry.location.lng))
 //                    startActivity(browserIntent)
-                })
+//                })
             }
         }
     }
