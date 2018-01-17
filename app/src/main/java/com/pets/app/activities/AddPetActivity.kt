@@ -14,16 +14,16 @@ import android.widget.ImageView
 import android.widget.RadioGroup
 import com.pets.app.R
 import com.pets.app.adapters.PhotosAdapter
+import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
+import com.pets.app.common.Constants
 import com.pets.app.common.ImageSetter
 import com.pets.app.interfaces.AddPhotoCallback
 import com.pets.app.model.Breed
 import com.pets.app.model.PetsType
 import com.pets.app.model.`object`.PhotosInfo
-import com.pets.app.utilities.DateFormatter
-import com.pets.app.utilities.DatePickerDialogFragment
-import com.pets.app.utilities.ImagePicker
-import com.pets.app.utilities.Utils
+import com.pets.app.utilities.*
+import kotlinx.android.synthetic.main.activity_add_pet.*
 import java.io.File
 
 class AddPetActivity : ImagePicker(), View.OnClickListener {
@@ -45,6 +45,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
     private val RC_TYPE: Int = 100
     private var petsTypeId: String? = ""
     private var breedId: String? = ""
+    private var certificateFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -167,22 +168,25 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                     val result = com.theartofdev.edmodo.cropper.CropImage.getActivityResult(data)
                     val mCurrentPhotoPath = result.uri.path
                     val bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath)
-                    updatedImageFile = File(mCurrentPhotoPath)
-                    if (updatedImageFile.exists()) {
-                        imageFlag = 1
-                        if (selectedType == 1) {
+                    if (selectedType == 1) {
+                        updatedImageFile = File(mCurrentPhotoPath)
+                        if (updatedImageFile.exists()) {
                             ImageSetter.loadRoundedImage(this, updatedImageFile, R.drawable.profile, imgPet)
-                        } else if (selectedType == 2) {
-                            val photo = PhotosInfo()
-                            photo.url = mCurrentPhotoPath
-                            photoList?.size?.minus(1)?.let { photoList!!.add(it, photo) }
-                            if (photoList!!.size >= 3) {
-                                photoList!!.removeAt(photoList!!.size - 1)
-                            }
-                            adapter!!.notifyDataSetChanged()
-                        } else {
-
                         }
+                    } else if (selectedType == 2) {
+                        val photo = PhotosInfo()
+                        photo.url = mCurrentPhotoPath
+                        photoList?.size?.minus(1)?.let { photoList!!.add(it, photo) }
+                        if (photoList!!.size >= 3) {
+                            photoList!!.removeAt(photoList!!.size - 1)
+                        }
+                        adapter!!.notifyDataSetChanged()
+                    } else {
+                        certificateFile = File(mCurrentPhotoPath)
+                        tvUploadUrl.text = mCurrentPhotoPath
+                        tvUploadUrl.visibility = View.VISIBLE
+                        val path = mCurrentPhotoPath.split("/".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
+                        tvUploadUrl.text = path[path.size - 1]
                     }
                 }
             }
@@ -234,6 +238,19 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
     }
 
     private fun addPetApiCall() {
+
+        var petName = edtName!!.text.toString().trim()
+        var dob = DateFormatter.getFormattedDate(DateFormatter.dd_MMM_yyyy_str, edtDOB!!.text.toString().trim(), DateFormatter.yyyy_MM_dd_str)
+        var desc = edtDesc!!.text.toString().trim()
+        var gender = Constants.MALE
+        if (radioGender?.checkedRadioButtonId == R.id.rbFemale) {
+            gender = Constants.FEMALE
+        }
+
+        var actionName = "add_pets"
+        var userId = AppPreferenceManager.getUserID()
+        var timestamp = TimeStamp.getTimeStamp()
+        var key = TimeStamp.getMd5(timestamp + userId + Constants.TIME_STAMP_KEY)
 
 
     }

@@ -65,7 +65,7 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private var petsTypeId: String? = ""
-    private var breedId: String? = "";
+    private var breedId: String? = ""
     private val RC_BREED: Int = 101
     private val RC_TYPE: Int = 102
 
@@ -120,7 +120,7 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
     }
 
     private fun setPhotoAdapter() {
-        photoList!!.add("")
+        photoList.add("")
         val mGridLayoutManager = GridLayoutManager(this, 3)
         mGridLayoutManager.orientation = GridLayoutManager.VERTICAL
         recyclerView?.layoutManager = mGridLayoutManager
@@ -134,16 +134,16 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
             }
 
             override fun onDeleteClick(position: Int) {
-                if (position != -1 && position < photoList!!.size) {
-                    val photo = photoList!!.get(position) as PhotosInfo
-                    if (photoList!!.get(photoList!!.size - 1) is PhotosInfo) {
-                        photoList!!.add(getString(R.string.add_photo))
+                if (position != -1 && position < photoList.size) {
+                    val photo = photoList.get(position) as PhotosInfo
+                    if (photoList.get(photoList.size - 1) is PhotosInfo) {
+                        photoList.add(getString(R.string.add_photo))
                     }
                     if (photo.url.contains("http")) {
 //                        if (Utils.isOnline(this@AddPetActivity))
 //                            deleteImageApiCall(position)
                     } else {
-                        photoList!!.removeAt(position)
+                        photoList.removeAt(position)
                         adapter!!.notifyDataSetChanged()
                     }
                 }
@@ -176,9 +176,14 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
                 this.startActivityForResult(mIntent, RC_TYPE)
             }
             R.id.rlBreed -> {
-                val mIntent = Intent(this, SelectTypeActivity::class.java)
-                mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, false)
-                this.startActivityForResult(mIntent, RC_BREED)
+                if (petsTypeId!!.isNotEmpty()) {
+                    val mIntent = Intent(this, SelectTypeActivity::class.java)
+                    mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, false)
+                    mIntent.putExtra(ApplicationsConstants.DATA, petsTypeId)
+                    this.startActivityForResult(mIntent, RC_BREED)
+                } else {
+                    Utils.showToast(this.getString(R.string.please_select_pet_type_first))
+                }
             }
         }
     }
@@ -229,9 +234,9 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
                     } else {
                         val photo = PhotosInfo()
                         photo.url = mCurrentPhotoPath
-                        photoList?.size?.minus(1)?.let { photoList!!.add(it, photo) }
-                        if (photoList!!.size >= 3) {
-                            photoList!!.removeAt(photoList!!.size - 1)
+                        photoList.size.minus(1).let { photoList.add(it, photo) }
+                        if (photoList.size >= 3) {
+                            photoList.removeAt(photoList.size - 1)
                         }
                         adapter!!.notifyDataSetChanged()
                     }
@@ -246,7 +251,7 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
                     val latLng = place.latLng
                     latitude = latLng.latitude
                     longitude = latLng.longitude
-                    tvAddress?.setText(place.address)
+                    tvAddress?.text = place.address
                     Logger.errorLog(place.id + "\n" + place.placeTypes + "\n" + place.address + "\n" + place.locale)
                 } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                     val status = PlaceAutocomplete.getStatus(this, data)
@@ -259,7 +264,7 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
 
             RC_TYPE -> {
                 if (data != null) {
-                    val petsType = data!!.getSerializableExtra(ApplicationsConstants.DATA) as PetsType
+                    val petsType = data.getSerializableExtra(ApplicationsConstants.DATA) as PetsType
                     if (petsType != null) {
                         petsTypeId = petsType.petsTypeId
                         tvType!!.text = petsType.typeName
@@ -268,7 +273,7 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
             }
             RC_BREED -> {
                 if (data != null) {
-                    val breed = data!!.getSerializableExtra(ApplicationsConstants.DATA) as Breed
+                    val breed = data.getSerializableExtra(ApplicationsConstants.DATA) as Breed
                     if (breed != null) {
                         breedId = breed.breed_id
                         tvBreed!!.text = breed.breed_name
@@ -344,7 +349,7 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
                                 multipartEntity.addPart("profile_image", FileBody(updatedImageFile, "userFile1/jpg"))
                             multipartEntity.addPart("age", StringBody(age))
                             multipartEntity.addPart("gender", StringBody(gender))
-                            response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName!!, multipartEntity)
+                            response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName, multipartEntity)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -394,14 +399,14 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
                     override fun onResponse(call: Call<AdoptionResponse>?, response: Response<AdoptionResponse>?) {
                         hideProgressBar()
                         if (response != null) {
-                            if (response.body() != null && response.isSuccessful()) {
+                            if (response.body() != null && response.isSuccessful) {
                                 uploadImages(response.body().result)
                             } else if (response.code() == 403) {
                                 val gson = GsonBuilder().create()
                                 val mError: NormalResponse
                                 try {
                                     mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-                                    Utils.showToast("" + mError.getMessage())
+                                    Utils.showToast("" + mError.message)
                                 } catch (e: IOException) {
                                     e.printStackTrace()
                                 }
@@ -464,7 +469,7 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
                     multipartEntity.addPart("type_id", StringBody(typeId))
                     if (file != null)
                         multipartEntity.addPart("type_image", FileBody(file, "userFile1/jpg"))
-                    response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName!!, multipartEntity)
+                    response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName, multipartEntity)
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }

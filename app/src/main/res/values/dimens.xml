@@ -15,6 +15,7 @@
     <dimen name="text_size_20">20sp</dimen>
 
     <dimen name="dimen_size_0.5px">0.5px</dimen>
+    <dimen name="dimen_size_1">1dp</dimen>
     <dimen name="dimen_size_2">2dp</dimen>
     <dimen name="dimen_size_5">5dp</dimen>
     <dimen name="dimen_size_10">10dp</dimen>

@@ -21,8 +21,9 @@ public class DateFormatter {
     public static final SimpleDateFormat yyyy_MM_dd = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     public static final String yyyy_mm_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
     public static final String REVIEW_DATE_FORMAT = "dd/MM/yyyy";
-    public static final String dd_MMM_yyyy_str = "dd MMM yyyy";
+    public static final String dd_MMM_yyyy_str = "dd MMM, yyyy";
     public static final String dd_MM_yyyy_str = "dd-MM-yyyy";
+    public static final String yyyy_MM_dd_str = "yyyy-MM-dd";
 
     private static final String TAG = DateFormatter.class.getName();
 

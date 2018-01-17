@@ -18,5 +18,7 @@ public class Constants {
     public static final String NO = "N";
     public static final String TERMS_AND_CONDITIONS_URL = "https://www.bing.com";
     public static final String PRIVACY_POLICY = "https://www.google.com";
+    public static final String MALE = "M";
+    public static final String FEMALE = "F";
     public static boolean isInDebugMode = true;
 }
