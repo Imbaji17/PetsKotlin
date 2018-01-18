@@ -320,6 +320,5 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         } else {
             viewFlipper?.displayedChild = 0
         }
-
     }
 }
