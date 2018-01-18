@@ -26,14 +26,20 @@ import com.pets.app.model.PetResponse
 import com.pets.app.model.PetsType
 import com.pets.app.model.`object`.PetDetails
 import com.pets.app.model.`object`.PhotosInfo
+import com.pets.app.model.request.PetUpdateRequest
 import com.pets.app.utilities.*
+import com.pets.app.webservice.RestClient
 import com.pets.app.webservice.UploadImage
+import com.pets.app.webservice.WebServiceBuilder
 import khandroid.ext.apache.http.entity.mime.HttpMultipartMode
 import khandroid.ext.apache.http.entity.mime.MultipartEntity
 import khandroid.ext.apache.http.entity.mime.content.FileBody
 import khandroid.ext.apache.http.entity.mime.content.StringBody
 import kotlinx.android.synthetic.main.activity_add_pet.*
 import kotlinx.android.synthetic.main.app_toolbar.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.io.IOException
 
@@ -160,6 +166,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             for (obj in petObj!!.petImages) {
                 val photo = PhotosInfo()
                 photo.url = obj.pet_image
+                photo.imageId = obj.pet_image_id
                 photoList!!.add(photo)
             }
         } else {
@@ -208,10 +215,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             R.id.btnAddPet -> {
                 if (checkValidations()) {
                     if (Utils.isOnline(this)) {
-                        if (petObj == null) {
-                            addPetApiCall()
-                        } else {
-                        }
+                        addUpdatePetApiCall()
                     } else {
                         Utils.showToast(this.getString(R.string.device_is_offline))
                     }
@@ -295,14 +299,19 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             edtDesc?.error = this.getString(R.string.please_enter_pet_description)
             edtDesc?.requestFocus()
             return false
-        } else if (updatedImageFile == null) {
-            Utils.showToast(this.getString(R.string.please_add_pet_image))
-            return false
         }
+
+        if (petObj == null) {
+            if (updatedImageFile == null) {
+                Utils.showToast(this.getString(R.string.please_add_pet_image))
+                return false
+            }
+        }
+
         return true
     }
 
-    private fun addPetApiCall() {
+    private fun addUpdatePetApiCall() {
 
         val petName = edtName!!.text.toString().trim()
         val dob = DateFormatter.getFormattedDate(DateFormatter.dd_MMM_yyyy_str, edtDOB!!.text.toString().trim(), DateFormatter.yyyy_MM_dd_str)
@@ -330,6 +339,8 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                     try {
                         val multipartEntity = MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
                         multipartEntity.addPart("user_id", StringBody(userId!!))
+                        if (petObj != null)
+                            multipartEntity.addPart("pet_id", StringBody(petObj!!.pet_id))
                         multipartEntity.addPart("key", StringBody(key!!))
                         multipartEntity.addPart("timestamp", StringBody(timestamp!!))
                         multipartEntity.addPart("pet_name", StringBody(petName))
@@ -362,6 +373,42 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                     }
                 }
             }.execute()
+        } else {
+
+            val request = PetUpdateRequest()
+            request.setUserId(userId)
+            if (petObj != null)
+                request.setPet_id(petObj!!.pet_id)
+            request.setTimestamp(timestamp)
+            request.setKey(key)
+            request.setPet_name(petName)
+            request.setPets_type_id(petsTypeId)
+            request.setBreed_id(breedId)
+            request.setDob(dob)
+            request.setGender(gender)
+            request.setDescription(desc)
+
+            showProgressBar()
+            val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+            val call = apiClient.addUpdatePet(request)
+            call.enqueue(object : Callback<PetResponse> {
+                override fun onResponse(call: Call<PetResponse>, response: Response<PetResponse>?) {
+                    hideProgressBar()
+                    if (response != null) {
+                        if (response.isSuccessful) {
+                            if (response.body() != null && response.body().result != null) {
+                                uploadImages(response.body().result)
+                            }
+                        } else {
+                            Utils.showErrorToast(response.errorBody())
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<PetResponse>, t: Throwable) {
+                    hideProgressBar()
+                }
+            })
         }
     }
 
@@ -371,8 +418,10 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             for (i in photoList!!.indices) {
                 val obj = photoList!!.get(index = i)
                 if (obj is PhotosInfo) {
-                    val file = File(obj.url)
-                    addImages(petDetails!!.pet_id, file)
+                    if (!obj.url.contains("http")) {
+                        val file = File(obj.url)
+                        addImages(petDetails!!.pet_id, file)
+                    }
                 }
             }
         }
@@ -426,6 +475,36 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
 
     private fun deletePetImageApiCall(photo: PhotosInfo, position: Int) {
 
+        val userId = AppPreferenceManager.getUserID()
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + userId + petObj!!.pet_id + photo.imageId + Constants.TIME_STAMP_KEY)
 
+        showProgressBar()
+        val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = apiClient.deletePetImage(userId, petObj!!.pet_id, photo.imageId, timeStamp, key)
+        call.enqueue(object : Callback<PetResponse> {
+            override fun onResponse(call: Call<PetResponse>, response: Response<PetResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            checkResponse(response.body(), position)
+                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<PetResponse>, t: Throwable) {
+                hideProgressBar()
+            }
+        })
+    }
+
+    private fun checkResponse(response: PetResponse?, position: Int) {
+        Utils.showToast(this.getString(R.string.image_deleted_successfully))
+        photoList!!.removeAt(position)
+        adapter!!.notifyDataSetChanged()
     }
 }

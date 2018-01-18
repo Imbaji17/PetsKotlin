@@ -196,4 +196,5 @@
     <string name="delete">Delete</string>
     <string name="edit_post">Edit Post</string>
     <string name="edit_pet">Edit Pet</string>
+    <string name="image_deleted_successfully">Image deleted successfully</string>
 </resources>
