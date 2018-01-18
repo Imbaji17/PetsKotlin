@@ -2,9 +2,7 @@ package com.pets.app.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Application
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
@@ -24,9 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
@@ -35,7 +31,6 @@ import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.FindHostel
 import com.pets.app.model.FindHostelResponse
-import com.pets.app.model.NormalResponse
 import com.pets.app.utilities.Logger
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
@@ -44,7 +39,6 @@ import com.pets.app.webservice.WebServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 import java.util.*
 
 
@@ -75,7 +69,7 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
         initializeToolbar(getString(R.string.find_hostel))
         init()
         initView()
-        invalidateOptionsMenu();
+        invalidateOptionsMenu()
         viewFlipper!!.displayedChild = 0
 
     }
@@ -227,19 +221,12 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
             call.enqueue(object : Callback<FindHostelResponse> {
                 override fun onResponse(call: Call<FindHostelResponse>, response: Response<FindHostelResponse>?) {
                     if (response != null) {
-                        if (response.isSuccessful()) {
+                        if (response.isSuccessful) {
                             if (response.body() != null && response.body().list != null) {
-                                listItems.addAll(response.body().list);
+                                listItems.addAll(response.body().list)
                             }
-                        } else if (response.code() == 403) {
-                            val gson = GsonBuilder().create()
-                            val mError: NormalResponse
-                            try {
-                                mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-//                                Utils.showToast(mActivity, "" + mError.getMessage())
-                            } catch (e: IOException) {
-                                e.printStackTrace()
-                            }
+                        } else {
+//                            Utils.showErrorToast(response.errorBody())
                         }
                     }
                     mapFragment!!.getMapAsync(this@FindHostelMapActivity)

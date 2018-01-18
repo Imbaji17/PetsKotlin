@@ -5,7 +5,6 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.Constants
@@ -20,7 +19,6 @@ import kotlinx.android.synthetic.main.activity_change_password.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
 class ChangePasswordActivity : BaseActivity(), View.OnClickListener {
 
@@ -117,14 +115,7 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener {
                         Utils.showToast(response.body().message)
                         this@ChangePasswordActivity.finish()
                     } else {
-                        val gson = GsonBuilder().create()
-                        val mError: NormalResponse
-                        try {
-                            mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-                            Utils.showToast("" + mError.message)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }
