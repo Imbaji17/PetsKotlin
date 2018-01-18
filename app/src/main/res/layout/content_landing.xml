@@ -10,77 +10,131 @@
     tools:context="com.pets.app.initialsetup.LandingActivity"
     tools:showIn="@layout/app_bar_landing">
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/mainLayout"
+    <ViewFlipper
+        android:id="@+id/mainViewFlipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_size_200">
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </android.support.v4.view.ViewPager>
-
-                <com.viewpagerindicator.CirclePageIndicator
-                    android:id="@+id/cvp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_margin="@dimen/dimen_size_5"
-                    android:background="@drawable/rec_transparent_black"
-                    android:padding="@dimen/dimen_size_5"
-                    app:fillColor="@color/green"
-                    app:pageColor="@color/white"
-                    app:radius="@dimen/dimen_size_5"
-                    app:strokeColor="@android:color/transparent" />
-
-            </RelativeLayout>
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/mainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/blue_wood"
-                android:padding="@dimen/dimen_size_10">
+                android:layout_height="match_parent"
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvName"
-                    style="@style/TextViewStyle"
-                    android:layout_width="0dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="@string/name"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_14" />
-
-                <RelativeLayout
-                    android:layout_width="0dp"
+                <ViewFlipper
+                    android:id="@+id/viewFlipper"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:background="@color/white_fade">
 
-                    <TextView
-                        android:id="@+id/tvBirthDate"
-                        style="@style/TextViewStyle"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/app_name"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_14" />
-                </RelativeLayout>
+                    <LinearLayout
+                        android:id="@+id/linAddPet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dimen_size_30">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/add_pet1" />
+
+                        <TextView
+                            style="@style/TextViewStyle"
+                            android:padding="@dimen/dimen_size_10"
+                            android:text="@string/add_pet"
+                            android:textAllCaps="true" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen_size_200">
+
+                            <android.support.v4.view.ViewPager
+                                android:id="@+id/viewPager"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                            </android.support.v4.view.ViewPager>
+
+                            <com.viewpagerindicator.CirclePageIndicator
+                                android:id="@+id/cvp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_margin="@dimen/dimen_size_5"
+                                android:background="@drawable/rec_transparent_black"
+                                android:paddingBottom="@dimen/dimen_size_5"
+                                android:paddingEnd="@dimen/dimen_size_5"
+                                android:paddingLeft="@dimen/dimen_size_10"
+                                android:paddingRight="@dimen/dimen_size_5"
+                                android:paddingStart="@dimen/dimen_size_10"
+                                android:paddingTop="@dimen/dimen_size_5"
+                                app:fillColor="@color/green"
+                                app:pageColor="@color/white"
+                                app:radius="@dimen/dimen_size_5"
+                                app:strokeColor="@android:color/transparent" />
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/blue_wood"
+                            android:padding="@dimen/dimen_size_10">
+
+                            <TextView
+                                android:id="@+id/tvName"
+                                style="@style/TextViewStyle"
+                                android:layout_width="0dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:text="@string/name"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_14" />
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/tvBirthDate"
+                                    style="@style/TextViewStyle"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="center_vertical"
+                                    android:text="@string/app_name"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/text_size_14" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </ViewFlipper>
+
+                <include layout="@layout/app_recycler_view" />
             </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
 
-            <include layout="@layout/app_recycler_view" />
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        <include layout="@layout/app_no_internet_connection" />
+
+    </ViewFlipper>
 </LinearLayout>

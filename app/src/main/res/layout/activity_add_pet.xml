@@ -166,6 +166,26 @@
                     android:textAllCaps="false" />
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/tvUploadUrl"
+                style="@style/TextViewStyle"
+                android:layout_marginLeft="@dimen/dimen_size_5"
+                android:layout_marginStart="@dimen/dimen_size_5"
+                android:layout_marginTop="@dimen/dimen_size_5"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_12"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_size_1"
+                android:layout_marginLeft="@dimen/dimen_size_5"
+                android:layout_marginRight="@dimen/dimen_size_5"
+                android:layout_marginTop="@dimen/dimen_size_15"
+                android:background="@color/dark_grey" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

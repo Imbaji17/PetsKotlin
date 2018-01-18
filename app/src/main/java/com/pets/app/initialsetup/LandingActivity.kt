@@ -13,21 +13,32 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import com.google.gson.GsonBuilder
 import com.pets.app.R
-import com.pets.app.activities.*
+import com.pets.app.activities.AddPetActivity
+import com.pets.app.activities.FindHostelActivity
+import com.pets.app.activities.FunZoneActivity
+import com.pets.app.activities.ProfileActivity
 import com.pets.app.activities.adoption.AdoptionListActivity
+import com.pets.app.adapters.LandingImageAdapter
 import com.pets.app.adapters.LandingMenuAdapter
-import com.pets.app.common.AppPreferenceManager
-import com.pets.app.common.DialogManager
-import com.pets.app.common.ImageSetter
+import com.pets.app.common.*
 import com.pets.app.interfaces.SimpleItemClickListener
+import com.pets.app.model.NormalResponse
+import com.pets.app.model.PetResponse
 import com.pets.app.model.`object`.LandingDetails
+import com.pets.app.utilities.TimeStamp
+import com.pets.app.utilities.Utils
+import com.pets.app.webservice.RestClient
+import com.pets.app.webservice.WebServiceBuilder
 import com.viewpagerindicator.CirclePageIndicator
 import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.app_toolbar.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.IOException
 
 class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SimpleItemClickListener {
 
@@ -36,6 +47,10 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
     private var imgProfile: ImageView? = null
     private var linHeader: LinearLayout? = null
     /*Landing*/
+    private var btnRetry: Button? = null
+    private var mainViewFlipper: ViewFlipper? = null
+    private var viewFlipper: ViewFlipper? = null
+    private var linAddPet: LinearLayout? = null
     private var viewPager: ViewPager? = null
     private var pageIndicator: CirclePageIndicator? = null
     private var tvName: TextView? = null
@@ -50,6 +65,16 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         initializeToolbar("")
         setUpDrawerMenu()
         initView()
+        checkValidations()
+    }
+
+    private fun checkValidations() {
+
+        if (Utils.isOnline(this)) {
+            myPetsApiCall()
+        } else {
+            mainViewFlipper?.displayedChild = 2
+        }
     }
 
     private fun setUpDrawerMenu() {
@@ -69,9 +94,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         tvUserName = headerView.findViewById(R.id.tvName)
         imgProfile = headerView.findViewById(R.id.imageView)
         linHeader = nav_view.findViewById(R.id.nav_header)
-
-        header?.setOnClickListener(this)
-        imgHeader?.setOnClickListener(this)
+        linAddPet = findViewById(R.id.linAddPet)
 
         /*Setting Data To View*/
         val user = AppPreferenceManager.getUser()
@@ -82,11 +105,14 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             tvUserName?.text = user.name
         }
 
+        btnRetry = findViewById(R.id.btnRetry)
+        mainViewFlipper = findViewById(R.id.mainViewFlipper)
+        viewFlipper = findViewById(R.id.viewFlipper)
         viewPager = findViewById(R.id.viewPager)
+        pageIndicator = findViewById(R.id.cvp)
         tvName = findViewById(R.id.tvName)
         tvBirthDate = findViewById(R.id.tvBirthDate)
         mRecyclerView = findViewById(R.id.recyclerView)
-
 
         val mGridLayoutManager = GridLayoutManager(this, 3)
         mGridLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -108,9 +134,10 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         mRecyclerView?.adapter = adapter
         adapter.setItemClick(this)
 
-//        val adapter = ImageAdapter(this,)
-//        viewPager?.adapter = adapter
-//        pageIndicator?.setViewPager(viewPager)
+        header?.setOnClickListener(this)
+        imgHeader?.setOnClickListener(this)
+        linAddPet?.setOnClickListener(this)
+        btnRetry?.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -124,6 +151,13 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             R.id.imgHeader -> {
                 val mIntent = Intent(this, AddPetActivity::class.java)
                 this.startActivity(mIntent)
+            }
+            R.id.linAddPet -> {
+                val mIntent = Intent(this, AddPetActivity::class.java)
+                this.startActivity(mIntent)
+            }
+            R.id.btnRetry -> {
+                checkValidations()
             }
         }
     }
@@ -185,7 +219,6 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         return true
     }
 
-
     override fun onItemClick(`object`: Any?) {
 
         when (`object` as Int) {
@@ -225,6 +258,77 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 //                val mIntent = Intent(this, ProfileActivity::class.java)
 //                this.startActivity(mIntent)
             }
+        }
+    }
+
+    private fun myPetsApiCall() {
+
+        val offset = "0"
+        val userId = AppPreferenceManager.getUserID()
+        val language = Enums.Language.EN.name.toUpperCase()
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + userId + Constants.TIME_STAMP_KEY)
+
+        showProgressBar()
+        mainViewFlipper?.displayedChild = 0
+        val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = apiClient.myPetsList(userId, timeStamp, key, language, offset)
+        call.enqueue(object : Callback<PetResponse> {
+            override fun onResponse(call: Call<PetResponse>, response: Response<PetResponse>?) {
+                mainViewFlipper?.displayedChild = 1
+                hideProgressBar()
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            checkResponse(response.body())
+                        }
+                    } else if (response.code() == 403) {
+                        val gson = GsonBuilder().create()
+                        val mError: NormalResponse
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
+//                                Utils.showToast(mActivity, "" + mError.getMessage())
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<PetResponse>, t: Throwable) {
+                mainViewFlipper?.displayedChild = 1
+                hideProgressBar()
+            }
+        })
+    }
+
+    private fun checkResponse(petResponse: PetResponse?) {
+
+        if (petResponse!!.list != null && petResponse.list.isNotEmpty()) {
+            viewFlipper?.displayedChild = 1
+
+            val adapter = LandingImageAdapter(this, petResponse.list)
+            viewPager?.adapter = adapter
+            pageIndicator?.setViewPager(viewPager)
+
+            tvName?.text = petResponse.list[0].pet_name
+            tvBirthDate?.text = this.getString(R.string.birthday).plus(petResponse.list[0].dob)
+
+            viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {
+                }
+
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                }
+
+                override fun onPageSelected(position: Int) {
+                    tvName?.text = petResponse.list[position].pet_name
+                    tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(petResponse.list[position].dob)
+                }
+            })
+
+        } else {
+            viewFlipper?.displayedChild = 0
         }
 
     }

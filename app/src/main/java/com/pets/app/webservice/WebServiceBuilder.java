@@ -8,6 +8,7 @@ import com.pets.app.model.FunZone;
 import com.pets.app.model.FunZoneResponse;
 import com.pets.app.model.LoginResponse;
 import com.pets.app.model.NormalResponse;
+import com.pets.app.model.PetResponse;
 import com.pets.app.model.PetsTypeResponse;
 import com.pets.app.model.ReviewsResponse;
 import com.pets.app.model.request.FavouriteHostel;
@@ -70,6 +71,9 @@ public class WebServiceBuilder {
         @FormUrlEncoded
         @POST("change_mobile/")
         Call<LoginResponse> changeMobile(@Field("user_id") String user_id, @Field("phone_code") String phone_code, @Field("phone_number") String phone_number, @Field("timestamp") String timestamp, @Field("key") String key);
+
+        @GET("myPetsList")
+        Call<PetResponse> myPetsList(@Query("user_id") String user_id, @Query("timestamp") String timestamp, @Query("key") String key, @Query("language_code") String language_code, @Query("next_offset") String next_offset);
 
         //http://34.199.202.75/pets/api/PetsApi/hostel_list?key=6b88b734ebb2c9f02ffe2cfdc1f40020&keyword=&language_code=EN&lat=0.000000&lng=0.000000&next_offset=0&timestamp=1515495550497.3&user_id=10
         @GET("hostel_list")

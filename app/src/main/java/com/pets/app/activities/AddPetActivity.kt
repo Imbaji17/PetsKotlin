@@ -3,6 +3,7 @@ package com.pets.app.activities
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,17 +15,26 @@ import android.widget.ImageView
 import android.widget.RadioGroup
 import com.pets.app.R
 import com.pets.app.adapters.PhotosAdapter
+import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
+import com.pets.app.common.Constants
 import com.pets.app.common.ImageSetter
 import com.pets.app.interfaces.AddPhotoCallback
 import com.pets.app.model.Breed
+import com.pets.app.model.ImageResponse
+import com.pets.app.model.PetResponse
 import com.pets.app.model.PetsType
+import com.pets.app.model.`object`.PetDetails
 import com.pets.app.model.`object`.PhotosInfo
-import com.pets.app.utilities.DateFormatter
-import com.pets.app.utilities.DatePickerDialogFragment
-import com.pets.app.utilities.ImagePicker
-import com.pets.app.utilities.Utils
+import com.pets.app.utilities.*
+import com.pets.app.webservice.UploadImage
+import khandroid.ext.apache.http.entity.mime.HttpMultipartMode
+import khandroid.ext.apache.http.entity.mime.MultipartEntity
+import khandroid.ext.apache.http.entity.mime.content.FileBody
+import khandroid.ext.apache.http.entity.mime.content.StringBody
+import kotlinx.android.synthetic.main.activity_add_pet.*
 import java.io.File
+import java.io.IOException
 
 class AddPetActivity : ImagePicker(), View.OnClickListener {
 
@@ -45,6 +55,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
     private val RC_TYPE: Int = 100
     private var petsTypeId: String? = ""
     private var breedId: String? = ""
+    private var certificateFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -167,22 +178,25 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                     val result = com.theartofdev.edmodo.cropper.CropImage.getActivityResult(data)
                     val mCurrentPhotoPath = result.uri.path
                     val bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath)
-                    updatedImageFile = File(mCurrentPhotoPath)
-                    if (updatedImageFile.exists()) {
-                        imageFlag = 1
-                        if (selectedType == 1) {
+                    if (selectedType == 1) {
+                        updatedImageFile = File(mCurrentPhotoPath)
+                        if (updatedImageFile.exists()) {
                             ImageSetter.loadRoundedImage(this, updatedImageFile, R.drawable.profile, imgPet)
-                        } else if (selectedType == 2) {
-                            val photo = PhotosInfo()
-                            photo.url = mCurrentPhotoPath
-                            photoList?.size?.minus(1)?.let { photoList!!.add(it, photo) }
-                            if (photoList!!.size >= 3) {
-                                photoList!!.removeAt(photoList!!.size - 1)
-                            }
-                            adapter!!.notifyDataSetChanged()
-                        } else {
-
                         }
+                    } else if (selectedType == 2) {
+                        val photo = PhotosInfo()
+                        photo.url = mCurrentPhotoPath
+                        photoList?.size?.minus(1)?.let { photoList!!.add(it, photo) }
+                        if (photoList!!.size >= 3) {
+                            photoList!!.removeAt(photoList!!.size - 1)
+                        }
+                        adapter!!.notifyDataSetChanged()
+                    } else {
+                        certificateFile = File(mCurrentPhotoPath)
+                        tvUploadUrl.text = mCurrentPhotoPath
+                        tvUploadUrl.visibility = View.VISIBLE
+                        val path = mCurrentPhotoPath.split("/".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
+                        tvUploadUrl.text = path[path.size - 1]
                     }
                 }
             }
@@ -214,20 +228,20 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             edtName?.requestFocus()
             return false
         } else if (TextUtils.isEmpty(edtType?.text.toString().trim())) {
-            edtType?.error = this.getString(R.string.please_select_pet_type)
-            edtType?.requestFocus()
+            Utils.showToast(this.getString(R.string.please_select_pet_type))
             return false
-        } else if (!Utils.isEmailValid(edtBreed?.text.toString().trim())) {
-            edtBreed?.error = this.getString(R.string.please_select_breed)
-            edtBreed?.requestFocus()
+        } else if (TextUtils.isEmpty(edtBreed?.text.toString().trim())) {
+            Utils.showToast(this.getString(R.string.please_select_breed))
             return false
         } else if (TextUtils.isEmpty(edtDOB?.text.toString().trim())) {
-            edtDOB?.error = this.getString(R.string.please_select_dob)
-            edtDOB?.requestFocus()
+            Utils.showToast(this.getString(R.string.please_select_dob))
             return false
         } else if (TextUtils.isEmpty(edtDesc?.text.toString().trim())) {
             edtDesc?.error = this.getString(R.string.please_enter_pet_description)
             edtDesc?.requestFocus()
+            return false
+        } else if (updatedImageFile == null) {
+            Utils.showToast(this.getString(R.string.please_add_pet_image))
             return false
         }
         return true
@@ -235,6 +249,123 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
 
     private fun addPetApiCall() {
 
+        val petName = edtName!!.text.toString().trim()
+        val dob = DateFormatter.getFormattedDate(DateFormatter.dd_MMM_yyyy_str, edtDOB!!.text.toString().trim(), DateFormatter.yyyy_MM_dd_str)
+        val desc = edtDesc!!.text.toString().trim()
+        var gender = Constants.MALE
+        if (radioGender?.checkedRadioButtonId == R.id.rbFemale) {
+            gender = Constants.FEMALE
+        }
 
+        val actionName = "add_pets"
+        val userId = AppPreferenceManager.getUserID()
+        val timestamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timestamp + userId + Constants.TIME_STAMP_KEY)
+
+        if (updatedImageFile != null || certificateFile != null) {
+
+            object : AsyncTask<Void, Void, String>() {
+                private var response: String? = null
+                override fun onPreExecute() {
+                    super.onPreExecute()
+                    showProgressBar()
+                }
+
+                override fun doInBackground(vararg params: Void): String? {
+                    try {
+                        val multipartEntity = MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
+                        multipartEntity.addPart("user_id", StringBody(userId!!))
+                        multipartEntity.addPart("key", StringBody(key!!))
+                        multipartEntity.addPart("timestamp", StringBody(timestamp!!))
+                        multipartEntity.addPart("pet_name", StringBody(petName))
+                        multipartEntity.addPart("pets_type_id", StringBody(petsTypeId))
+                        multipartEntity.addPart("breed_id", StringBody(breedId))
+                        multipartEntity.addPart("dob", StringBody(dob))
+                        multipartEntity.addPart("gender", StringBody(gender))
+                        multipartEntity.addPart("description", StringBody(desc))
+                        if (certificateFile != null)
+                            multipartEntity.addPart("certificate_image", FileBody(certificateFile, "userFile1/jpg"))
+                        if (updatedImageFile != null)
+                            multipartEntity.addPart("pet_image", FileBody(updatedImageFile, "userFile1/jpg"))
+                        response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName, multipartEntity)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                    return response
+                }
+
+                override fun onPostExecute(result: String?) {
+                    hideProgressBar()
+                    Logger.errorLog("Response ### " + result!!)
+                    print("Response #### " + result)
+                    if (result != null) {
+                        val response: PetResponse = Utils.getResponse(result.toString(), PetResponse::class.java)
+                        this@AddPetActivity.finish()
+                        if (response.result != null) {
+                            uploadImages(response.result)
+                        }
+                    }
+                }
+            }.execute()
+        }
+    }
+
+    private fun uploadImages(petDetails: PetDetails?) {
+
+        if (photoList!!.isNotEmpty()) {
+            for (i in photoList!!.indices) {
+                val obj = photoList!!.get(index = i)
+                if (obj is PhotosInfo) {
+                    val file: File = File(obj.url)
+                    addImages(petDetails!!.pet_id, file)
+                }
+            }
+        }
+
+        this.finish()
+    }
+
+    private fun addImages(petId: String, file: File) {
+
+        val actionName = "add_pet_images"
+        val userId = AppPreferenceManager.getUserID()
+        val timestamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timestamp + userId + petId + Constants.TIME_STAMP_KEY)
+
+        object : AsyncTask<Void, Void, String>() {
+            private var response: String? = null
+            override fun onPreExecute() {
+                super.onPreExecute()
+                showProgressBar()
+            }
+
+            override fun doInBackground(vararg params: Void): String? {
+                try {
+                    val multipartEntity = MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
+                    multipartEntity.addPart("user_id", StringBody(userId!!))
+                    multipartEntity.addPart("key", StringBody(key!!))
+                    multipartEntity.addPart("timestamp", StringBody(timestamp!!))
+                    multipartEntity.addPart("pet_id", StringBody(petId))
+                    if (file != null)
+                        multipartEntity.addPart("pet_image", FileBody(file, "userFile1/jpg"))
+                    response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName, multipartEntity)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                return response
+            }
+
+            override fun onPostExecute(result: String?) {
+                hideProgressBar()
+                Logger.errorLog("Response ### " + result!!)
+                print("Response #### " + result)
+                if (result != null) {
+                    val imageResponse: ImageResponse = Utils.getResponse(result.toString(), ImageResponse::class.java)
+                    if (imageResponse.result != null) {
+                        Utils.showToast(imageResponse.message)
+                    }
+                }
+            }
+        }.execute()
     }
 }

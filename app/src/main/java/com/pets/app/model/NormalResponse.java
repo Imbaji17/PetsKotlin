@@ -11,19 +11,15 @@ public class NormalResponse implements Serializable {
 
     @SerializedName("status")
     private String status;
-    @SerializedName("code")
-    private String code;
+
     @SerializedName("message")
     private String message;
-    @SerializedName("nextOffset")
+
+    @SerializedName("next_offset")
     private String nextOffset;
 
     public String getStatus() {
         return status;
-    }
-
-    public String getCode() {
-        return code;
     }
 
     public String getMessage() {
@@ -38,7 +34,6 @@ public class NormalResponse implements Serializable {
     public String toString() {
         return "NormalResponse{" +
                 "status='" + status + '\'' +
-                ", code='" + code + '\'' +
                 ", message='" + message + '\'' +
                 ", nextOffset='" + nextOffset + '\'' +
                 '}';
