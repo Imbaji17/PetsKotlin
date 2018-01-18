@@ -302,7 +302,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             pageIndicator?.setViewPager(viewPager)
 
             tvName?.text = petResponse.list[0].pet_name
-            tvBirthDate?.text = this.getString(R.string.birthday).plus(petResponse.list[0].dob)
+            tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(petResponse.list[0].dob.replace("-", "/"))
 
             viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
@@ -313,7 +313,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
                 override fun onPageSelected(position: Int) {
                     tvName?.text = petResponse.list[position].pet_name
-                    tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(petResponse.list[position].dob)
+                    tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(petResponse.list[position].dob.replace("-", "/"))
                 }
             })
 
