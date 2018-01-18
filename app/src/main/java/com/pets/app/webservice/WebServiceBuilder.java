@@ -134,5 +134,8 @@ public class WebServiceBuilder {
         @POST("add_edit_fun_zone")
         Call<FunZoneResponse> addEditFunZone(@Body FunZone funZone);
 
+        @POST("fun_zone_delete")
+        Call<NormalResponse> funZoneDelete(@Body FunZone funZone);
+//
     }
 }

@@ -3,10 +3,7 @@ package com.pets.app.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -18,8 +15,6 @@ import android.view.View
 import android.widget.*
 import com.google.gson.GsonBuilder
 import com.pets.app.R
-import com.pets.app.activities.adoption.AddAdoptionActivity
-import com.pets.app.activities.adoption.FilterAdoptionActivity
 import com.pets.app.adapters.FunZoneAdapter
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.Constants
@@ -28,7 +23,6 @@ import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.FunZone
 import com.pets.app.model.FunZoneResponse
 import com.pets.app.model.NormalResponse
-import com.pets.app.model.Reviews
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -40,7 +34,6 @@ import java.io.IOException
 import java.util.*
 
 class FunZoneActivity : BaseActivity(), View.OnClickListener {
-
 
     private var viewFlipper: ViewFlipper? = null
     private var rlForLoadingScreen: RelativeLayout? = null
@@ -113,6 +106,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 R.id.action_edit -> {
+                    AddFunZoneActivity.startActivity(this, RC_POST, 1, funZone)
                 }
 
                 R.id.action_delete -> {
@@ -212,7 +206,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
         val id = item!!.itemId
         when (id) {
             R.id.action_post -> {
-                AddFunZoneActivity.startActivity(this, RC_POST)
+                AddFunZoneActivity.startActivity(this, RC_POST, 0, null)
             }
         }
         return super.onOptionsItemSelected(item)

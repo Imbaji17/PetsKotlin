@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.ThumbnailUtils
 import android.os.AsyncTask
 import android.os.Bundle
@@ -22,10 +21,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.gson.GsonBuilder
 import com.pets.app.R
-import com.pets.app.common.AppPreferenceManager
-import com.pets.app.common.Constants
-import com.pets.app.common.Enums
-import com.pets.app.common.ImageSetter
+import com.pets.app.common.*
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.*
 import com.pets.app.utilities.*
@@ -60,11 +56,15 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
     private var selectedType: Int = 0
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+    private var from: Int = 0
+    private var funZone: FunZone? = null
 
     companion object {
         private val TAG = AddFunZoneActivity::class.java.simpleName
-        fun startActivity(activity: Activity, requestCode: Int) {
+        fun startActivity(activity: Activity, requestCode: Int, from: Int, funZone: FunZone?) {
             val intent = Intent(activity, AddFunZoneActivity::class.java)
+            intent.putExtra(ApplicationsConstants.FROM, from)
+            intent.putExtra(ApplicationsConstants.DATA, funZone)
             activity.startActivityForResult(intent, requestCode)
         }
     }
@@ -72,7 +72,21 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_fun_zone)
+
+        init()
         initView()
+        if (from == 1) {
+            setValue()
+            initializeToolbar(getString(R.string.edit_post))
+        } else {
+            initializeToolbar(getString(R.string.crate_post))
+        }
+    }
+
+    fun init() {
+        from = intent.getIntExtra(ApplicationsConstants.FROM, 0)
+        if (from == 1)
+            funZone = intent.getSerializableExtra(ApplicationsConstants.DATA) as FunZone?
     }
 
     private fun initView() {
@@ -85,10 +99,32 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
         etAddress = findViewById(R.id.etAddress)
         etDescription = findViewById(R.id.etDescription)
         btnSave = findViewById(R.id.btnSave)
-
         ivPost!!.setOnClickListener(this)
         btnSave!!.setOnClickListener(this)
         etAddress!!.setOnClickListener(this)
+    }
+
+    private fun setValue() {
+        if (funZone != null) {
+            if (!TextUtils.isEmpty(funZone!!.videoThumb)) {
+                ImageSetter.loadImage(this, funZone!!.videoThumb, R.drawable.alert_placeholder, ivPost)
+            } else {
+                ImageSetter.loadImage(this, funZone!!.funZoneImage, R.drawable.alert_placeholder, ivPost)
+            }
+
+            if (!TextUtils.isEmpty(funZone!!.title))
+                etTitle!!.setText(funZone!!.title)
+            if (!TextUtils.isEmpty(funZone!!.contactPerson))
+                etContactPerson!!.setText(funZone!!.contactPerson)
+            if (!TextUtils.isEmpty(funZone!!.contactNo))
+                etPhoneNumber!!.setText(funZone!!.contactNo)
+            if (!TextUtils.isEmpty(funZone!!.emailId))
+                etEmail!!.setText(funZone!!.emailId)
+            if (!TextUtils.isEmpty(funZone!!.address))
+                etAddress!!.setText(funZone!!.address)
+            if (!TextUtils.isEmpty(funZone!!.description))
+                etDescription!!.setText(funZone!!.description)
+        }
     }
 
     override fun onClick(p0: View?) {
@@ -286,7 +322,11 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                             multipartEntity.addPart("key", StringBody(key!!))
                             multipartEntity.addPart("timestamp", StringBody(timestamp!!))
                             multipartEntity.addPart("language_code", StringBody(languageCode))
-//                        multipartEntity.addPart("fun_zone_id", StringBody(languageCode))
+
+                            if (from == 1) {
+                                multipartEntity.addPart("fun_zone_id", StringBody(funZone!!.funZoneId))
+                            }
+
                             multipartEntity.addPart("title", StringBody(title))
                             multipartEntity.addPart("contact_person", StringBody(user.name))
                             multipartEntity.addPart("contact_no", StringBody(user.phone_number))
@@ -334,7 +374,9 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                 funZone.setUserId(userId)
                 funZone.setKey(key)
                 funZone.setTimestamp(timestamp)
-//                adoption.fun_zone_id = ""
+                if (from == 1) {
+                    funZone.funZoneId = funZone!!.funZoneId
+                }
                 funZone.title = title
                 funZone.contactPerson = user.name
                 funZone.contactNo = user.phone_number
