@@ -5,6 +5,7 @@ import com.pets.app.model.Breed;
 import com.pets.app.model.PetsType;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by admin on 12/01/18.
@@ -44,6 +45,9 @@ public class PetDetails implements Serializable {
 
     @SerializedName("user")
     private LoginDetails user;
+
+    @SerializedName("pet_images")
+    private ArrayList<PetImageInfo> petImages;
 
     public String getCreated_date() {
         return created_date;
@@ -105,6 +109,10 @@ public class PetDetails implements Serializable {
         return user;
     }
 
+    public ArrayList<PetImageInfo> getPetImages() {
+        return petImages;
+    }
+
     @Override
     public String toString() {
         return "PetDetails{" +
@@ -123,6 +131,7 @@ public class PetDetails implements Serializable {
                 ", petsType=" + petsType +
                 ", breed=" + breed +
                 ", user=" + user +
+                ", petImages=" + petImages +
                 '}';
     }
 }
