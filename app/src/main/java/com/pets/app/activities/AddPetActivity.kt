@@ -9,10 +9,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.RadioGroup
+import android.widget.*
 import com.pets.app.R
 import com.pets.app.adapters.PhotosAdapter
 import com.pets.app.common.AppPreferenceManager
@@ -26,13 +23,20 @@ import com.pets.app.model.PetResponse
 import com.pets.app.model.PetsType
 import com.pets.app.model.`object`.PetDetails
 import com.pets.app.model.`object`.PhotosInfo
+import com.pets.app.model.request.PetUpdateRequest
 import com.pets.app.utilities.*
+import com.pets.app.webservice.RestClient
 import com.pets.app.webservice.UploadImage
+import com.pets.app.webservice.WebServiceBuilder
 import khandroid.ext.apache.http.entity.mime.HttpMultipartMode
 import khandroid.ext.apache.http.entity.mime.MultipartEntity
 import khandroid.ext.apache.http.entity.mime.content.FileBody
 import khandroid.ext.apache.http.entity.mime.content.StringBody
 import kotlinx.android.synthetic.main.activity_add_pet.*
+import kotlinx.android.synthetic.main.app_toolbar.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.io.IOException
 
@@ -47,6 +51,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
     private var btnUpload: Button? = null
     private var edtDesc: EditText? = null
     private var mRecyclerView: RecyclerView? = null
+    private var checkMatch: CheckBox? = null
     private var btnAddPet: Button? = null
     private var adapter: PhotosAdapter? = null
     private var photoList: ArrayList<Any>? = null
@@ -56,6 +61,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
     private var petsTypeId: String? = ""
     private var breedId: String? = ""
     private var certificateFile: File? = null
+    private var petObj: PetDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +70,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         initializeToolbar(this.getString(R.string.add_pet))
         initView()
         clickListeners()
+        getIntentData()
     }
 
     private fun initView() {
@@ -79,6 +86,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         btnUpload = findViewById(R.id.btnUpload)
         edtDesc = findViewById(R.id.edtDescription)
         mRecyclerView = findViewById(R.id.recyclerView)
+        checkMatch = findViewById(R.id.checkMatch)
         btnAddPet = findViewById(R.id.btnAddPet)
 
         val mGridLayoutManager = GridLayoutManager(this, 3)
@@ -100,8 +108,8 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                         photoList!!.add(getString(R.string.add_photo))
                     }
                     if (photo.url.contains("http")) {
-//                        if (Utils.isOnline(this@AddPetActivity))
-//                            deleteImageApiCall(position)
+                        if (Utils.isOnline(this@AddPetActivity))
+                            deletePetImageApiCall(photo, position)
                     } else {
                         photoList!!.removeAt(position)
                         adapter!!.notifyDataSetChanged()
@@ -109,9 +117,6 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 }
             }
         })
-
-        photoList!!.add("")
-        adapter!!.notifyDataSetChanged()
     }
 
     private fun clickListeners() {
@@ -122,6 +127,55 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         edtDOB?.setOnClickListener(this)
         btnUpload?.setOnClickListener(this)
         btnAddPet?.setOnClickListener(this)
+    }
+
+    private fun getIntentData() {
+
+        if (intent.hasExtra(ApplicationsConstants.DATA)) {
+            tvToolbar.text = this.getText(R.string.edit_pet)
+            btnAddPet!!.text = this.getText(R.string.update)
+            petObj = intent.getSerializableExtra(ApplicationsConstants.DATA) as PetDetails
+
+            edtName?.setText(if (!TextUtils.isEmpty(petObj!!.pet_name)) petObj!!.pet_name else "")
+            edtType?.setText(if (!TextUtils.isEmpty(petObj!!.petsType!!.typeName)) petObj!!.petsType!!.typeName else "")
+            edtBreed?.setText(if (!TextUtils.isEmpty(petObj!!.breed!!.breed_name)) petObj!!.breed!!.breed_name else "")
+            edtDOB?.setText(if (!TextUtils.isEmpty(petObj!!.dob)) petObj!!.dob else "")
+            edtDesc?.setText(if (!TextUtils.isEmpty(petObj!!.description)) petObj!!.description else "")
+
+            petsTypeId = if (!TextUtils.isEmpty(petObj!!.petsType!!.petsTypeId)) petObj!!.petsType!!.petsTypeId else ""
+            breedId = if (!TextUtils.isEmpty(petObj!!.breed!!.breed_id)) petObj!!.breed!!.breed_id else ""
+
+            if (!TextUtils.isEmpty(petObj!!.is_ready_match)) {
+                checkMatch!!.isChecked = petObj!!.isReadyForMatch
+            }
+
+            if (!TextUtils.isEmpty(petObj!!.pet_image)) {
+                imgCamera.visibility = View.GONE
+                ImageSetter.loadRoundedImage(this, petObj!!.pet_image, R.drawable.dog, imgPet)
+            }
+
+            if (!TextUtils.isEmpty(petObj!!.gender) && petObj!!.gender.equals(Constants.FEMALE, true)) {
+                radioGender?.check(R.id.rbFemale)
+            }
+
+            if (!TextUtils.isEmpty(petObj!!.certificate_image)) {
+                tvUploadUrl?.text = petObj!!.certificate_image
+                tvUploadUrl?.visibility = View.VISIBLE
+            }
+        }
+
+        if (petObj != null && petObj!!.petImages != null && petObj!!.petImages.isNotEmpty()) {
+
+            for (obj in petObj!!.petImages) {
+                val photo = PhotosInfo()
+                photo.url = obj.pet_image
+                photo.imageId = obj.pet_image_id
+                photoList!!.add(photo)
+            }
+        } else {
+            photoList!!.add("")
+        }
+        adapter!!.notifyDataSetChanged()
     }
 
     override fun onClick(v: View?) {
@@ -135,12 +189,14 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             R.id.edtType -> {
                 val mIntent = Intent(this, SelectTypeActivity::class.java)
                 mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, true)
+                mIntent.putExtra(ApplicationsConstants.SELECTION, petsTypeId)
                 this.startActivityForResult(mIntent, RC_TYPE)
             }
             R.id.edtBreed -> {
                 if (petsTypeId!!.isNotEmpty()) {
                     val mIntent = Intent(this, SelectTypeActivity::class.java)
                     mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, false)
+                    mIntent.putExtra(ApplicationsConstants.SELECTION, breedId)
                     mIntent.putExtra(ApplicationsConstants.DATA, petsTypeId)
                     this.startActivityForResult(mIntent, RC_BREED)
                 } else {
@@ -149,7 +205,8 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             }
             R.id.edtDOB -> {
                 DatePickerDialogFragment(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                    val date = "$dayOfMonth-$month-$year"
+                    val cmgMonth = month + 1
+                    val date = "$dayOfMonth-$cmgMonth-$year"
                     val strDate = DateFormatter.getFormattedDate(DateFormatter.dd_MM_yyyy_str, date, DateFormatter.dd_MMM_yyyy_str)
                     edtDOB?.setText(strDate)
                 }).show(supportFragmentManager, this.getString(R.string.select_date))
@@ -161,7 +218,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             R.id.btnAddPet -> {
                 if (checkValidations()) {
                     if (Utils.isOnline(this)) {
-                        addPetApiCall()
+                        addUpdatePetApiCall()
                     } else {
                         Utils.showToast(this.getString(R.string.device_is_offline))
                     }
@@ -178,6 +235,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                     val result = com.theartofdev.edmodo.cropper.CropImage.getActivityResult(data)
                     val mCurrentPhotoPath = result.uri.path
                     val bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath)
+                    imgCamera.visibility = View.GONE
                     if (selectedType == 1) {
                         updatedImageFile = File(mCurrentPhotoPath)
                         if (updatedImageFile.exists()) {
@@ -204,6 +262,10 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 if (data != null) {
                     val petsType = data.getSerializableExtra(ApplicationsConstants.DATA) as PetsType
                     if (petsType != null) {
+                        if (!petsTypeId.equals(petsType.petsTypeId)) {
+                            breedId = ""
+                            edtBreed!!.setText("")
+                        }
                         petsTypeId = petsType.petsTypeId
                         edtType!!.setText(petsType.typeName)
                     }
@@ -240,21 +302,32 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             edtDesc?.error = this.getString(R.string.please_enter_pet_description)
             edtDesc?.requestFocus()
             return false
-        } else if (updatedImageFile == null) {
-            Utils.showToast(this.getString(R.string.please_add_pet_image))
-            return false
         }
+
+        if (petObj == null) {
+            if (updatedImageFile == null) {
+                Utils.showToast(this.getString(R.string.please_add_pet_image))
+                return false
+            }
+        }
+
         return true
     }
 
-    private fun addPetApiCall() {
+    private fun addUpdatePetApiCall() {
 
         val petName = edtName!!.text.toString().trim()
         val dob = DateFormatter.getFormattedDate(DateFormatter.dd_MMM_yyyy_str, edtDOB!!.text.toString().trim(), DateFormatter.yyyy_MM_dd_str)
         val desc = edtDesc!!.text.toString().trim()
+
         var gender = Constants.MALE
         if (radioGender?.checkedRadioButtonId == R.id.rbFemale) {
             gender = Constants.FEMALE
+        }
+
+        var match = Constants.NO
+        if (checkMatch!!.isChecked) {
+            match = Constants.YES
         }
 
         val actionName = "add_pets"
@@ -275,12 +348,15 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                     try {
                         val multipartEntity = MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
                         multipartEntity.addPart("user_id", StringBody(userId!!))
+                        if (petObj != null)
+                            multipartEntity.addPart("pet_id", StringBody(petObj!!.pet_id))
                         multipartEntity.addPart("key", StringBody(key!!))
                         multipartEntity.addPart("timestamp", StringBody(timestamp!!))
                         multipartEntity.addPart("pet_name", StringBody(petName))
                         multipartEntity.addPart("pets_type_id", StringBody(petsTypeId))
                         multipartEntity.addPart("breed_id", StringBody(breedId))
                         multipartEntity.addPart("dob", StringBody(dob))
+                        multipartEntity.addPart("is_ready_match", StringBody(match))
                         multipartEntity.addPart("gender", StringBody(gender))
                         multipartEntity.addPart("description", StringBody(desc))
                         if (certificateFile != null)
@@ -307,6 +383,43 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                     }
                 }
             }.execute()
+        } else {
+
+            val request = PetUpdateRequest()
+            request.setUserId(userId)
+            if (petObj != null)
+                request.setPet_id(petObj!!.pet_id)
+            request.setTimestamp(timestamp)
+            request.setKey(key)
+            request.setPet_name(petName)
+            request.setPets_type_id(petsTypeId)
+            request.setBreed_id(breedId)
+            request.setDob(dob)
+            request.setGender(gender)
+            request.setDescription(desc)
+            request.setIs_ready_match(match)
+
+            showProgressBar()
+            val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+            val call = apiClient.addUpdatePet(request)
+            call.enqueue(object : Callback<PetResponse> {
+                override fun onResponse(call: Call<PetResponse>, response: Response<PetResponse>?) {
+                    hideProgressBar()
+                    if (response != null) {
+                        if (response.isSuccessful) {
+                            if (response.body() != null && response.body().result != null) {
+                                uploadImages(response.body().result)
+                            }
+                        } else {
+                            Utils.showErrorToast(response.errorBody())
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<PetResponse>, t: Throwable) {
+                    hideProgressBar()
+                }
+            })
         }
     }
 
@@ -316,8 +429,10 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             for (i in photoList!!.indices) {
                 val obj = photoList!!.get(index = i)
                 if (obj is PhotosInfo) {
-                    val file: File = File(obj.url)
-                    addImages(petDetails!!.pet_id, file)
+                    if (!obj.url.contains("http")) {
+                        val file = File(obj.url)
+                        addImages(petDetails!!.pet_id, file)
+                    }
                 }
             }
         }
@@ -367,5 +482,40 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 }
             }
         }.execute()
+    }
+
+    private fun deletePetImageApiCall(photo: PhotosInfo, position: Int) {
+
+        val userId = AppPreferenceManager.getUserID()
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + userId + petObj!!.pet_id + photo.imageId + Constants.TIME_STAMP_KEY)
+
+        showProgressBar()
+        val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = apiClient.deletePetImage(userId, petObj!!.pet_id, photo.imageId, timeStamp, key)
+        call.enqueue(object : Callback<PetResponse> {
+            override fun onResponse(call: Call<PetResponse>, response: Response<PetResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        if (response.body() != null) {
+                            checkResponse(response.body(), position)
+                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<PetResponse>, t: Throwable) {
+                hideProgressBar()
+            }
+        })
+    }
+
+    private fun checkResponse(response: PetResponse?, position: Int) {
+        Utils.showToast(this.getString(R.string.image_deleted_successfully))
+        photoList!!.removeAt(position)
+        adapter!!.notifyDataSetChanged()
     }
 }

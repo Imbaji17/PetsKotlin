@@ -20,13 +20,27 @@
             android:orientation="vertical"
             android:padding="@dimen/dimen_size_20">
 
-            <ImageView
-                android:id="@+id/imgView"
+            <RelativeLayout
                 android:layout_width="@dimen/dimen_size_100"
-                android:layout_height="@dimen/dimen_size_100"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimen_size_10"
-                android:src="@drawable/add_pet1" />
+                android:layout_marginTop="@dimen/dimen_size_10">
+
+                <ImageView
+                    android:id="@+id/imgView"
+                    android:layout_width="@dimen/dimen_size_100"
+                    android:layout_height="@dimen/dimen_size_100"
+                    android:src="@drawable/dog" />
+
+                <ImageView
+                    android:id="@+id/imgCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/smallcamera" />
+            </RelativeLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -223,6 +237,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_size_5" />
             </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/checkMatch"
+                style="@style/CheckBoxStyle"
+                android:layout_marginTop="@dimen/dimen_size_15"
+                android:text="@string/ready_for_match" />
 
             <Button
                 android:id="@+id/btnAddPet"

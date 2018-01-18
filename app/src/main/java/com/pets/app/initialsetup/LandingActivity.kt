@@ -26,6 +26,7 @@ import com.pets.app.common.*
 import com.pets.app.interfaces.SimpleItemClickListener
 import com.pets.app.model.PetResponse
 import com.pets.app.model.`object`.LandingDetails
+import com.pets.app.model.`object`.PetDetails
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -50,9 +51,12 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
     private var linAddPet: LinearLayout? = null
     private var viewPager: ViewPager? = null
     private var pageIndicator: CirclePageIndicator? = null
+    private var imgEdit: ImageView? = null
     private var tvName: TextView? = null
     private var tvBirthDate: TextView? = null
     private var mRecyclerView: RecyclerView? = null
+    private var mList: ArrayList<PetDetails>? = null
+    private var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +88,8 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
     private fun initView() {
 
+        mList = ArrayList()
+
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         val headerView = navigationView.getHeaderView(0)
         val header = headerView.findViewById<LinearLayout>(R.id.nav_header)
@@ -107,6 +113,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         viewFlipper = findViewById(R.id.viewFlipper)
         viewPager = findViewById(R.id.viewPager)
         pageIndicator = findViewById(R.id.cvp)
+        imgEdit = findViewById(R.id.imgEdit)
         tvName = findViewById(R.id.tvName)
         tvBirthDate = findViewById(R.id.tvBirthDate)
         mRecyclerView = findViewById(R.id.recyclerView)
@@ -134,6 +141,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         header?.setOnClickListener(this)
         imgHeader?.setOnClickListener(this)
         linAddPet?.setOnClickListener(this)
+        imgEdit?.setOnClickListener(this)
         btnRetry?.setOnClickListener(this)
     }
 
@@ -151,6 +159,11 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             }
             R.id.linAddPet -> {
                 val mIntent = Intent(this, AddPetActivity::class.java)
+                this.startActivity(mIntent)
+            }
+            R.id.imgEdit -> {
+                val mIntent = Intent(this, AddPetActivity::class.java)
+                mIntent.putExtra(ApplicationsConstants.DATA, mList!![position])
                 this.startActivity(mIntent)
             }
             R.id.btnRetry -> {
@@ -297,12 +310,16 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         if (petResponse!!.list != null && petResponse.list.isNotEmpty()) {
             viewFlipper?.displayedChild = 1
 
-            val adapter = LandingImageAdapter(this, petResponse.list)
+            mList!!.clear()
+            mList!!.addAll(petResponse.list)
+
+            val adapter = LandingImageAdapter(this, mList!!)
             viewPager?.adapter = adapter
             pageIndicator?.setViewPager(viewPager)
 
-            tvName?.text = petResponse.list[0].pet_name
-            tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(petResponse.list[0].dob.replace("-", "/"))
+            position = 0
+            tvName?.text = mList!![0].pet_name
+            tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(mList!![0].dob.replace("-", "/"))
 
             viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
@@ -312,11 +329,11 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
                 }
 
                 override fun onPageSelected(position: Int) {
-                    tvName?.text = petResponse.list[position].pet_name
-                    tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(petResponse.list[position].dob.replace("-", "/"))
+                    this@LandingActivity.position = position
+                    tvName?.text = mList!![position].pet_name
+                    tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(mList!![position].dob.replace("-", "/"))
                 }
             })
-
         } else {
             viewFlipper?.displayedChild = 0
         }

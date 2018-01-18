@@ -12,8 +12,8 @@ public class PhotosInfo implements Serializable {
     @SerializedName("url")
     private String url;
 
-    @SerializedName("order")
-    private String order;
+    @SerializedName("image_id")
+    private String imageId;
 
     public String getUrl() {
         return url;
@@ -23,19 +23,19 @@ public class PhotosInfo implements Serializable {
         this.url = url;
     }
 
-    public String getOrder() {
-        return order;
+    public String getImageId() {
+        return imageId;
     }
 
-    public void setOrder(String order) {
-        this.order = order;
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
     }
 
     @Override
     public String toString() {
         return "PhotosInfo{" +
-                "url=" + url +
-                ", order='" + order + '\'' +
+                "url='" + url + '\'' +
+                ", imageId='" + imageId + '\'' +
                 '}';
     }
 }

@@ -195,5 +195,8 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="edit_post">Edit Post</string>
+    <string name="edit_pet">Edit Pet</string>
+    <string name="image_deleted_successfully">Image deleted successfully</string>
+    <string name="ready_for_match">Ready for match</string>
     <string name="just_now">Just now</string>
 </resources>

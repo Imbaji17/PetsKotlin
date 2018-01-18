@@ -34,18 +34,14 @@ public class DatePickerDialogFragment extends DialogFragment {
         mDateSetListener = callback;
     }
 
-
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH) + 1;
+        int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-//        c.set(c.get(Calendar.YEAR) - 16, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH) - 1);
         DatePickerDialog dialog = new DatePickerDialog(mActivity, mDateSetListener, year, month, day);
-//        dialog.getDatePicker().setMaxDate(c.getTimeInMillis());
-
         return dialog;
     }
 

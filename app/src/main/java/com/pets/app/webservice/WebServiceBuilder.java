@@ -13,6 +13,7 @@ import com.pets.app.model.PetResponse;
 import com.pets.app.model.PetsTypeResponse;
 import com.pets.app.model.ReviewsResponse;
 import com.pets.app.model.request.FavouriteHostel;
+import com.pets.app.model.request.PetUpdateRequest;
 import com.pets.app.model.request.UpdateUserRequest;
 import com.pets.app.model.request.WriteReview;
 
@@ -73,8 +74,15 @@ public class WebServiceBuilder {
         @POST("change_mobile/")
         Call<LoginResponse> changeMobile(@Field("user_id") String user_id, @Field("phone_code") String phone_code, @Field("phone_number") String phone_number, @Field("timestamp") String timestamp, @Field("key") String key);
 
+        @POST("add_pets/")
+        Call<PetResponse> addUpdatePet(@Body PetUpdateRequest request);
+
         @GET("myPetsList")
         Call<PetResponse> myPetsList(@Query("user_id") String user_id, @Query("timestamp") String timestamp, @Query("key") String key, @Query("language_code") String language_code, @Query("next_offset") String next_offset);
+
+        @FormUrlEncoded
+        @POST("delete_pet_image_by_id/")
+        Call<PetResponse> deletePetImage(@Field("user_id") String user_id, @Field("pet_id") String pet_id, @Field("pet_image_id") String pet_image_id, @Field("timestamp") String timestamp, @Field("key") String key);
 
         //http://34.199.202.75/pets/api/PetsApi/hostel_list?key=6b88b734ebb2c9f02ffe2cfdc1f40020&keyword=&language_code=EN&lat=0.000000&lng=0.000000&next_offset=0&timestamp=1515495550497.3&user_id=10
         @GET("hostel_list")
