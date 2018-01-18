@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.ViewFlipper
-import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.adapters.CommonAdapter
 import com.pets.app.common.AppPreferenceManager
@@ -26,7 +25,6 @@ import com.pets.app.webservice.WebServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
 class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
 
@@ -34,6 +32,7 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
     private var mRecyclerView: RecyclerView? = null
     private var mList: ArrayList<Any>? = null
     private var adapter: CommonAdapter? = null
+    private var selectedId: String? = ""
     private var petTypeId: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +56,7 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
 
     private fun getIntentData() {
 
+        selectedId = intent.getStringExtra(ApplicationsConstants.SELECTION)
         if (intent.getBooleanExtra(ApplicationsConstants.NAVIGATION_TYPE, false)) {
             initializeToolbar(this.getString(R.string.pet_type))
             if (Utils.isOnline(this)) {
@@ -90,15 +90,8 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
                 if (response != null) {
                     if (response.body() != null && response.isSuccessful) {
                         checkResponse(response.body().list)
-                    } else if (response.code() == 403) {
-                        val gson = GsonBuilder().create()
-                        val mError: PetsTypeResponse
-                        try {
-                            mError = gson.fromJson(response.errorBody().string(), PetsTypeResponse::class.java)
-                            Utils.showToast("" + mError.message)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }
@@ -112,6 +105,14 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
     private fun checkResponse(list: ArrayList<PetsType>?) {
         viewFlipper?.displayedChild = 0
         if (list != null && list.isNotEmpty()) {
+            if (!selectedId.isNullOrEmpty()) {
+                for (obj in list) {
+                    if (obj.petsTypeId.equals(selectedId, true)) {
+                        obj.isSelected = true
+                        break
+                    }
+                }
+            }
             mList?.addAll(list)
             adapter = CommonAdapter(this, mList!!)
             mRecyclerView?.adapter = adapter
@@ -136,15 +137,8 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
                 if (response != null) {
                     if (response.body() != null && response.isSuccessful) {
                         checkBreedResponse(response.body().list)
-                    } else if (response.code() == 403) {
-                        val gson = GsonBuilder().create()
-                        val mError: BreedResponse
-                        try {
-                            mError = gson.fromJson(response.errorBody().string(), BreedResponse::class.java)
-                            Utils.showToast("" + mError.message)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }
@@ -158,6 +152,14 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
     private fun checkBreedResponse(list: ArrayList<Breed>?) {
         viewFlipper?.displayedChild = 0
         if (list != null && list.isNotEmpty()) {
+            if (!selectedId.isNullOrEmpty()) {
+                for (obj in list) {
+                    if (obj.breed_id.equals(selectedId, true)) {
+                        obj.isSelected = true
+                        break
+                    }
+                }
+            }
             mList?.addAll(list)
             adapter = CommonAdapter(this, mList!!)
             mRecyclerView?.adapter = adapter
@@ -171,7 +173,7 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
 
         if (`object` is PetsType) {
             val type = `object`
-            type.isSelected = !type.isSelected
+            type.isSelected = true
             for (i in mList!!.indices) {
                 if (i != mList!!.indexOf(type)) {
                     (mList?.get(i) as PetsType).isSelected = false
@@ -184,7 +186,7 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
             finish()
         } else if (`object` is Breed) {
             val breed = `object`
-            breed.isSelected = !breed.isSelected
+            breed.isSelected = true
             for (i in mList!!.indices) {
                 if (i != mList!!.indexOf(breed)) {
                     (mList?.get(i) as Breed).isSelected = false

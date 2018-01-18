@@ -33,6 +33,7 @@ import khandroid.ext.apache.http.entity.mime.MultipartEntity
 import khandroid.ext.apache.http.entity.mime.content.FileBody
 import khandroid.ext.apache.http.entity.mime.content.StringBody
 import kotlinx.android.synthetic.main.activity_add_pet.*
+import kotlinx.android.synthetic.main.app_toolbar.*
 import java.io.File
 import java.io.IOException
 
@@ -56,6 +57,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
     private var petsTypeId: String? = ""
     private var breedId: String? = ""
     private var certificateFile: File? = null
+    private var petObj: PetDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +66,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         initializeToolbar(this.getString(R.string.add_pet))
         initView()
         clickListeners()
+        getIntentData()
     }
 
     private fun initView() {
@@ -100,8 +103,8 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                         photoList!!.add(getString(R.string.add_photo))
                     }
                     if (photo.url.contains("http")) {
-//                        if (Utils.isOnline(this@AddPetActivity))
-//                            deleteImageApiCall(position)
+                        if (Utils.isOnline(this@AddPetActivity))
+                            deletePetImageApiCall(photo, position)
                     } else {
                         photoList!!.removeAt(position)
                         adapter!!.notifyDataSetChanged()
@@ -109,9 +112,6 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 }
             }
         })
-
-        photoList!!.add("")
-        adapter!!.notifyDataSetChanged()
     }
 
     private fun clickListeners() {
@@ -122,6 +122,50 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         edtDOB?.setOnClickListener(this)
         btnUpload?.setOnClickListener(this)
         btnAddPet?.setOnClickListener(this)
+    }
+
+    private fun getIntentData() {
+
+        if (intent.hasExtra(ApplicationsConstants.DATA)) {
+            tvToolbar.text = this.getText(R.string.edit_pet)
+            btnAddPet!!.text = this.getText(R.string.update)
+            petObj = intent.getSerializableExtra(ApplicationsConstants.DATA) as PetDetails
+
+            edtName?.setText(if (!TextUtils.isEmpty(petObj!!.pet_name)) petObj!!.pet_name else "")
+            edtType?.setText(if (!TextUtils.isEmpty(petObj!!.petsType!!.typeName)) petObj!!.petsType!!.typeName else "")
+            edtBreed?.setText(if (!TextUtils.isEmpty(petObj!!.breed!!.breed_name)) petObj!!.breed!!.breed_name else "")
+            edtDOB?.setText(if (!TextUtils.isEmpty(petObj!!.dob)) petObj!!.dob else "")
+            edtDesc?.setText(if (!TextUtils.isEmpty(petObj!!.description)) petObj!!.description else "")
+
+            petsTypeId = if (!TextUtils.isEmpty(petObj!!.petsType!!.petsTypeId)) petObj!!.petsType!!.petsTypeId else ""
+            breedId = if (!TextUtils.isEmpty(petObj!!.breed!!.breed_id)) petObj!!.breed!!.breed_id else ""
+
+            if (!TextUtils.isEmpty(petObj!!.pet_image)) {
+                imgCamera.visibility = View.GONE
+                ImageSetter.loadRoundedImage(this, petObj!!.pet_image, R.drawable.dog, imgPet)
+            }
+
+            if (!TextUtils.isEmpty(petObj!!.gender) && petObj!!.gender.equals(Constants.FEMALE, true)) {
+                radioGender?.check(R.id.rbFemale)
+            }
+
+            if (!TextUtils.isEmpty(petObj!!.certificate_image)) {
+                tvUploadUrl?.text = petObj!!.certificate_image
+                tvUploadUrl?.visibility = View.VISIBLE
+            }
+        }
+
+        if (petObj != null && petObj!!.petImages != null && petObj!!.petImages.isNotEmpty()) {
+
+            for (obj in petObj!!.petImages) {
+                val photo = PhotosInfo()
+                photo.url = obj.pet_image
+                photoList!!.add(photo)
+            }
+        } else {
+            photoList!!.add("")
+        }
+        adapter!!.notifyDataSetChanged()
     }
 
     override fun onClick(v: View?) {
@@ -135,12 +179,14 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             R.id.edtType -> {
                 val mIntent = Intent(this, SelectTypeActivity::class.java)
                 mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, true)
+                mIntent.putExtra(ApplicationsConstants.SELECTION, petsTypeId)
                 this.startActivityForResult(mIntent, RC_TYPE)
             }
             R.id.edtBreed -> {
                 if (petsTypeId!!.isNotEmpty()) {
                     val mIntent = Intent(this, SelectTypeActivity::class.java)
                     mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, false)
+                    mIntent.putExtra(ApplicationsConstants.SELECTION, breedId)
                     mIntent.putExtra(ApplicationsConstants.DATA, petsTypeId)
                     this.startActivityForResult(mIntent, RC_BREED)
                 } else {
@@ -161,7 +207,10 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             R.id.btnAddPet -> {
                 if (checkValidations()) {
                     if (Utils.isOnline(this)) {
-                        addPetApiCall()
+                        if (petObj == null) {
+                            addPetApiCall()
+                        } else {
+                        }
                     } else {
                         Utils.showToast(this.getString(R.string.device_is_offline))
                     }
@@ -178,6 +227,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                     val result = com.theartofdev.edmodo.cropper.CropImage.getActivityResult(data)
                     val mCurrentPhotoPath = result.uri.path
                     val bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath)
+                    imgCamera.visibility = View.GONE
                     if (selectedType == 1) {
                         updatedImageFile = File(mCurrentPhotoPath)
                         if (updatedImageFile.exists()) {
@@ -204,6 +254,10 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 if (data != null) {
                     val petsType = data.getSerializableExtra(ApplicationsConstants.DATA) as PetsType
                     if (petsType != null) {
+                        if (!petsTypeId.equals(petsType.petsTypeId)) {
+                            breedId = ""
+                            edtBreed!!.setText("")
+                        }
                         petsTypeId = petsType.petsTypeId
                         edtType!!.setText(petsType.typeName)
                     }
@@ -367,5 +421,10 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 }
             }
         }.execute()
+    }
+
+    private fun deletePetImageApiCall(photo: PhotosInfo, position: Int) {
+
+
     }
 }
