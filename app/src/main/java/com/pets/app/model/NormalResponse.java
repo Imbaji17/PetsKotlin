@@ -16,7 +16,7 @@ public class NormalResponse implements Serializable {
     private String message;
 
     @SerializedName("next_offset")
-    private String nextOffset;
+    private int nextOffset;
 
     public String getStatus() {
         return status;
@@ -26,7 +26,7 @@ public class NormalResponse implements Serializable {
         return message;
     }
 
-    public String getNextOffset() {
+    public int getNextOffset() {
         return nextOffset;
     }
 

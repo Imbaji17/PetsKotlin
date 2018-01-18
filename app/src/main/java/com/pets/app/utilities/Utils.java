@@ -2,6 +2,7 @@ package com.pets.app.utilities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -9,6 +10,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -36,7 +38,11 @@ import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -45,6 +51,8 @@ import java.util.regex.Pattern;
 import okhttp3.ResponseBody;
 
 public class Utils {
+
+    private static String TAG = Utils.class.getSimpleName();
 
     public static void showToast(String text) {
         Toast.makeText(MyApplication.getInstance(), text, Toast.LENGTH_SHORT).show();
@@ -248,4 +256,93 @@ public class Utils {
         }.getType();
         return new Gson().fromJson(countriesJsonString, listType);
     }
+
+    public static void shareData(Context context, String body) {
+        String shareBody = body +
+                "\n\n";
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        shareBody += "Sent from Android";
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        context.startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
+
+    public static String getTimeString(Context mContext, final Date date) {
+        Log.d(TAG, "getTime");
+        if (date == null) {
+            return "";
+        }
+        Log.d(TAG, "date: " + date.toString());
+        String actionTimeStr = "";
+        // VPK: The before date is in UTC time so current calendar_white time must also be in UTC time as the diff would otherwise be offset with users current timezone.
+        //final Calendar current = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        final Calendar current = Calendar.getInstance();
+        final Calendar before = Calendar.getInstance();
+        before.setTime(date);
+        //VPK: The getTimeInMillis shows a diff which is exactly that of the timezone.
+        Log.d(TAG, "current: " + current.getTimeInMillis());
+        Log.d(TAG, "before: " + before.getTimeInMillis());
+//        current.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Log.d(TAG, "c1: " + new SimpleDateFormat("d MMM yyyy HH:mm:ss", Locale.ENGLISH).format(current.getTimeInMillis()));
+        Log.d(TAG, "b0: " + new SimpleDateFormat("d MMM yyyy HH:mm:ss", Locale.ENGLISH).format(before.getTimeInMillis()));
+//        before.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date currentDate = new Date();
+        try {
+            currentDate = sdf.parse(sdf.format(currentDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long difference = current.getTimeInMillis() - before.getTimeInMillis();
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+        long daysago = difference / daysInMilli;
+        long monthsAgo = current.get(Calendar.MONTH) - before.get(Calendar.MONTH);
+        long yearsAgo = current.get(Calendar.YEAR) - before.get(Calendar.YEAR);
+
+        if (daysago >= 1 && daysago <= 6) {
+            actionTimeStr = mContext.getResources().getQuantityString(R.plurals.day_ago_plural, (int) daysago, daysago);
+        } else if (daysago >= 1 && daysago <= 30) {
+            actionTimeStr = mContext.getResources().getQuantityString(R.plurals.week_ago_plural, (int) (daysago / 7), (daysago / 7));
+        } else if (daysago == 0) {
+//            final long hoursAgo = current.get(Calendar.HOUR_OF_DAY) - before.get(Calendar.HOUR_OF_DAY);
+            final long hoursAgo = difference / hoursInMilli;
+            Log.d(TAG, "hours ago: " + hoursAgo);
+            if (hoursAgo == 1) {
+                actionTimeStr = mContext.getResources().getQuantityString(R.plurals.hour_ago_plural, (int) hoursAgo, hoursAgo);
+            } else if (hoursAgo != 0) {
+                actionTimeStr = mContext.getResources().getQuantityString(R.plurals.hour_ago_plural, (int) hoursAgo, hoursAgo);
+            } else {
+//                final long minutes = current.get(Calendar.MINUTE) - before.get(Calendar.MINUTE);
+//                final long sec = current.get(Calendar.SECOND) - before.get(Calendar.SECOND);
+                final long minutes = difference / minutesInMilli;
+                final long sec = difference / secondsInMilli;
+                Log.d(TAG, "minutes: " + minutes);
+//                actionTimeStr = (minutes < 1) ? mContext.getString(R.string.just_now) : mContext.getResources().getQuantityString(R.plurals.minute_ago_plural, (int) minutes, minutes);
+                if (minutes >= 1)
+                    actionTimeStr = (minutes < 1) ? mContext.getResources().getQuantityString(R.plurals.second_ago_plural, (int) sec, sec) : mContext.getResources().getQuantityString(R.plurals.minute_ago_plural, (int) minutes, minutes);
+                else
+                    actionTimeStr = (sec > 1) ? mContext.getResources().getQuantityString(R.plurals.second_ago_plural, (int) sec, sec) : mContext.getString(R.string.just_now);
+
+            }
+        } /*else if (daysago == 1) {
+            return mContext.getString(R.string.yesterday);
+        }*/ else if (monthsAgo >= 1 && monthsAgo <= 12) {
+            actionTimeStr = mContext.getResources().getQuantityString(R.plurals.month_ago_plural, (int) monthsAgo, monthsAgo);
+        } else if (yearsAgo >= 1) {
+            actionTimeStr = mContext.getResources().getQuantityString(R.plurals.year_ago_plural, (int) yearsAgo, yearsAgo);
+        } else {
+            if (before.get(Calendar.YEAR) == current.get(Calendar.YEAR)) {
+                actionTimeStr = DateFormatter.MMMM_dd.format(date);
+            } else {
+                actionTimeStr = DateFormatter.MMMM_dd_yyyy.format(date);
+            }
+        }
+        return actionTimeStr;
+    }
+
 }

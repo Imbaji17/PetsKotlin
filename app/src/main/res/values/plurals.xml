@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="second_ago_plural">
+        <!--<item quantity="zero">%1$s seconds ago</item>-->
+        <item quantity="one">%1$s second ago</item>
+        <item quantity="other">%1$s seconds ago</item>
+    </plurals>
+    <plurals name="minute_ago_plural">
+        <!--<item quantity="zero">%1$s minutes ago</item>-->
+        <item quantity="one">%1$s minute ago</item>
+        <item quantity="other">%1$s minutes ago</item>
+    </plurals>
+    <plurals name="hour_ago_plural">
+        <!--<item quantity="zero">%1$s hours ago</item>-->
+        <item quantity="one">%1$s hour ago</item>
+        <item quantity="other">%1$s hours ago</item>
+    </plurals>
+    <plurals name="day_ago_plural">
+        <!-- <item quantity="zero">%1$s days ago</item>-->
+        <item quantity="one">%1$s day ago</item>
+        <item quantity="other">%1$s days ago</item>
+    </plurals>
+    <plurals name="week_ago_plural">
+        <!--<item quantity="zero">%1$s weeks ago</item>-->
+        <item quantity="one">%1$s week ago</item>
+        <item quantity="other">%1$s weeks ago</item>
+    </plurals>
+    <plurals name="month_ago_plural">
+        <!--<item quantity="zero">%1$s months ago</item>-->
+        <item quantity="one">%1$s month ago</item>
+        <item quantity="other">%1$s months ago</item>
+    </plurals>
+    <plurals name="year_ago_plural">
+        <!-- <item quantity="zero">%1$s years ago</item>-->
+        <item quantity="one">%1$s year ago</item>
+        <item quantity="other">%1$s years ago</item>
+    </plurals>
+
+    <plurals name="review_plural">
+        <!-- <item quantity="zero">%1$s years ago</item>-->
+        <item quantity="one">(%1$s Review)</item>
+        <item quantity="other">(%1$s Reviews)</item>
+    </plurals>
+</resources>

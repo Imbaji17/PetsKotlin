@@ -11,6 +11,7 @@ import com.pets.app.common.Enums
 import com.pets.app.common.ImageSetter
 import com.pets.app.model.FunZone
 import com.pets.app.utilities.DateFormatter
+import com.pets.app.utilities.Utils
 
 /**
  * Created by admin on 16/01/18.
@@ -32,12 +33,18 @@ class FunZoneVH(itemView: View, clickListener: View.OnClickListener) : RecyclerV
     init {
         ivPlay.setOnClickListener(clickListener)
         ivMore.setOnClickListener(clickListener)
+        tvComment.setOnClickListener(clickListener)
+        tvHelpful.setOnClickListener(clickListener)
+        tvShare.setOnClickListener(clickListener)
     }
 
     override fun onBindView(`object`: Any) {
         val funZone = `object` as FunZone
         ivPlay.tag = funZone
         ivMore.tag = funZone
+        tvComment.tag = funZone
+        tvHelpful.tag = funZone
+        tvShare.tag = funZone
 
         if (funZone.user != null) {
             if (!TextUtils.isEmpty(funZone.user.name)) {
@@ -48,7 +55,10 @@ class FunZoneVH(itemView: View, clickListener: View.OnClickListener) : RecyclerV
             ImageSetter.loadRoundedImage(context, funZone.user.profile_image, R.drawable.alert_placeholder, ivProfile)
         }
 
-        tvDate.text = DateFormatter.getFormattedDate(DateFormatter.yyyy_mm_dd_HH_mm_ss, funZone.createdDate, DateFormatter.REVIEW_DATE_FORMAT)
+        tvDate.text = Utils.getTimeString(context, DateFormatter.getDate(DateFormatter.yyyy_mm_dd_HH_mm_ss, funZone.createdDate))
+//        tvDate.text = DateFormatter.getFormattedDate(DateFormatter.yyyy_mm_dd_HH_mm_ss, funZone.createdDate, DateFormatter.REVIEW_DATE_FORMAT)
+
+
         ImageSetter.loadImage(context, funZone.funZoneImage, R.drawable.alert_placeholder, ivFunZone)
         if (!TextUtils.isEmpty(funZone.type) && funZone.type == Enums.FunZoneType.VIDEO.name) {
             ivPlay.visibility = View.VISIBLE

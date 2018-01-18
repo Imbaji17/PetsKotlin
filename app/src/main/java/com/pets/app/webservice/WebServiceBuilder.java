@@ -5,6 +5,7 @@ import com.pets.app.model.AdoptionResponse;
 import com.pets.app.model.BreedResponse;
 import com.pets.app.model.FindHostelResponse;
 import com.pets.app.model.FunZone;
+import com.pets.app.model.FunZoneCommentResponse;
 import com.pets.app.model.FunZoneResponse;
 import com.pets.app.model.LoginResponse;
 import com.pets.app.model.NormalResponse;
@@ -136,6 +137,20 @@ public class WebServiceBuilder {
 
         @POST("fun_zone_delete")
         Call<NormalResponse> funZoneDelete(@Body FunZone funZone);
-//
+
+        @GET("fun_zone_comment_list")
+        Call<FunZoneCommentResponse> getFunZoneCommentList(@Query("user_id") String user_id, @Query("timestamp") String timeStamp, @Query("key") String key,
+                                                           @Query("language_code") String languageCode, @Query("next_offset") int nextOffset,
+                                                           @Query("fun_zone_id") String fun_zone_id);
+
+//        @FormUrlEncoded
+//        @POST("fun_zone_post_comment")
+//        Call<NormalResponse> addFunZoneComment(@Field("user_id") String user_id, @Field("key") String key, @Field("timestamp") String timestamp,
+//                                               @Field("language_code") String language_code, @Field("fun_zone_id") String fun_zone_id,
+//                                               @Field("fun_zone_comment_id") String fun_zone_comment_id, @Field("comment") String comment);
+
+        @POST("fun_zone_post_comment/")
+        Call<NormalResponse> addFunZoneComment(@Body FavouriteHostel favouriteHostel);
+
     }
 }
