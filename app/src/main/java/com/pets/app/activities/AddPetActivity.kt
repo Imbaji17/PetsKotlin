@@ -9,10 +9,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.RadioGroup
+import android.widget.*
 import com.pets.app.R
 import com.pets.app.adapters.PhotosAdapter
 import com.pets.app.common.AppPreferenceManager
@@ -54,6 +51,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
     private var btnUpload: Button? = null
     private var edtDesc: EditText? = null
     private var mRecyclerView: RecyclerView? = null
+    private var checkMatch: CheckBox? = null
     private var btnAddPet: Button? = null
     private var adapter: PhotosAdapter? = null
     private var photoList: ArrayList<Any>? = null
@@ -88,6 +86,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         btnUpload = findViewById(R.id.btnUpload)
         edtDesc = findViewById(R.id.edtDescription)
         mRecyclerView = findViewById(R.id.recyclerView)
+        checkMatch = findViewById(R.id.checkMatch)
         btnAddPet = findViewById(R.id.btnAddPet)
 
         val mGridLayoutManager = GridLayoutManager(this, 3)
@@ -316,9 +315,15 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         val petName = edtName!!.text.toString().trim()
         val dob = DateFormatter.getFormattedDate(DateFormatter.dd_MMM_yyyy_str, edtDOB!!.text.toString().trim(), DateFormatter.yyyy_MM_dd_str)
         val desc = edtDesc!!.text.toString().trim()
+
         var gender = Constants.MALE
         if (radioGender?.checkedRadioButtonId == R.id.rbFemale) {
             gender = Constants.FEMALE
+        }
+
+        var match = Constants.NO
+        if (checkMatch!!.isChecked) {
+            match = Constants.YES
         }
 
         val actionName = "add_pets"
@@ -347,6 +352,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                         multipartEntity.addPart("pets_type_id", StringBody(petsTypeId))
                         multipartEntity.addPart("breed_id", StringBody(breedId))
                         multipartEntity.addPart("dob", StringBody(dob))
+                        multipartEntity.addPart("is_ready_match", StringBody(match))
                         multipartEntity.addPart("gender", StringBody(gender))
                         multipartEntity.addPart("description", StringBody(desc))
                         if (certificateFile != null)
@@ -387,6 +393,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             request.setDob(dob)
             request.setGender(gender)
             request.setDescription(desc)
+            request.setIs_ready_match(match)
 
             showProgressBar()
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)

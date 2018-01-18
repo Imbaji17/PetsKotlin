@@ -29,6 +29,8 @@ public class PetUpdateRequest implements Serializable {
     private String gender;
     @SerializedName("description")
     private String description;
+    @SerializedName("is_ready_match")
+    private String is_ready_match;
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -68,5 +70,9 @@ public class PetUpdateRequest implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setIs_ready_match(String is_ready_match) {
+        this.is_ready_match = is_ready_match;
     }
 }
