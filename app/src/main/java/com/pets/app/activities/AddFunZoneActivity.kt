@@ -124,6 +124,10 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                 etAddress!!.setText(funZone!!.address)
             if (!TextUtils.isEmpty(funZone!!.description))
                 etDescription!!.setText(funZone!!.description)
+            if (!TextUtils.isEmpty(funZone!!.lat))
+                latitude = funZone!!.lat.toDouble()
+            if (!TextUtils.isEmpty(funZone!!.lng))
+                longitude = funZone!!.lng.toDouble()
         }
     }
 
@@ -370,25 +374,25 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
 
             } else {
 
-                var funZone = FunZone()
-                funZone.setUserId(userId)
-                funZone.setKey(key)
-                funZone.setTimestamp(timestamp)
+                var request = FunZone()
+                request.setUserId(userId)
+                request.setKey(key)
+                request.setTimestamp(timestamp)
                 if (from == 1) {
-                    funZone.funZoneId = funZone!!.funZoneId
+                    request.funZoneId = funZone!!.funZoneId
                 }
-                funZone.title = title
-                funZone.contactPerson = user.name
-                funZone.contactNo = user.phone_number
-                funZone.emailId = emailAddress
-                funZone.address = address
-                funZone.lat = latitude.toString()
-                funZone.lng = longitude.toString()
-                funZone.description = description
+                request.title = title
+                request.contactPerson = user.name
+                request.contactNo = user.phone_number
+                request.emailId = emailAddress
+                request.address = address
+                request.lat = latitude.toString()
+                request.lng = longitude.toString()
+                request.description = description
 
                 showProgressBar()
                 val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-                val call = api.addEditFunZone(funZone)
+                val call = api.addEditFunZone(request)
                 call.enqueue(object : Callback<FunZoneResponse> {
                     override fun onResponse(call: Call<FunZoneResponse>?, response: Response<FunZoneResponse>?) {
                         hideProgressBar()
