@@ -195,7 +195,8 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             }
             R.id.edtDOB -> {
                 DatePickerDialogFragment(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                    val date = "$dayOfMonth-$month-$year"
+                    val cmgMonth = month + 1
+                    val date = "$dayOfMonth-$cmgMonth-$year"
                     val strDate = DateFormatter.getFormattedDate(DateFormatter.dd_MM_yyyy_str, date, DateFormatter.dd_MMM_yyyy_str)
                     edtDOB?.setText(strDate)
                 }).show(supportFragmentManager, this.getString(R.string.select_date))
