@@ -371,7 +371,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             for (i in photoList!!.indices) {
                 val obj = photoList!!.get(index = i)
                 if (obj is PhotosInfo) {
-                    val file: File = File(obj.url)
+                    val file = File(obj.url)
                     addImages(petDetails!!.pet_id, file)
                 }
             }
