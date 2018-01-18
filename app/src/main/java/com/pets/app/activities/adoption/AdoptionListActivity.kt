@@ -6,17 +6,12 @@ import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.*
 import com.google.gson.GsonBuilder
 import com.pets.app.R
-import com.pets.app.activities.HostelDetailActivity
 import com.pets.app.adapters.AdoptionListAdapter
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
@@ -96,8 +91,8 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
                     //check for scroll down
                     if (listItems != null && listItems.size > 0) {
                         if (nextOffset != -1) {
-                            visibleItemCount = gridLayoutManager!!.getChildCount()
-                            totalItemCount = gridLayoutManager!!.getItemCount()
+                            visibleItemCount = gridLayoutManager!!.childCount
+                            totalItemCount = gridLayoutManager!!.itemCount
                             pastVisibleItems = gridLayoutManager!!.findFirstVisibleItemPosition()
                             if (loading) {
                                 if (visibleItemCount + pastVisibleItems >= totalItemCount) {
@@ -135,7 +130,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
         val includeEdge = true
         recyclerView!!.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
         gridLayoutManager = GridLayoutManager(this, spanCount)
-        recyclerView!!.layoutManager = this!!.gridLayoutManager
+        recyclerView!!.layoutManager = this.gridLayoutManager
         recyclerView!!.itemAnimator = DefaultItemAnimator()
         adapter = AdoptionListAdapter(listItems, this)
         recyclerView!!.adapter = adapter
@@ -162,10 +157,10 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
                 override fun onResponse(call: Call<AdoptionResponse>, response: Response<AdoptionResponse>?) {
                     loading = true
                     if (response != null) {
-                        if (response.isSuccessful()) {
+                        if (response.isSuccessful) {
                             nextOffset = response.body().nextOffset
                             if (response.body() != null && response.body().list != null) {
-                                listItems.addAll(response.body().list);
+                                listItems.addAll(response.body().list)
                                 adapter!!.notifyDataSetChanged()
                             }
                         } else if (response.code() == 403) {
@@ -251,8 +246,8 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             RC_FILTER -> if (resultCode == Activity.RESULT_OK) {
-                latitude = data!!.getDoubleExtra(ApplicationsConstants.LATITUDE, 0.0);
-                longitude = data!!.getDoubleExtra(ApplicationsConstants.LONGITUDE, 0.0);
+                latitude = data!!.getDoubleExtra(ApplicationsConstants.LATITUDE, 0.0)
+                longitude = data.getDoubleExtra(ApplicationsConstants.LONGITUDE, 0.0)
                 petsTypeId = data.getStringExtra(ApplicationsConstants.PETS_TYPE_ID)
                 petsTypeStr = data.getStringExtra(ApplicationsConstants.PETS_TYPE_NAME)
                 breedId = data.getStringExtra(ApplicationsConstants.BREED_ID)
@@ -296,19 +291,12 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
             override fun onResponse(call: Call<NormalResponse>?, response: Response<NormalResponse>?) {
                 hideProgressBar()
                 if (response != null) {
-                    if (response.body() != null && response.isSuccessful()) {
+                    if (response.body() != null && response.isSuccessful) {
                         var pos = listItems.indexOf(adoption as Any)
                         adoption!!.isInterest = !adoption!!.isInterest
                         adapter!!.notifyItemChanged(pos)
-                    } else if (response.code() == 403) {
-                        val gson = GsonBuilder().create()
-                        val mError: NormalResponse
-                        try {
-                            mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }

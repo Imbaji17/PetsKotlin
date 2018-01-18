@@ -20,9 +20,10 @@ import com.google.gson.reflect.TypeToken;
 import com.pets.app.R;
 import com.pets.app.common.AppPreferenceManager;
 import com.pets.app.common.MyApplication;
-import com.pets.app.model.LoginResponse;
 import com.pets.app.model.NormalResponse;
 import com.pets.app.model.object.Country;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,7 +42,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import retrofit2.Response;
+import okhttp3.ResponseBody;
 
 public class Utils {
 
@@ -151,12 +152,12 @@ public class Utils {
         return list;
     }
 
-    public static void showErrorToast(Response<LoginResponse> response) {
-
+    public static void showErrorToast(@Nullable ResponseBody errorBody) {
         Gson gson = new GsonBuilder().create();
         NormalResponse mError;
         try {
-            mError = gson.fromJson(response.errorBody().string(), NormalResponse.class);
+            assert errorBody != null;
+            mError = gson.fromJson(errorBody.string(), NormalResponse.class);
             Utils.showToast("" + mError.getMessage());
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,7 +5,6 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.common.Constants
 import com.pets.app.model.NormalResponse
@@ -16,7 +15,6 @@ import com.pets.app.webservice.WebServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
 class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
 
@@ -88,15 +86,8 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                     if (response.body() != null && response.isSuccessful) {
                         Utils.showToast(response.body().message)
                         this@ForgotPasswordActivity.finish()
-                    } else if (response.code() == 403) {
-                        val gson = GsonBuilder().create()
-                        val mError: NormalResponse
-                        try {
-                            mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-                            Utils.showToast("" + mError.message)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }

@@ -14,7 +14,6 @@ import android.widget.*
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
-import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
@@ -32,7 +31,6 @@ import com.pets.app.webservice.WebServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
@@ -236,15 +234,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 if (response != null) {
                     if (response.body() != null && response.isSuccessful) {
                         checkSocialLoginResponse(response.body().result)
-                    } else if (response.code() == 403) {
-                        val gson = GsonBuilder().create()
-                        val mError: LoginResponse
-                        try {
-                            mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
-                            Utils.showToast("" + mError.message)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }
@@ -275,7 +266,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     if (response.body() != null && response.isSuccessful) {
                         checkResponse(response.body().result)
                     } else {
-                        Utils.showErrorToast(response)
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }

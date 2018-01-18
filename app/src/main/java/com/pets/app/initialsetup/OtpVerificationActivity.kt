@@ -14,7 +14,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
@@ -29,7 +28,6 @@ import com.pets.app.webservice.WebServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
 class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
 
@@ -204,15 +202,8 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
                 if (response != null) {
                     if (response.body() != null && response.isSuccessful) {
                         checkResponse(response.body(), true)
-                    } else if (response.code() == 403) {
-                        val gson = GsonBuilder().create()
-                        val mError: NormalResponse
-                        try {
-                            mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-                            Utils.showToast("" + mError.message)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }
@@ -237,15 +228,8 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
                 if (response != null) {
                     if (response.body() != null && response.isSuccessful) {
                         checkResponse(response.body(), false)
-                    } else if (response.code() == 403) {
-                        val gson = GsonBuilder().create()
-                        val mError: NormalResponse
-                        try {
-                            mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-                            Utils.showToast("" + mError.message)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }

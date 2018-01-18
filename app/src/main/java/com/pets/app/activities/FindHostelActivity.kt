@@ -19,7 +19,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.ViewFlipper
-import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.adapters.FindHostelAdapter
 import com.pets.app.common.AppPreferenceManager
@@ -39,7 +38,6 @@ import com.pets.app.webservice.WebServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 import java.util.*
 
 
@@ -95,7 +93,7 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
         val includeEdge = true
         recyclerView!!.addItemDecoration(GridSpacingItemDecoration(spanCount, spacing, includeEdge))
         gridLayoutManager = GridLayoutManager(this, spanCount)
-        recyclerView!!.layoutManager = this!!.gridLayoutManager
+        recyclerView!!.layoutManager = this.gridLayoutManager
         recyclerView!!.itemAnimator = DefaultItemAnimator()
 //        val snapHelper = LinearSnapHelper()
 //        snapHelper.attachToRecyclerView(recyclerView)
@@ -119,20 +117,13 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
             call.enqueue(object : Callback<FindHostelResponse> {
                 override fun onResponse(call: Call<FindHostelResponse>, response: Response<FindHostelResponse>?) {
                     if (response != null) {
-                        if (response.isSuccessful()) {
+                        if (response.isSuccessful) {
                             if (response.body() != null && response.body().list != null) {
-                                listItems.addAll(response.body().list);
+                                listItems.addAll(response.body().list)
                                 adapter!!.notifyDataSetChanged()
                             }
-                        } else if (response.code() == 403) {
-                            val gson = GsonBuilder().create()
-                            val mError: NormalResponse
-                            try {
-                                mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-//                                Utils.showToast(mActivity, "" + mError.getMessage())
-                            } catch (e: IOException) {
-                                e.printStackTrace()
-                            }
+                        } else {
+//                            Utils.showErrorToast(response.errorBody())
                         }
                     }
                     setNoResult()
@@ -205,8 +196,8 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             RC_MAP_ACTIVITY -> if (resultCode == Activity.RESULT_OK) {
-                latitude = data!!.getDoubleExtra(ApplicationsConstants.LATITUDE, 0.0);
-                longitude = data!!.getDoubleExtra(ApplicationsConstants.LONGITUDE, 0.0);
+                latitude = data!!.getDoubleExtra(ApplicationsConstants.LATITUDE, 0.0)
+                longitude = data.getDoubleExtra(ApplicationsConstants.LONGITUDE, 0.0)
                 keyWord = data.getStringExtra(ApplicationsConstants.NAME)
                 if (!TextUtils.isEmpty(keyWord)) {
                     edtSearch!!.setText(keyWord)
@@ -222,10 +213,10 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
             keyWord = edtSearch!!.text.toString()
             nextOffset = 0
             listItems.clear()
-            getHostelList();
-            return true;
+            getHostelList()
+            return true
         }
-        return false;
+        return false
     }
 
     override fun afterTextChanged(p0: Editable?) {
@@ -262,19 +253,12 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
             override fun onResponse(call: Call<NormalResponse>?, response: Response<NormalResponse>?) {
                 hideProgressBar()
                 if (response != null) {
-                    if (response.body() != null && response.isSuccessful()) {
+                    if (response.body() != null && response.isSuccessful) {
                         var pos = listItems.indexOf(findHostel as Any)
                         findHostel!!.isInterest = !findHostel!!.isInterest
                         adapter!!.notifyItemChanged(pos)
-                    } else if (response.code() == 403) {
-                        val gson = GsonBuilder().create()
-                        val mError: NormalResponse
-                        try {
-                            mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }

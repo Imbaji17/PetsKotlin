@@ -5,11 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.NestedScrollView
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.widget.*
-import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.adapters.ImageAdapter
 import com.pets.app.common.AppPreferenceManager
@@ -19,7 +17,6 @@ import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.FindHostel
 import com.pets.app.model.FindHostelResponse
-import com.pets.app.model.NormalResponse
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -28,7 +25,6 @@ import com.viewpagerindicator.CirclePageIndicator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
 class HostelDetailActivity : BaseActivity(), View.OnClickListener {
 
@@ -119,19 +115,12 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
             val call = apiClient.hostelDetailsById(hostelId, key, "EN", lat, lng, timeStamp, userId)
             call.enqueue(object : Callback<FindHostelResponse> {
                 override fun onResponse(call: Call<FindHostelResponse>, response: Response<FindHostelResponse>?) {
-                    if (response != null && response.isSuccessful() && response.body() != null && response.body().result != null) {
+                    if (response != null && response.isSuccessful && response.body() != null && response.body().result != null) {
                         setMainLayout()
                         setValues(response.body().result)
                     } else {
                         setNoDataLayout()
-                        val gson = GsonBuilder().create()
-                        val mError: NormalResponse
-                        try {
-                            mError = gson.fromJson(response!!.errorBody().string(), NormalResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                        Utils.showErrorToast(response?.errorBody())
                     }
                 }
 
@@ -171,7 +160,7 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
         if (result.lat > 0 && result.lng > 0) {
             llDistance?.visibility = View.VISIBLE
             var distance = Utils.getDistance(this, result.lat.toString(), result.lng.toString())
-            tvDistance?.text = String.format(getString(R.string.x_miles), distance);
+            tvDistance?.text = String.format(getString(R.string.x_miles), distance)
         } else llDistance?.visibility = View.GONE
 
 
@@ -188,7 +177,7 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
             cvp!!.setViewPager(viewPager)
         }
 
-        ratingBar?.rating = result.avgRating.toFloat();
+        ratingBar?.rating = result.avgRating.toFloat()
         tvReview?.text = resources.getQuantityString(R.plurals.reviews_plural, result.reviewsCount, result.reviewsCount)
         tvName?.text = if (!TextUtils.isEmpty(result.hostelName)) {
             result.hostelName

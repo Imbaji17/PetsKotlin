@@ -14,7 +14,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.activities.AddPetActivity
 import com.pets.app.activities.FindHostelActivity
@@ -25,7 +24,6 @@ import com.pets.app.adapters.LandingImageAdapter
 import com.pets.app.adapters.LandingMenuAdapter
 import com.pets.app.common.*
 import com.pets.app.interfaces.SimpleItemClickListener
-import com.pets.app.model.NormalResponse
 import com.pets.app.model.PetResponse
 import com.pets.app.model.`object`.LandingDetails
 import com.pets.app.utilities.TimeStamp
@@ -38,7 +36,6 @@ import kotlinx.android.synthetic.main.app_toolbar.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
 class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SimpleItemClickListener {
 
@@ -282,15 +279,8 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
                         if (response.body() != null) {
                             checkResponse(response.body())
                         }
-                    } else if (response.code() == 403) {
-                        val gson = GsonBuilder().create()
-                        val mError: NormalResponse
-                        try {
-                            mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-//                                Utils.showToast(mActivity, "" + mError.getMessage())
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }
@@ -312,7 +302,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             pageIndicator?.setViewPager(viewPager)
 
             tvName?.text = petResponse.list[0].pet_name
-            tvBirthDate?.text = this.getString(R.string.birthday).plus(petResponse.list[0].dob)
+            tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(petResponse.list[0].dob.replace("-", "/"))
 
             viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
@@ -323,13 +313,12 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
                 override fun onPageSelected(position: Int) {
                     tvName?.text = petResponse.list[position].pet_name
-                    tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(petResponse.list[position].dob)
+                    tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(petResponse.list[position].dob.replace("-", "/"))
                 }
             })
 
         } else {
             viewFlipper?.displayedChild = 0
         }
-
     }
 }
