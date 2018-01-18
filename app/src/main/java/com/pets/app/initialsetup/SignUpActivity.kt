@@ -311,15 +311,8 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                     if (response.body() != null && response.isSuccessful) {
                         Utils.showToast(response.body().message)
                         checkResponse(response.body().result)
-                    } else if (response.code() == 403) {
-                        val gson = GsonBuilder().create()
-                        val mError: LoginResponse
-                        try {
-                            mError = gson.fromJson(response.errorBody().string(), LoginResponse::class.java)
-                            Utils.showToast("" + mError.message)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
                     }
                 }
             }
