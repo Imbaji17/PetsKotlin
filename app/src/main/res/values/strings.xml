@@ -192,4 +192,5 @@
     <string name="please_enter_contact_number">Please enter contact number</string>
     <string name="please_enter_description">Please enter description</string>
     <string name="please_add_pet_image">Please add pet image</string>
+    <string name="birthday">BIRTHDAY:</string>
 </resources>

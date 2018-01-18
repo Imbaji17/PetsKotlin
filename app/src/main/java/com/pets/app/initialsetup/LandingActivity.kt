@@ -13,10 +13,7 @@ import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.ViewFlipper
+import android.widget.*
 import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.activities.AddPetActivity
@@ -50,6 +47,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
     private var imgProfile: ImageView? = null
     private var linHeader: LinearLayout? = null
     /*Landing*/
+    private var btnRetry: Button? = null
     private var mainViewFlipper: ViewFlipper? = null
     private var viewFlipper: ViewFlipper? = null
     private var linAddPet: LinearLayout? = null
@@ -98,10 +96,6 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         linHeader = nav_view.findViewById(R.id.nav_header)
         linAddPet = findViewById(R.id.linAddPet)
 
-        header?.setOnClickListener(this)
-        imgHeader?.setOnClickListener(this)
-        linAddPet?.setOnClickListener(this)
-
         /*Setting Data To View*/
         val user = AppPreferenceManager.getUser()
         if (!TextUtils.isEmpty(user.profile_image)) {
@@ -111,9 +105,11 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             tvUserName?.text = user.name
         }
 
+        btnRetry = findViewById(R.id.btnRetry)
         mainViewFlipper = findViewById(R.id.mainViewFlipper)
         viewFlipper = findViewById(R.id.viewFlipper)
         viewPager = findViewById(R.id.viewPager)
+        pageIndicator = findViewById(R.id.cvp)
         tvName = findViewById(R.id.tvName)
         tvBirthDate = findViewById(R.id.tvBirthDate)
         mRecyclerView = findViewById(R.id.recyclerView)
@@ -137,6 +133,11 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         val adapter = LandingMenuAdapter(this, mList)
         mRecyclerView?.adapter = adapter
         adapter.setItemClick(this)
+
+        header?.setOnClickListener(this)
+        imgHeader?.setOnClickListener(this)
+        linAddPet?.setOnClickListener(this)
+        btnRetry?.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -154,6 +155,9 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             R.id.linAddPet -> {
                 val mIntent = Intent(this, AddPetActivity::class.java)
                 this.startActivity(mIntent)
+            }
+            R.id.btnRetry -> {
+                checkValidations()
             }
         }
     }
@@ -306,6 +310,23 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             val adapter = LandingImageAdapter(this, petResponse.list)
             viewPager?.adapter = adapter
             pageIndicator?.setViewPager(viewPager)
+
+            tvName?.text = petResponse.list[0].pet_name
+            tvBirthDate?.text = this.getString(R.string.birthday).plus(petResponse.list[0].dob)
+
+            viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {
+                }
+
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                }
+
+                override fun onPageSelected(position: Int) {
+                    tvName?.text = petResponse.list[position].pet_name
+                    tvBirthDate?.text = this@LandingActivity.getString(R.string.birthday).plus(petResponse.list[position].dob)
+                }
+            })
+
         } else {
             viewFlipper?.displayedChild = 0
         }
