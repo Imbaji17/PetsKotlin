@@ -185,10 +185,11 @@
     <string name="crate_post">Crate Post</string>
     <string name="enter_your_comment">Enter your Comment</string>
     <string name="please_select_dob">Please select date of birth</string>
-
     <string name="add_video">Add Video</string>
     <string name="please_enter_title">Please enter title</string>
     <string name="please_enter_contact_person">Please enter contact person</string>
     <string name="please_enter_contact_number">Please enter contact number</string>
     <string name="please_enter_description">Please enter description</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

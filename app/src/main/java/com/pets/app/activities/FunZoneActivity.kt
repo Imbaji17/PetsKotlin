@@ -1,12 +1,17 @@
 package com.pets.app.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -20,8 +25,10 @@ import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
+import com.pets.app.model.FunZone
 import com.pets.app.model.FunZoneResponse
 import com.pets.app.model.NormalResponse
+import com.pets.app.model.Reviews
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -80,8 +87,39 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(p0: View?) {
+        when (p0!!.id) {
+            R.id.ivMore -> {
+                val funZone = p0.tag as FunZone
+                showMenu(p0, funZone)
+            }
 
+            R.id.ivPlay -> {
+                val funZone = p0.tag as FunZone
+                if (funZone != null && !TextUtils.isEmpty(funZone.funZoneImage))
+                    VideoViewActivity.startActivity(this, funZone.funZoneImage)
+            }
+        }
+    }
 
+    @SuppressLint("NewApi")
+    private fun showMenu(view: View, funZone: FunZone) {
+        val menu = PopupMenu(this, view, Gravity.RIGHT)
+        menu.menuInflater.inflate(R.menu.menu_funzone, menu.menu)
+        menu.show()
+        menu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+
+                R.id.action_cancel -> {
+                }
+
+                R.id.action_edit -> {
+                }
+
+                R.id.action_delete -> {
+                }
+            }
+            false
+        }
     }
 
 
@@ -179,5 +217,4 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }

@@ -34,6 +34,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dimen_size_10"
                 android:layout_marginStart="@dimen/dimen_size_10"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
 
@@ -53,15 +54,39 @@
                     android:textSize="@dimen/text_size_15"
                     tools:text="@string/app_name" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/dot" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/ivFunZone"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_centerVertical="true"
-            android:layout_margin="@dimen/dimen_size_5"
-            android:src="@drawable/img_placeholder" />
+            android:layout_height="@dimen/dimen_size_200">
+
+            <ImageView
+                android:id="@+id/ivFunZone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/dimen_size_5"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_placeholder" />
+
+            <ImageView
+                android:id="@+id/ivPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/play"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"

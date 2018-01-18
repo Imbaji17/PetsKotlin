@@ -166,6 +166,10 @@
             android:name=".activities.AddFunZoneActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.VideoViewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

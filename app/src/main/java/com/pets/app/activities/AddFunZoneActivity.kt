@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.ThumbnailUtils
 import android.os.AsyncTask
 import android.os.Bundle
@@ -19,22 +20,25 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.common.ImageSetter
 import com.pets.app.initialsetup.BaseActivity
-import com.pets.app.model.AdoptionResponse
-import com.pets.app.utilities.ImagePicker
-import com.pets.app.utilities.Logger
-import com.pets.app.utilities.TimeStamp
-import com.pets.app.utilities.Utils
+import com.pets.app.model.*
+import com.pets.app.utilities.*
+import com.pets.app.webservice.RestClient
 import com.pets.app.webservice.UploadImage
+import com.pets.app.webservice.WebServiceBuilder
 import khandroid.ext.apache.http.entity.mime.HttpMultipartMode
 import khandroid.ext.apache.http.entity.mime.MultipartEntity
 import khandroid.ext.apache.http.entity.mime.content.FileBody
 import khandroid.ext.apache.http.entity.mime.content.StringBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.*
 
 
@@ -131,15 +135,24 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                 if (data != null) {
 //                    mVideoView.setVideoURI(videoUri)
                     val videoUri = data.data
-                    videoFile = File(videoUri.path);
-                    val filePath = videoUri.path
-                    Log.d(TAG, "Video path is: " + filePath)
-                    tvAddImage!!.visibility = View.VISIBLE
+//                    videoFile = File(videoUri.path);
+//                    val filePath = videoUri.path
+//                    Log.d(TAG, "Video path is: " + filePath)
+                    tvAddImage!!.visibility = View.GONE
 
-                    val thumb = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Images.Thumbnails.MINI_KIND)
-                    videoThumbFile = bitmapToFile(thumb)
-                    if (videoThumbFile!!.exists()) {
-                        ImageSetter.loadRoundedImage(this, videoThumbFile, R.drawable.profile, ivPost)
+                    val selectedPath = FileUtils.getPath(this, videoUri)
+                    if (selectedPath != null) {
+                        val parts = selectedPath!!.split("/".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
+                        val lastWord = parts[parts.size - 1]
+                        videoFile = File(selectedPath!!)
+
+//                        val ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(selectedPath), 100, 100)
+                        val ThumbImage = ThumbnailUtils.createVideoThumbnail(selectedPath, MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
+//                    val thumb = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Images.Thumbnails.MINI_KIND)
+                        videoThumbFile = bitmapToFile(ThumbImage)
+                        if (videoThumbFile!!.exists()) {
+                            ImageSetter.loadImage(this, videoThumbFile, R.drawable.profile, ivPost)
+                        }
                     }
                 }
             }
@@ -281,10 +294,10 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
 
                             if (updatedImageFile != null) {
                                 multipartEntity.addPart("fun_zone_image", FileBody(updatedImageFile, "userFile1/jpg"))
-                                multipartEntity.addPart("type", StringBody("IMAGE"))
+                                multipartEntity.addPart("type", StringBody(Enums.FunZoneType.IMAGE.name))
                             } else if (videoFile != null) {
                                 multipartEntity.addPart("fun_zone_image", FileBody(videoFile, "userFile1/jpg"))
-                                multipartEntity.addPart("type", StringBody("VIDEO"))
+                                multipartEntity.addPart("type", StringBody(Enums.FunZoneType.VIDEO.name))
 
                                 if (videoThumbFile != null)
                                     multipartEntity.addPart("video_thumb", FileBody(videoThumbFile, "userFile1/jpg"))
@@ -317,8 +330,47 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
 
             } else {
 
-            }
+                var funZone = FunZone()
+                funZone.setUserId(userId)
+                funZone.setKey(key)
+                funZone.setTimestamp(timestamp)
+//                adoption.fun_zone_id = ""
+                funZone.title = title
+                funZone.contactPerson = user.name
+                funZone.contactNo = user.phone_number
+                funZone.emailId = emailAddress
+                funZone.address = address
+                funZone.lat = latitude.toString()
+                funZone.lng = longitude.toString()
+                funZone.description = description
 
+                showProgressBar()
+                val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+                val call = api.addEditFunZone(funZone)
+                call.enqueue(object : Callback<FunZoneResponse> {
+                    override fun onResponse(call: Call<FunZoneResponse>?, response: Response<FunZoneResponse>?) {
+                        hideProgressBar()
+                        if (response != null) {
+                            if (response.body() != null && response.isSuccessful()) {
+                                finish()
+                            } else if (response.code() == 403) {
+                                val gson = GsonBuilder().create()
+                                val mError: NormalResponse
+                                try {
+                                    mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
+                                    Utils.showToast("" + mError.getMessage())
+                                } catch (e: IOException) {
+                                    e.printStackTrace()
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<FunZoneResponse>?, t: Throwable?) {
+                        hideProgressBar()
+                    }
+                })
+            }
         }
     }
 }

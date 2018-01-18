@@ -2,6 +2,8 @@ package com.pets.app.webservice;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 
 import com.pets.app.common.AppPreferenceManager;
 import com.pets.app.common.Constants;
@@ -42,6 +44,7 @@ public class CommonServices {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
+                
             }
         });
     }

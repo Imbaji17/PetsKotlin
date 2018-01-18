@@ -25,4 +25,9 @@ public class Enums {
         VR_APPROVE, PS_REJECT, PS_APPROVE, VR_REJECT
     }
 
+    public enum FunZoneType {
+        VIDEO, IMAGE
+    }
+
+
 }

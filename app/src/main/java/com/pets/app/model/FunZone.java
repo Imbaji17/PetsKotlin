@@ -46,68 +46,140 @@ public class FunZone implements Serializable {
     @SerializedName("is_fun_zone_like")
     private boolean funZoneLike;
 
+    //For add update
+    @SerializedName("user_id")
+    private String userId;
+    @SerializedName("key")
+    private String key;
+    @SerializedName("timestamp")
+    private String timestamp;
+
     public String getFunZoneId() {
         return funZoneId;
+    }
+
+    public void setFunZoneId(String funZoneId) {
+        this.funZoneId = funZoneId;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getContactPerson() {
         return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
     }
 
     public String getContactNo() {
         return contactNo;
     }
 
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
+
     public String getEmailId() {
         return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 
     public String getFunZoneImage() {
         return funZoneImage;
     }
 
+    public void setFunZoneImage(String funZoneImage) {
+        this.funZoneImage = funZoneImage;
+    }
+
     public String getVideoThumb() {
         return videoThumb;
+    }
+
+    public void setVideoThumb(String videoThumb) {
+        this.videoThumb = videoThumb;
     }
 
     public String getType() {
         return type;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public String getAddress() {
         return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getLat() {
         return lat;
     }
 
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
     public String getLng() {
         return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getCreatedDate() {
         return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 
     public String getUpdatedDate() {
         return updatedDate;
     }
 
+    public void setUpdatedDate(String updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
     public String getStatus() {
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public LoginDetails getUser() {
         return user;
+    }
+
+    public void setUser(LoginDetails user) {
+        this.user = user;
     }
 
     public boolean isFunZoneLike() {
@@ -116,5 +188,17 @@ public class FunZone implements Serializable {
 
     public void setFunZoneLike(boolean funZoneLike) {
         this.funZoneLike = funZoneLike;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 }

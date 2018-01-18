@@ -48,4 +48,15 @@ public class ImageSetter {
             mImageView.setImageResource(placeHolder);
         }
     }
+
+    public static void loadImage(Context mContext, File mUrl, int placeHolder, ImageView mImageView) {
+        if (mUrl != null) {
+            Picasso.with(mContext)
+                    .load(mUrl)
+                    .placeholder(placeHolder)
+                    .into(mImageView);
+        } else {
+            mImageView.setImageResource(placeHolder);
+        }
+    }
 }
