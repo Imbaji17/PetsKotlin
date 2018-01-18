@@ -194,4 +194,5 @@
     <string name="birthday">BIRTHDAY:</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="edit_post">Edit Post</string>
 </resources>
