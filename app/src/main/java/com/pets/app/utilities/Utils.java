@@ -20,6 +20,8 @@ import com.google.gson.reflect.TypeToken;
 import com.pets.app.R;
 import com.pets.app.common.AppPreferenceManager;
 import com.pets.app.common.MyApplication;
+import com.pets.app.model.LoginResponse;
+import com.pets.app.model.NormalResponse;
 import com.pets.app.model.object.Country;
 
 import java.io.BufferedReader;
@@ -38,6 +40,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import retrofit2.Response;
 
 public class Utils {
 
@@ -145,6 +149,18 @@ public class Utils {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public static void showErrorToast(Response<LoginResponse> response) {
+
+        Gson gson = new GsonBuilder().create();
+        NormalResponse mError;
+        try {
+            mError = gson.fromJson(response.errorBody().string(), NormalResponse.class);
+            Utils.showToast("" + mError.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static ArrayList<String> stringToResponse(String jsonString) {
