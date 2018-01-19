@@ -1,6 +1,7 @@
 package com.pets.app.model.object;
 
 import com.google.gson.annotations.SerializedName;
+import com.pets.app.common.Constants;
 import com.pets.app.model.Breed;
 import com.pets.app.model.PetsType;
 
@@ -111,6 +112,11 @@ public class PetDetails implements Serializable {
 
     public ArrayList<PetImageInfo> getPetImages() {
         return petImages;
+    }
+
+    public boolean isReadyForMatch() {
+
+        return is_ready_match.equalsIgnoreCase(Constants.YES);
     }
 
     @Override

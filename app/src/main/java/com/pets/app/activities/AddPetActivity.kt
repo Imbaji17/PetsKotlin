@@ -145,6 +145,10 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             petsTypeId = if (!TextUtils.isEmpty(petObj!!.petsType!!.petsTypeId)) petObj!!.petsType!!.petsTypeId else ""
             breedId = if (!TextUtils.isEmpty(petObj!!.breed!!.breed_id)) petObj!!.breed!!.breed_id else ""
 
+            if (!TextUtils.isEmpty(petObj!!.is_ready_match)) {
+                checkMatch!!.isChecked = petObj!!.isReadyForMatch
+            }
+
             if (!TextUtils.isEmpty(petObj!!.pet_image)) {
                 imgCamera.visibility = View.GONE
                 ImageSetter.loadRoundedImage(this, petObj!!.pet_image, R.drawable.dog, imgPet)
