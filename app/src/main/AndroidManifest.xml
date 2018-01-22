@@ -25,7 +25,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
         <provider
             android:name=".utilities.GenericFileProvider"
             android:authorities="${applicationId}.utilities.GenericFileProvider"
@@ -182,6 +181,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.FunZoneCommentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.MyPetsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
