@@ -3,6 +3,7 @@ package com.pets.app.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -17,8 +18,6 @@ import com.pets.app.common.*
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.FunZone
 import com.pets.app.model.FunZoneCommentResponse
-import com.pets.app.model.NormalResponse
-import com.pets.app.model.request.FavouriteHostel
 import com.pets.app.utilities.DateFormatter
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
@@ -44,6 +43,7 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
     private var etComment: EditText? = null
     private var ivSend: ImageView? = null
     private var funZone: FunZone? = null
+    private var nsv: NestedScrollView? = null
 
     private var adapter: FunZoneCommentAdapter? = null
     private var listItems = ArrayList<Any>()
@@ -68,6 +68,37 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
         setValues()
         setAdapter()
         getFunZoneComment()
+
+        nsv!!.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
+            override fun onScrollChange(v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+
+                var visibleItemCount = 0;
+                var totalItemCount = 0
+                var pastVisibleItems = 0
+
+                if (v!!.getChildAt(v!!.getChildCount() - 1) != null) {
+                    if ((scrollY >= (v.getChildAt(v.getChildCount() - 1)
+                            .getMeasuredHeight() - v.getMeasuredHeight())) &&
+                            scrollY > oldScrollY) {
+
+                        visibleItemCount = layoutManager!!.getChildCount();
+                        totalItemCount = layoutManager!!.getItemCount();
+                        pastVisibleItems = layoutManager!!.findFirstVisibleItemPosition();
+
+                        if (loading) {
+                            if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                                loading = false;
+                                if (nextOffset != -1) {
+                                    getFunZoneComment()
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+        })
     }
 
     fun init() {
@@ -85,6 +116,7 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
         recyclerView = findViewById(R.id.recyclerView)
         etComment = findViewById(R.id.etComment)
         ivSend = findViewById(R.id.ivSend)
+        nsv = findViewById(R.id.nsv)
         ivSend!!.setOnClickListener(this)
     }
 

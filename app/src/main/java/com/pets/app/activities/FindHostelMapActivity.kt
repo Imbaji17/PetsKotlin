@@ -3,6 +3,7 @@ package com.pets.app.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
@@ -40,6 +42,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListener {
@@ -53,6 +56,7 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
     private var viewFlipper: ViewFlipper? = null
     private val nextOffset: Int = 0
     private var mapFragment: SupportMapFragment? = null
+    private var mHashMap: HashMap<Marker, String>? = HashMap()
 
     companion object {
         private val TAG = FindHostelMapActivity::class.java.simpleName
@@ -95,7 +99,7 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
             var cnt = 0
             for (i in listItems.indices) {
                 var findHostel = listItems[i] as FindHostel
-                googleMap.addMarker(MarkerOptions()
+                var marker: Marker = googleMap.addMarker(MarkerOptions()
                         .position(LatLng(findHostel.lat, findHostel.lng))
                         .title(findHostel.hostelName)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.location))
@@ -109,13 +113,11 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(findHostel.lat, findHostel.lng), 7f))
                     }
                 }
+                mHashMap!!.put(marker, findHostel.hostelId)
 
-//                googleMap.setOnInfoWindowClickListener(GoogleMap.OnInfoWindowClickListener { marker ->
-//                                        val k = Integer.parseInt(marker.title)
-//                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=" + Utils.getDataFromPreferences(ApplicationsConstants.LoginDetails.LATITUDE, "")
-//                            + "," + Utils.getDataFromPreferences(ApplicationsConstants.LoginDetails.LONGITUDE, "") + "&daddr=" + apiResponse.get(k).geometry.location.lat + "," + apiResponse.get(k).geometry.location.lng))
-//                    startActivity(browserIntent)
-//                })
+                googleMap.setOnInfoWindowClickListener(GoogleMap.OnInfoWindowClickListener { marker ->
+                    HostelDetailActivity.startActivity(this, mHashMap!![marker]!!)
+                })
             }
         }
     }

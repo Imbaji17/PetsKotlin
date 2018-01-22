@@ -58,13 +58,15 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
     private var longitude: Double = 0.0
     private var from: Int = 0
     private var funZone: FunZone? = null
+    private var position: Int = 0
 
     companion object {
         private val TAG = AddFunZoneActivity::class.java.simpleName
-        fun startActivity(activity: Activity, requestCode: Int, from: Int, funZone: FunZone?) {
+        fun startActivity(activity: Activity, requestCode: Int, from: Int, funZone: FunZone?, position: Int) {
             val intent = Intent(activity, AddFunZoneActivity::class.java)
             intent.putExtra(ApplicationsConstants.FROM, from)
             intent.putExtra(ApplicationsConstants.DATA, funZone)
+            intent.putExtra(ApplicationsConstants.POSITION, position)
             activity.startActivityForResult(intent, requestCode)
         }
     }
@@ -85,6 +87,7 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
 
     fun init() {
         from = intent.getIntExtra(ApplicationsConstants.FROM, 0)
+        position = intent.getIntExtra(ApplicationsConstants.POSITION, 0)
         if (from == 1)
             funZone = intent.getSerializableExtra(ApplicationsConstants.DATA) as FunZone?
     }
@@ -209,7 +212,7 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                     val mCurrentPhotoPath = result.uri.path
                     updatedImageFile = File(mCurrentPhotoPath)
                     if (updatedImageFile.exists()) {
-                        ImageSetter.loadRoundedImage(this, updatedImageFile, R.drawable.profile, ivPost)
+                        ImageSetter.loadImage(this, updatedImageFile, R.drawable.profile, ivPost)
                     }
                     tvAddImage!!.visibility = View.GONE
                 }
@@ -370,10 +373,10 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                         Logger.errorLog("Response ### " + result!!)
                         print("Response #### " + result)
                         if (result != null) {
-                            val adoptionResponse: AdoptionResponse = Utils.getResponse(result.toString(), AdoptionResponse::class.java)
-                            if (adoptionResponse.result != null) {
-                                Utils.showToast(adoptionResponse.message)
-                                finish()
+                            val funZoneResponse: FunZoneResponse = Utils.getResponse(result.toString(), FunZoneResponse::class.java)
+                            if (funZoneResponse.result != null) {
+                                Utils.showToast(funZoneResponse.message)
+                                setResultOk(funZoneResponse.result)
                             }
                         }
                     }
@@ -405,6 +408,9 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                         hideProgressBar()
                         if (response != null) {
                             if (response.body() != null && response.isSuccessful()) {
+                                if (response.body().result != null)
+                                    setResultOk(response.body().result)
+
                                 finish()
                             } else {
                                 Utils.showErrorToast(response.errorBody())
@@ -418,5 +424,14 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                 })
             }
         }
+    }
+
+    fun setResultOk(funZone: FunZone?) {
+        val selectedAddIntent = Intent()
+        selectedAddIntent.putExtra(ApplicationsConstants.FROM, from)
+        selectedAddIntent.putExtra(ApplicationsConstants.DATA, funZone)
+        selectedAddIntent.putExtra(ApplicationsConstants.POSITION, position)
+        setResult(Activity.RESULT_OK, selectedAddIntent)
+        finish()
     }
 }

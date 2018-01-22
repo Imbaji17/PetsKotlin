@@ -30,4 +30,7 @@ public class Logger {
             Log.e("karyab", message == null ? "" : message);
         }
     }
+
+
+
 }

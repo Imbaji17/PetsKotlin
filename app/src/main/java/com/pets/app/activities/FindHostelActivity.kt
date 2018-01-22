@@ -43,7 +43,6 @@ import java.util.*
 
 class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEditorActionListener, TextWatcher {
 
-
     private var layoutManager: LinearLayoutManager? = null
     private var adapter: FindHostelAdapter? = null
     private var listItems = ArrayList<Any>()

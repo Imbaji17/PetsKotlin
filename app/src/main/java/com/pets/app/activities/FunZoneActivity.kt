@@ -16,6 +16,7 @@ import android.widget.*
 import com.pets.app.R
 import com.pets.app.adapters.FunZoneAdapter
 import com.pets.app.common.AppPreferenceManager
+import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
@@ -155,7 +156,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 R.id.action_edit -> {
-                    AddFunZoneActivity.startActivity(this, RC_POST, 1, funZone)
+                    AddFunZoneActivity.startActivity(this, RC_POST, 1, funZone, listItems.indexOf(funZone))
                 }
                 R.id.action_delete -> {
                     if (Utils.isOnline(this)) {
@@ -256,7 +257,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
         val id = item!!.itemId
         when (id) {
             R.id.action_post -> {
-                AddFunZoneActivity.startActivity(this, RC_POST, 0, null)
+                AddFunZoneActivity.startActivity(this, RC_POST, 0, null, 0)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -336,5 +337,27 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            RC_POST -> if (resultCode == Activity.RESULT_OK) {
+                var from = data?.getIntExtra(ApplicationsConstants.FROM, 0)
+                var funZone = data?.getSerializableExtra(ApplicationsConstants.DATA) as FunZone
+                if (from == 0) {
+                    listItems.add(0, funZone)
+                    adapter!!.notifyDataSetChanged()
+                } else {
+                    var position = data?.getIntExtra(ApplicationsConstants.POSITION, 0)
+                    if (position < listItems.size) {
+                        listItems[position] = funZone
+                        adapter!!.notifyItemChanged(position)
+                    }
+                }
 
+                if (listItems.size > 0) {
+                    setMainLayout()
+                }
+            }
+        }
+    }
 }

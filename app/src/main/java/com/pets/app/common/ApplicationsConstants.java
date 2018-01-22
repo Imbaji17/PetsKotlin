@@ -26,4 +26,5 @@ public class ApplicationsConstants {
     public static final String SELECTION = "selection";
     public static final String MOBILE_NUMBER = "mobile_number";
     public static final String COUNTRY_CODE = "country_code";
+    public static final String POSITION = "position";
 }

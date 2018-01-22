@@ -10,6 +10,7 @@
     <include layout="@layout/app_toolbar" />
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nsv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
@@ -137,12 +138,25 @@
                 </RelativeLayout>
             </LinearLayout>
 
+            <com.pets.app.widgets.TextViewPlus
+                android:id="@+id/tvNoResult"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dimen_size_15"
+                android:layout_marginRight="@dimen/dimen_size_15"
+                android:layout_marginTop="@dimen/dimen_size_15"
+                android:gravity="center"
+                android:text="@string/no_result_found"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_14"
+                android:visibility="gone"
+                app:fontStyle="regular" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:listitem="@layout/item_fun_zone_comments" />
-
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
