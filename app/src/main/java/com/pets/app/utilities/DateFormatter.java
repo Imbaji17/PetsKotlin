@@ -15,6 +15,7 @@ public class DateFormatter {
     public static final SimpleDateFormat h_mm_a = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
     public static final SimpleDateFormat EE_MMM_dd_hh_mm_a = new SimpleDateFormat("EE, MMM dd, hh:mm a", Locale.ENGLISH);
     public static final SimpleDateFormat MMMM_dd_yyyy = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+    public static final SimpleDateFormat MMMM_dd = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
     public static final SimpleDateFormat dd_MM_yyyy = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
     public static final SimpleDateFormat yyyy_MM_dd_hh_mm_ss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
     public static final SimpleDateFormat dd_MMM_yyyy = new SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH);
@@ -56,9 +57,17 @@ public class DateFormatter {
 
     public static Date getDate(String format, String strClosingDate) {
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        SimpleDateFormat sdf1 = new SimpleDateFormat(format, Locale.ENGLISH);
+        sdf1.setTimeZone(TimeZone.getDefault());
+
         try {
-            Date date = sdf.parse(strClosingDate);
-            return date;
+            Date d1 = sdf.parse(strClosingDate);
+            String s1 = sdf1.format(d1);
+            Date d2 = sdf1.parse(s1);
+//            Date date = sdf1.parse(sdf1.format(sdf.parse(strClosingDate)));
+            return d2;
         } catch (ParseException e) {
             e.printStackTrace();
             return null;

@@ -23,6 +23,7 @@ import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.FunZone
 import com.pets.app.model.FunZoneResponse
 import com.pets.app.model.NormalResponse
+import com.pets.app.model.request.FavouriteHostel
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -91,6 +92,13 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                 if (funZone != null && !TextUtils.isEmpty(funZone.funZoneImage))
                     VideoViewActivity.startActivity(this, funZone.funZoneImage)
             }
+            R.id.tvComment -> {
+                val funZone = p0.tag as FunZone
+                if (funZone != null)
+                    FunZoneCommentActivity.startActivity(this, funZone)
+            }
+
+
         }
     }
 
@@ -110,6 +118,11 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 R.id.action_delete -> {
+                    if (Utils.isOnline(this)) {
+                        deleteFunZone(funZone)
+                    } else {
+                        Utils.showToast(getString(R.string.please_check_internet_connection))
+                    }
                 }
             }
             false
@@ -153,14 +166,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                             adapter!!.notifyDataSetChanged()
                         }
                     } else {
-                        val gson = GsonBuilder().create()
-                        val mError: NormalResponse
-                        try {
-                            mError = gson.fromJson(response!!.errorBody().string(), NormalResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                        Utils.showErrorToast(response?.errorBody())
                     }
                     if (listItems.size > 0) {
                         setMainLayout()
@@ -211,4 +217,44 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
         }
         return super.onOptionsItemSelected(item)
     }
+
+
+    private fun deleteFunZone(funZone: FunZone) {
+        val timeStamp = TimeStamp.getTimeStamp()
+        val userId = AppPreferenceManager.getUserID()
+        val key = TimeStamp.getMd5(timeStamp + userId + funZone?.funZoneId + Constants.TIME_STAMP_KEY)
+        val request = FunZone()
+
+        request.setUserId(userId)
+        request.setTimestamp(timeStamp)
+        request.setKey(key)
+        request.funZoneId = funZone?.funZoneId
+
+        showProgressBar()
+        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = api.funZoneDelete(request)
+        call.enqueue(object : Callback<NormalResponse> {
+            override fun onResponse(call: Call<NormalResponse>?, response: Response<NormalResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.body() != null && response.isSuccessful) {
+                        var pos = listItems.indexOf(funZone as Any)
+                        listItems.remove(funZone)
+                        adapter!!.notifyItemRemoved(pos)
+                        if (listItems.size == 0) {
+                            setNoDataLayout()
+                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<NormalResponse>?, t: Throwable?) {
+                hideProgressBar()
+            }
+        })
+    }
+
+
 }

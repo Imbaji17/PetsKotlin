@@ -112,6 +112,13 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                 ImageSetter.loadImage(this, funZone!!.funZoneImage, R.drawable.alert_placeholder, ivPost)
             }
 
+            if (TextUtils.isEmpty(funZone!!.videoThumb) && TextUtils.isEmpty(funZone!!.funZoneImage)) {
+                tvAddImage!!.visibility = View.VISIBLE
+            } else {
+                tvAddImage!!.visibility = View.GONE
+            }
+
+
             if (!TextUtils.isEmpty(funZone!!.title))
                 etTitle!!.setText(funZone!!.title)
             if (!TextUtils.isEmpty(funZone!!.contactPerson))
@@ -204,7 +211,7 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                     if (updatedImageFile.exists()) {
                         ImageSetter.loadRoundedImage(this, updatedImageFile, R.drawable.profile, ivPost)
                     }
-                    tvAddImage!!.visibility = View.VISIBLE
+                    tvAddImage!!.visibility = View.GONE
                 }
             }
 
@@ -399,15 +406,8 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                         if (response != null) {
                             if (response.body() != null && response.isSuccessful()) {
                                 finish()
-                            } else if (response.code() == 403) {
-                                val gson = GsonBuilder().create()
-                                val mError: NormalResponse
-                                try {
-                                    mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-                                    Utils.showToast("" + mError.getMessage())
-                                } catch (e: IOException) {
-                                    e.printStackTrace()
-                                }
+                            } else {
+                                Utils.showErrorToast(response.errorBody())
                             }
                         }
                     }
