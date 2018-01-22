@@ -57,6 +57,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
     private var mRecyclerView: RecyclerView? = null
     private var mList: ArrayList<PetDetails>? = null
     private var position: Int = 0
+    private val RC_ADD_PET: Int = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,16 +156,16 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
             }
             R.id.imgHeader -> {
                 val mIntent = Intent(this, AddPetActivity::class.java)
-                this.startActivity(mIntent)
+                this.startActivityForResult(mIntent, RC_ADD_PET)
             }
             R.id.linAddPet -> {
                 val mIntent = Intent(this, AddPetActivity::class.java)
-                this.startActivity(mIntent)
+                this.startActivityForResult(mIntent, RC_ADD_PET)
             }
             R.id.imgEdit -> {
                 val mIntent = Intent(this, AddPetActivity::class.java)
                 mIntent.putExtra(ApplicationsConstants.DATA, mList!![position])
-                this.startActivity(mIntent)
+                this.startActivityForResult(mIntent, RC_ADD_PET)
             }
             R.id.btnRetry -> {
                 checkValidations()
@@ -227,6 +228,17 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            RC_ADD_PET -> {
+                if (Utils.isOnline(this)) {
+                    myPetsApiCall()
+                }
+            }
+        }
     }
 
     override fun onItemClick(`object`: Any?) {

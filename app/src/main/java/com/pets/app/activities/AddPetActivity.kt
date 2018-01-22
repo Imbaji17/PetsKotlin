@@ -1,5 +1,6 @@
 package com.pets.app.activities
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -139,8 +140,11 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             edtName?.setText(if (!TextUtils.isEmpty(petObj!!.pet_name)) petObj!!.pet_name else "")
             edtType?.setText(if (!TextUtils.isEmpty(petObj!!.petsType!!.typeName)) petObj!!.petsType!!.typeName else "")
             edtBreed?.setText(if (!TextUtils.isEmpty(petObj!!.breed!!.breed_name)) petObj!!.breed!!.breed_name else "")
-            edtDOB?.setText(if (!TextUtils.isEmpty(petObj!!.dob)) petObj!!.dob else "")
             edtDesc?.setText(if (!TextUtils.isEmpty(petObj!!.description)) petObj!!.description else "")
+
+            if (!TextUtils.isEmpty(petObj!!.dob)) {
+                edtDOB?.setText(DateFormatter.getFormattedDate(DateFormatter.yyyy_MM_dd_str, petObj!!.dob, DateFormatter.dd_MMM_yyyy_str))
+            }
 
             petsTypeId = if (!TextUtils.isEmpty(petObj!!.petsType!!.petsTypeId)) petObj!!.petsType!!.petsTypeId else ""
             breedId = if (!TextUtils.isEmpty(petObj!!.breed!!.breed_id)) petObj!!.breed!!.breed_id else ""
@@ -376,7 +380,6 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                     print("Response #### " + result)
                     if (result != null) {
                         val response: PetResponse = Utils.getResponse(result.toString(), PetResponse::class.java)
-                        this@AddPetActivity.finish()
                         if (response.result != null) {
                             uploadImages(response.result)
                         }
@@ -437,6 +440,9 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
             }
         }
 
+        val mIntent = Intent()
+        mIntent.putExtra(ApplicationsConstants.DATA, true)
+        setResult(Activity.RESULT_OK, mIntent)
         this.finish()
     }
 
