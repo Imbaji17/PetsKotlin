@@ -236,7 +236,6 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
         }
     }
 
-
     private fun showDialog() {
         val items = arrayOf<CharSequence>(getString(R.string.add_image), getString(R.string.add_video), getString(R.string.cancel))
         val builder = AlertDialog.Builder(this)
@@ -245,7 +244,8 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
             when (item) {
                 0 -> {
                     selectedType = 1
-                    openGallery()
+//                    openGallery()
+                    showTakeImagePopup()
                 }
                 1 -> {
                     selectedType = 2

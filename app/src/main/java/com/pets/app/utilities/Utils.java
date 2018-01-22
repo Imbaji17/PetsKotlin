@@ -257,15 +257,6 @@ public class Utils {
         return new Gson().fromJson(countriesJsonString, listType);
     }
 
-    public static void shareData(Context context, String body) {
-        String shareBody = body +
-                "\n\n";
-        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-        shareBody += "Sent from Android";
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-        context.startActivity(Intent.createChooser(sharingIntent, "Share via"));
-    }
 
     public static String getTimeString(Context mContext, final Date date) {
         Log.d(TAG, "getTime");

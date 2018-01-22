@@ -5,6 +5,7 @@ import com.pets.app.model.AdoptionResponse;
 import com.pets.app.model.BreedResponse;
 import com.pets.app.model.FindHostelResponse;
 import com.pets.app.model.FunZone;
+import com.pets.app.model.FunZoneComment;
 import com.pets.app.model.FunZoneCommentResponse;
 import com.pets.app.model.FunZoneResponse;
 import com.pets.app.model.LoginResponse;
@@ -13,6 +14,7 @@ import com.pets.app.model.PetResponse;
 import com.pets.app.model.PetsTypeResponse;
 import com.pets.app.model.ReviewsResponse;
 import com.pets.app.model.request.FavouriteHostel;
+import com.pets.app.model.request.FunZoneLike;
 import com.pets.app.model.request.PetUpdateRequest;
 import com.pets.app.model.request.UpdateUserRequest;
 import com.pets.app.model.request.WriteReview;
@@ -158,7 +160,10 @@ public class WebServiceBuilder {
 //                                               @Field("fun_zone_comment_id") String fun_zone_comment_id, @Field("comment") String comment);
 
         @POST("fun_zone_post_comment/")
-        Call<NormalResponse> addFunZoneComment(@Body FavouriteHostel favouriteHostel);
+        Call<NormalResponse> addFunZoneComment(@Body FunZoneComment funZoneComment);
+
+        @POST("fun_zone_like_unlike")
+        Call<NormalResponse> funZoneLikeUnLike(@Body FunZoneLike funZoneLike);
 
     }
 }

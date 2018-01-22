@@ -13,7 +13,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.adapters.FunZoneAdapter
 import com.pets.app.common.AppPreferenceManager
@@ -23,7 +22,8 @@ import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.FunZone
 import com.pets.app.model.FunZoneResponse
 import com.pets.app.model.NormalResponse
-import com.pets.app.model.request.FavouriteHostel
+import com.pets.app.model.request.FunZoneLike
+import com.pets.app.utilities.ShareUtils
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -31,7 +31,6 @@ import com.pets.app.webservice.WebServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 import java.util.*
 
 class FunZoneActivity : BaseActivity(), View.OnClickListener {
@@ -41,6 +40,8 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
     private var recyclerView: RecyclerView? = null
     private var llForNoResult: LinearLayout? = null
     private var llForOfflineScreen: LinearLayout? = null
+    private var llForRecyclerView: LinearLayout? = null
+    private var llLoadMore: LinearLayout? = null
     private var tvNoResult: TextView? = null
     private var btnRetry: Button? = null
 
@@ -48,9 +49,13 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
     private var listItems = ArrayList<Any>()
     private var layoutManager: LinearLayoutManager? = null
 
+    private val RC_POST: Int = 2
+
     private var nextOffset = 0
     private var loading = true
-    private val RC_POST: Int = 2
+    private var pastVisibleItems: Int = 0
+    private var visibleItemCount: Int = 0
+    private var totalItemCount: Int = 0
 
     companion object {
         private val TAG = FunZoneActivity::class.java.simpleName
@@ -67,6 +72,27 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
         initView()
         setAdapter()
         getFunZone()
+
+        recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    //check for scroll down
+                    if (listItems != null && listItems.size > 0) {
+                        if (nextOffset != -1) {
+                            visibleItemCount = layoutManager!!.getChildCount()
+                            totalItemCount = layoutManager!!.getItemCount()
+                            pastVisibleItems = layoutManager!!.findFirstVisibleItemPosition()
+                            if (loading) {
+                                if (visibleItemCount + pastVisibleItems >= totalItemCount) {
+                                    loading = false
+                                    getFunZone()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun initView() {
@@ -75,6 +101,8 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
         recyclerView = findViewById(R.id.recyclerView)
         llForNoResult = findViewById(R.id.llForNoResult)
         llForOfflineScreen = findViewById(R.id.llForOfflineScreen)
+        llForRecyclerView = findViewById(R.id.llForRecyclerView)
+        llLoadMore = findViewById(R.id.llLoadMore)
         btnRetry = findViewById(R.id.btnRetry)
         tvNoResult = findViewById(R.id.tvNoResult)
         btnRetry?.setOnClickListener(this)
@@ -97,8 +125,21 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                 if (funZone != null)
                     FunZoneCommentActivity.startActivity(this, funZone)
             }
-
-
+            R.id.tvShare -> {
+                val funZone = p0.tag as FunZone
+                if (funZone != null) {
+                    ShareUtils.shareData(this, funZone.title)
+                }
+            }
+            R.id.tvHelpful -> {
+                val funZone = p0.tag as FunZone
+                if (funZone != null) {
+                    funZoneLikeUnLike(funZone)
+                }
+            }
+            R.id.btnRetry -> {
+                getFunZone()
+            }
         }
     }
 
@@ -116,7 +157,6 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                 R.id.action_edit -> {
                     AddFunZoneActivity.startActivity(this, RC_POST, 1, funZone)
                 }
-
                 R.id.action_delete -> {
                     if (Utils.isOnline(this)) {
                         deleteFunZone(funZone)
@@ -141,24 +181,27 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun getFunZone() {
-        setLoadingLayout()
-        val timeStamp = TimeStamp.getTimeStamp()
-        val language = Enums.Language.EN.name.toUpperCase()
-        val userId = AppPreferenceManager.getUserID()
-        val key = TimeStamp.getMd5(timeStamp + userId + Constants.TIME_STAMP_KEY)
-        val lat = AppPreferenceManager.getUser().lat
-        val lng = AppPreferenceManager.getUser().lng
-
-//        @Query("user_id") String user_id, @Query("timestamp") String timeStamp, @Query("key") String key,
-//        @Query("language_code") String languageCode, @Query("next_offset") int nextOffset,
-//        @Query("lat") String lat, @Query("lng") String lng
-
         if (Utils.isOnline(this)) {
+            if (nextOffset == 0) {
+                setLoadingLayout()
+            } else {
+                llLoadMore!!.visibility = View.VISIBLE
+            }
+
+            val timeStamp = TimeStamp.getTimeStamp()
+            val language = Enums.Language.EN.name.toUpperCase()
+            val userId = AppPreferenceManager.getUserID()
+            val key = TimeStamp.getMd5(timeStamp + userId + Constants.TIME_STAMP_KEY)
+            val lat = AppPreferenceManager.getUser().lat
+            val lng = AppPreferenceManager.getUser().lng
+
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
             val call = apiClient.getFunZoneList(userId, timeStamp, key, language, nextOffset, lat, lng)
             call.enqueue(object : Callback<FunZoneResponse> {
                 override fun onResponse(call: Call<FunZoneResponse>, response: Response<FunZoneResponse>?) {
                     loading = true
+                    llLoadMore!!.visibility = View.GONE
+
                     if (response != null && response.isSuccessful() && response.body() != null) {
                         nextOffset = response.body().nextOffset
                         if (response.body().list != null) {
@@ -168,7 +211,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         Utils.showErrorToast(response?.errorBody())
                     }
-                    if (listItems.size > 0) {
+                    if (!listItems.isEmpty()) {
                         setMainLayout()
                     } else {
                         setNoDataLayout()
@@ -177,6 +220,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
 
                 override fun onFailure(call: Call<FunZoneResponse>, t: Throwable) {
                     loading = true
+                    llLoadMore!!.visibility = View.GONE
                     setNoDataLayout()
                 }
             })
@@ -194,7 +238,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setMainLayout() {
-        viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(recyclerView)
+        viewFlipper!!.displayedChild = viewFlipper!!.indexOfChild(llForRecyclerView)
     }
 
     private fun setNoDataLayout() {
@@ -244,6 +288,42 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                         if (listItems.size == 0) {
                             setNoDataLayout()
                         }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<NormalResponse>?, t: Throwable?) {
+                hideProgressBar()
+            }
+        })
+    }
+
+
+    private fun funZoneLikeUnLike(funZone: FunZone) {
+        val timeStamp = TimeStamp.getTimeStamp()
+        val userId = AppPreferenceManager.getUserID()
+        val key = TimeStamp.getMd5(timeStamp + userId + funZone?.funZoneId + Constants.TIME_STAMP_KEY)
+        val request = FunZoneLike()
+
+        request.setUserId(userId)
+        request.setKey(key)
+        request.setTimestamp(timeStamp)
+        request.setFunZoneId(funZone?.funZoneId)
+
+
+        showProgressBar()
+        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = api.funZoneLikeUnLike(request)
+        call.enqueue(object : Callback<NormalResponse> {
+            override fun onResponse(call: Call<NormalResponse>?, response: Response<NormalResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.body() != null && response.isSuccessful) {
+                        var pos = listItems.indexOf(funZone as Any)
+                        funZone!!.isFunZoneLike = !funZone!!.isFunZoneLike
+                        adapter!!.notifyItemChanged(pos)
                     } else {
                         Utils.showErrorToast(response.errorBody())
                     }
