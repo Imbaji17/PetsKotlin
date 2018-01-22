@@ -61,7 +61,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
     private var llForOfflineScreen: LinearLayout? = null
     private var tvNoResult: TextView? = null
     private var btnRetry: Button? = null
-    private var linLoadMore: LinearLayout? = null
+    private var llLoadMore: LinearLayout? = null
     private var llForRecyclerView: LinearLayout? = null
 
     private var loading = true
@@ -119,7 +119,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
         btnRetry = findViewById(R.id.btnRetry)
         tvNoResult = findViewById(R.id.tvNoResult)
         recyclerView = findViewById(R.id.recyclerView)
-        linLoadMore = findViewById(R.id.linLoadMore)
+        llLoadMore = findViewById(R.id.llLoadMore)
 
         btnRetry!!.setOnClickListener(this)
     }

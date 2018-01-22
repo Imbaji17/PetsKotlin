@@ -17,12 +17,7 @@
 
         <include layout="@layout/app_loading_screen" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.RecyclerView>
+        <include layout="@layout/app_recycler_view" />
 
         <include layout="@layout/app_no_result_found" />
 
