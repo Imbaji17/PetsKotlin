@@ -15,10 +15,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import com.pets.app.R
-import com.pets.app.activities.AddPetActivity
-import com.pets.app.activities.FindHostelActivity
-import com.pets.app.activities.FunZoneActivity
-import com.pets.app.activities.ProfileActivity
+import com.pets.app.activities.*
 import com.pets.app.activities.adoption.AdoptionListActivity
 import com.pets.app.adapters.LandingImageAdapter
 import com.pets.app.adapters.LandingMenuAdapter
@@ -204,7 +201,8 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
             }
             R.id.nav_mypets -> {
-
+                val mIntent = Intent(this, MyPetsActivity::class.java)
+                this.startActivity(mIntent)
             }
             R.id.nav_mymatches -> {
 

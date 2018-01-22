@@ -80,8 +80,8 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                     //check for scroll down
                     if (listItems != null && listItems.size > 0) {
                         if (nextOffset != -1) {
-                            visibleItemCount = layoutManager!!.getChildCount()
-                            totalItemCount = layoutManager!!.getItemCount()
+                            visibleItemCount = layoutManager!!.childCount
+                            totalItemCount = layoutManager!!.itemCount
                             pastVisibleItems = layoutManager!!.findFirstVisibleItemPosition()
                             if (loading) {
                                 if (visibleItemCount + pastVisibleItems >= totalItemCount) {
@@ -103,7 +103,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
         llForNoResult = findViewById(R.id.llForNoResult)
         llForOfflineScreen = findViewById(R.id.llForOfflineScreen)
         llForRecyclerView = findViewById(R.id.llForRecyclerView)
-        llLoadMore = findViewById(R.id.llLoadMore)
+        llLoadMore = findViewById(R.id.linLoadMore)
         btnRetry = findViewById(R.id.btnRetry)
         tvNoResult = findViewById(R.id.tvNoResult)
         btnRetry?.setOnClickListener(this)
@@ -203,7 +203,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                     loading = true
                     llLoadMore!!.visibility = View.GONE
 
-                    if (response != null && response.isSuccessful() && response.body() != null) {
+                    if (response != null && response.isSuccessful && response.body() != null) {
                         nextOffset = response.body().nextOffset
                         if (response.body().list != null) {
                             listItems.addAll(response.body().list)
@@ -267,13 +267,13 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
     private fun deleteFunZone(funZone: FunZone) {
         val timeStamp = TimeStamp.getTimeStamp()
         val userId = AppPreferenceManager.getUserID()
-        val key = TimeStamp.getMd5(timeStamp + userId + funZone?.funZoneId + Constants.TIME_STAMP_KEY)
+        val key = TimeStamp.getMd5(timeStamp + userId + funZone.funZoneId + Constants.TIME_STAMP_KEY)
         val request = FunZone()
 
         request.setUserId(userId)
         request.setTimestamp(timeStamp)
         request.setKey(key)
-        request.funZoneId = funZone?.funZoneId
+        request.funZoneId = funZone.funZoneId
 
         showProgressBar()
         val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
@@ -305,13 +305,13 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
     private fun funZoneLikeUnLike(funZone: FunZone) {
         val timeStamp = TimeStamp.getTimeStamp()
         val userId = AppPreferenceManager.getUserID()
-        val key = TimeStamp.getMd5(timeStamp + userId + funZone?.funZoneId + Constants.TIME_STAMP_KEY)
+        val key = TimeStamp.getMd5(timeStamp + userId + funZone.funZoneId + Constants.TIME_STAMP_KEY)
         val request = FunZoneLike()
 
         request.setUserId(userId)
         request.setKey(key)
         request.setTimestamp(timeStamp)
-        request.setFunZoneId(funZone?.funZoneId)
+        request.setFunZoneId(funZone.funZoneId)
 
 
         showProgressBar()
@@ -323,7 +323,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                 if (response != null) {
                     if (response.body() != null && response.isSuccessful) {
                         var pos = listItems.indexOf(funZone as Any)
-                        funZone!!.isFunZoneLike = !funZone!!.isFunZoneLike
+                        funZone.isFunZoneLike = !funZone.isFunZoneLike
                         adapter!!.notifyItemChanged(pos)
                     } else {
                         Utils.showErrorToast(response.errorBody())

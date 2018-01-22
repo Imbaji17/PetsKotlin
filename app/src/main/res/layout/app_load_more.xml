@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="@dimen/dimen_size_5"
+        android:padding="@dimen/dimen_size_2"
         android:visibility="visible">
 
         <ProgressBar

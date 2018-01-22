@@ -119,7 +119,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
         btnRetry = findViewById(R.id.btnRetry)
         tvNoResult = findViewById(R.id.tvNoResult)
         recyclerView = findViewById(R.id.recyclerView)
-        llLoadMore = findViewById(R.id.llLoadMore)
+        llLoadMore = findViewById(R.id.linLoadMore)
 
         btnRetry!!.setOnClickListener(this)
     }
