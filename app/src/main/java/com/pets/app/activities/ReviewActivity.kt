@@ -76,7 +76,7 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 if (dy > 0) {
                     //check for scroll down
-                    if (listItems != null && listItems.size > 0) {
+                    if (listItems.size > 0) {
                         if (nextOffset != -1) {
                             visibleItemCount = layoutManager!!.getChildCount()
                             totalItemCount = layoutManager!!.getItemCount()

@@ -14,6 +14,7 @@ import com.pets.app.model.PetResponse;
 import com.pets.app.model.PetsTypeResponse;
 import com.pets.app.model.ReviewsResponse;
 import com.pets.app.model.request.FavouriteHostel;
+import com.pets.app.model.request.FunZoneAddComment;
 import com.pets.app.model.request.FunZoneLike;
 import com.pets.app.model.request.PetUpdateRequest;
 import com.pets.app.model.request.UpdateUserRequest;
@@ -160,7 +161,7 @@ public class WebServiceBuilder {
 //                                               @Field("fun_zone_comment_id") String fun_zone_comment_id, @Field("comment") String comment);
 
         @POST("fun_zone_post_comment/")
-        Call<NormalResponse> addFunZoneComment(@Body FunZoneComment funZoneComment);
+        Call<NormalResponse> addFunZoneComment(@Body FunZoneAddComment funZoneComment);
 
         @POST("fun_zone_like_unlike")
         Call<NormalResponse> funZoneLikeUnLike(@Body FunZoneLike funZoneLike);

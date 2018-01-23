@@ -78,7 +78,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 if (dy > 0) {
                     //check for scroll down
-                    if (listItems != null && listItems.size > 0) {
+                    if (listItems.size > 0) {
                         if (nextOffset != -1) {
                             visibleItemCount = layoutManager!!.childCount
                             totalItemCount = layoutManager!!.itemCount
@@ -107,6 +107,8 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
         btnRetry = findViewById(R.id.btnRetry)
         tvNoResult = findViewById(R.id.tvNoResult)
         btnRetry?.setOnClickListener(this)
+
+
     }
 
     override fun onClick(p0: View?) {
@@ -118,7 +120,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
 
             R.id.ivPlay -> {
                 val funZone = p0.tag as FunZone
-                if (funZone != null && !TextUtils.isEmpty(funZone.funZoneImage))
+                if (!TextUtils.isEmpty(funZone.funZoneImage))
                     VideoViewActivity.startActivity(this, funZone.funZoneImage)
             }
             R.id.tvComment -> {

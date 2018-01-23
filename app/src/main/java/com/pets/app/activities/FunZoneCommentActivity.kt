@@ -17,7 +17,10 @@ import com.pets.app.adapters.FunZoneCommentAdapter
 import com.pets.app.common.*
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.FunZone
+import com.pets.app.model.FunZoneComment
 import com.pets.app.model.FunZoneCommentResponse
+import com.pets.app.model.NormalResponse
+import com.pets.app.model.request.FunZoneAddComment
 import com.pets.app.utilities.DateFormatter
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
@@ -50,6 +53,7 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
     private var layoutManager: LinearLayoutManager? = null
     private var loading = true
     private var nextOffset = 0
+    private var tvNoResult: TextView? = null
 
     companion object {
         private val TAG = FunZoneCommentActivity::class.java.simpleName
@@ -117,6 +121,7 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
         etComment = findViewById(R.id.etComment)
         ivSend = findViewById(R.id.ivSend)
         nsv = findViewById(R.id.nsv)
+        tvNoResult = findViewById(R.id.tvNoResult)
         ivSend!!.setOnClickListener(this)
     }
 
@@ -153,7 +158,7 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.ivSend -> {
-
+                addComment()
             }
         }
     }
@@ -185,7 +190,9 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
                         Utils.showErrorToast(response?.errorBody())
                     }
                     if (listItems.size > 0) {
+                        tvNoResult!!.visibility = View.GONE
                     } else {
+                        tvNoResult!!.visibility = View.VISIBLE
                     }
                 }
 
@@ -198,41 +205,48 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-//    private fun addComment() {
-//
-//        val timeStamp = TimeStamp.getTimeStamp()
-//        val userId = AppPreferenceManager.getUserID()
-//        val key = TimeStamp.getMd5(timeStamp + userId + Enums.Favourite.ADOPTION.name + adoption?.adoptionId + Constants.TIME_STAMP_KEY)
-//        val request = FavouriteHostel()
-//
-//        request.setUserId(userId)
-//        request.setTimestamp(timeStamp)
-//        request.setType(Enums.Favourite.ADOPTION.name)
-//        request.setTypeId(adoption?.adoptionId)
-//        request.setKey(key)
-//
-//        showProgressBar()
-//        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-//        val call = api.favourite(request)
-//        call.enqueue(object : Callback<NormalResponse> {
-//            override fun onResponse(call: Call<NormalResponse>?, response: Response<NormalResponse>?) {
-//                hideProgressBar()
-//                if (response != null) {
-//                    if (response.body() != null && response.isSuccessful) {
+    private fun addComment() {
+        val comment = etComment!!.text.toString()
+
+        if (TextUtils.isEmpty(comment)) {
+            Utils.showToast(getString(R.string.please_enter_comment))
+        } else if (!Utils.isOnline(this)) {
+            Utils.showToast(getString(R.string.please_check_internet_connection))
+        } else {
+            showProgressBar()
+            val timeStamp = TimeStamp.getTimeStamp()
+            val userId = AppPreferenceManager.getUserID()
+            val key = TimeStamp.getMd5(timeStamp + userId + funZone!!.funZoneId + Constants.TIME_STAMP_KEY)
+            val request = FunZoneAddComment()
+
+            request.setUserId(userId)
+            request.setKey(key)
+            request.setTimestamp(timeStamp)
+            request.setFunZoneId(funZone!!.funZoneId)
+//        request.setFunZoneCommentId()
+            request.setComment(comment)
+
+            val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+            val call = api.addFunZoneComment(request)
+            call.enqueue(object : Callback<NormalResponse> {
+                override fun onResponse(call: Call<NormalResponse>?, response: Response<NormalResponse>?) {
+                    hideProgressBar()
+                    if (response != null) {
+                        if (response.body() != null && response.isSuccessful) {
 //                        var pos = listItems.indexOf(adoption as Any)
 //                        adoption!!.isInterest = !adoption!!.isInterest
 //                        adapter!!.notifyItemChanged(pos)
-//                    } else {
-//                        Utils.showErrorToast(response.errorBody())
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<NormalResponse>?, t: Throwable?) {
-//                hideProgressBar()
-//            }
-//        })
-//
-//    }
+                        } else {
+                            Utils.showErrorToast(response.errorBody())
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<NormalResponse>?, t: Throwable?) {
+                    hideProgressBar()
+                }
+            })
+        }
+    }
 
 }

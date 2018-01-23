@@ -199,4 +199,7 @@
     <string name="image_deleted_successfully">Image deleted successfully</string>
     <string name="ready_for_match">Ready for match</string>
     <string name="just_now">Just now</string>
+    <string name="please_enter_comment">Please enter comment</string>
+    <string name="are_you_sure_you_want_to_delete_comment">Are you sure you want to delete comment?</string>
+    <string name="no_comment_found">No comment found</string>
 </resources>
