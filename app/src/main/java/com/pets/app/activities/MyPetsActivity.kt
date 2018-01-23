@@ -82,7 +82,7 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
             }
 
             override fun onFailure(call: Call<PetResponse>, t: Throwable) {
-                showMainLayout()
+                showNoDataFound(this@MyPetsActivity.getString(R.string.server_not_responding))
             }
         })
     }
