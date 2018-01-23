@@ -271,8 +271,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
                 this.startActivity(mIntent)
             }
             7 -> {
-//                val mIntent = Intent(this, ProfileActivity::class.java)
-//                this.startActivity(mIntent)
+                BuyAndSellActivity.startActivity(this)
             }
             8 -> {
 //                val mIntent = Intent(this, ProfileActivity::class.java)

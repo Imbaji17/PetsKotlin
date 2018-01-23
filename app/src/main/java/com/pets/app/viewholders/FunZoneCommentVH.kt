@@ -20,14 +20,18 @@ class FunZoneCommentVH(itemView: View, clickListener: View.OnClickListener) : Re
     private val tvName: TextView = itemView.findViewById<View>(R.id.tvName) as TextView
     private val tvDate: TextView = itemView.findViewById<View>(R.id.tvDate) as TextView
     private val tvComment: TextView = itemView.findViewById<View>(R.id.tvComment) as TextView
+    private val ivDelete: ImageView = itemView.findViewById<View>(R.id.ivDelete) as ImageView
 
     private val context: Context = itemView.context
 
     init {
+        ivDelete.setOnClickListener(clickListener)
     }
 
     override fun onBindView(`object`: Any) {
         val funZoneComment = `object` as FunZoneComment
+        ivDelete.tag = funZoneComment
+
         if (funZoneComment.user != null) {
             if (!TextUtils.isEmpty(funZoneComment.user.name)) {
                 tvName.text = funZoneComment.user.name

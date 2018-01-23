@@ -14,7 +14,14 @@ public class FunZoneCommentResponse extends NormalResponse implements Serializab
     @SerializedName("list")
     private ArrayList<FunZoneComment> list;
 
+    @SerializedName("result")
+    private FunZoneComment result;
+
     public ArrayList<FunZoneComment> getList() {
         return list;
+    }
+
+    public FunZoneComment getResult() {
+        return result;
     }
 }

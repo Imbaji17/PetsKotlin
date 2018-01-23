@@ -153,6 +153,7 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
         recyclerView!!.addItemDecoration(SimpleDividerItemDecoration(this))
         adapter = FunZoneCommentAdapter(listItems, this)
         recyclerView!!.adapter = adapter
+        recyclerView!!.isNestedScrollingEnabled = false
     }
 
     override fun onClick(p0: View?) {
@@ -160,25 +161,33 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
             R.id.ivSend -> {
                 addComment()
             }
+
+            R.id.ivDelete -> {
+                val funZoneComment = p0.tag as FunZoneComment
+                funZoneDeleteComment(funZoneComment)
+            }
         }
     }
 
     private fun getFunZoneComment() {
 
-        val timeStamp = TimeStamp.getTimeStamp()
-        val language = Enums.Language.EN.name.toUpperCase()
-        val userId = AppPreferenceManager.getUserID()
-        val key = TimeStamp.getMd5(timeStamp + userId + funZone!!.funZoneId + Constants.TIME_STAMP_KEY)
 
 //        @Query("user_id") String user_id, @Query("timestamp") String timeStamp, @Query("key") String key,
 //        @Query("language_code") String languageCode, @Query("next_offset") int nextOffset,
 //        @Query("fun_zone_id") String fun_zone_id
 
         if (Utils.isOnline(this)) {
+            showProgressBar()
+            val timeStamp = TimeStamp.getTimeStamp()
+            val language = Enums.Language.EN.name.toUpperCase()
+            val userId = AppPreferenceManager.getUserID()
+            val key = TimeStamp.getMd5(timeStamp + userId + funZone!!.funZoneId + Constants.TIME_STAMP_KEY)
+
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
             val call = apiClient.getFunZoneCommentList(userId, timeStamp, key, language, nextOffset, funZone!!.funZoneId)
             call.enqueue(object : Callback<FunZoneCommentResponse> {
                 override fun onResponse(call: Call<FunZoneCommentResponse>, response: Response<FunZoneCommentResponse>?) {
+                    hideProgressBar()
                     loading = true
                     if (response != null && response.isSuccessful() && response.body() != null) {
                         nextOffset = response.body().nextOffset
@@ -197,6 +206,7 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 override fun onFailure(call: Call<FunZoneCommentResponse>, t: Throwable) {
+                    hideProgressBar()
                     loading = true
                 }
             })
@@ -228,25 +238,68 @@ class FunZoneCommentActivity : BaseActivity(), View.OnClickListener {
 
             val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
             val call = api.addFunZoneComment(request)
-            call.enqueue(object : Callback<NormalResponse> {
-                override fun onResponse(call: Call<NormalResponse>?, response: Response<NormalResponse>?) {
+            call.enqueue(object : Callback<FunZoneCommentResponse> {
+                override fun onResponse(call: Call<FunZoneCommentResponse>?, response: Response<FunZoneCommentResponse>?) {
                     hideProgressBar()
                     if (response != null) {
                         if (response.body() != null && response.isSuccessful) {
-//                        var pos = listItems.indexOf(adoption as Any)
-//                        adoption!!.isInterest = !adoption!!.isInterest
-//                        adapter!!.notifyItemChanged(pos)
+                            if (response.body().result != null) {
+                                var funZoneComment = response.body().result
+                                funZoneComment.user = AppPreferenceManager.getUser()
+                                listItems.add(funZoneComment)
+                                adapter!!.notifyItemInserted(listItems.size)
+                                etComment!!.setText("")
+                                Utils.hideKeyboard(this@FunZoneCommentActivity)
+                            }
                         } else {
                             Utils.showErrorToast(response.errorBody())
                         }
                     }
                 }
 
-                override fun onFailure(call: Call<NormalResponse>?, t: Throwable?) {
+                override fun onFailure(call: Call<FunZoneCommentResponse>?, t: Throwable?) {
                     hideProgressBar()
                 }
             })
         }
+    }
+
+
+    private fun funZoneDeleteComment(funZoneComment: FunZoneComment) {
+        val timeStamp = TimeStamp.getTimeStamp()
+        val userId = AppPreferenceManager.getUserID()
+        val key = TimeStamp.getMd5(timeStamp + userId + funZoneComment.funZoneCommentId + Constants.TIME_STAMP_KEY)
+        val request = FunZoneAddComment()
+
+        request.setUserId(userId)
+        request.setTimestamp(timeStamp)
+        request.setKey(key)
+        request.setFunZoneCommentId(funZoneComment.funZoneCommentId)
+
+        showProgressBar()
+        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = api.funZoneDeleteComment(request)
+        call.enqueue(object : Callback<NormalResponse> {
+            override fun onResponse(call: Call<NormalResponse>?, response: Response<NormalResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.body() != null && response.isSuccessful) {
+                        var pos = listItems.indexOf(funZone as Any)
+                        listItems.remove(funZoneComment)
+                        adapter!!.notifyItemRemoved(pos)
+                        if (listItems.size == 0) {
+                            tvNoResult!!.visibility = View.VISIBLE
+                        }
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<NormalResponse>?, t: Throwable?) {
+                hideProgressBar()
+            }
+        })
     }
 
 }

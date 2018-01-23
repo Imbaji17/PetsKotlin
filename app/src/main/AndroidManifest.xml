@@ -187,6 +187,11 @@
             android:name=".activities.MyPetsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.BuyAndSellActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.adoption.BuySellFilterActivity"></activity>
     </application>
 
 </manifest>

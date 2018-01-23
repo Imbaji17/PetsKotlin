@@ -161,10 +161,13 @@ public class WebServiceBuilder {
 //                                               @Field("fun_zone_comment_id") String fun_zone_comment_id, @Field("comment") String comment);
 
         @POST("fun_zone_post_comment/")
-        Call<NormalResponse> addFunZoneComment(@Body FunZoneAddComment funZoneComment);
+        Call<FunZoneCommentResponse> addFunZoneComment(@Body FunZoneAddComment funZoneComment);
 
         @POST("fun_zone_like_unlike")
         Call<NormalResponse> funZoneLikeUnLike(@Body FunZoneLike funZoneLike);
+
+        @POST("fun_zone_delete_comment")
+        Call<NormalResponse> funZoneDeleteComment(@Body FunZoneAddComment funZoneAddComment);
 
     }
 }
