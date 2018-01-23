@@ -84,12 +84,11 @@ open class BaseActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val actionBar = supportActionBar
-        val gradient = resources.getDrawable(R.drawable.app_gradient)
         if (actionBar != null) {
             actionBar.setDisplayShowHomeEnabled(true)
             actionBar.setDisplayShowTitleEnabled(false)
             actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setBackgroundDrawable(gradient)
+            actionBar.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.app_gradient))
             actionBar.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.back))
         }
     }
