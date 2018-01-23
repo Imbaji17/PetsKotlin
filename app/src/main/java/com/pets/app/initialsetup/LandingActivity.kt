@@ -244,7 +244,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         when (`object` as Int) {
 
             0 -> {
-                val mIntent = Intent(this, ProfileActivity::class.java)
+                val mIntent = Intent(this, MyPetsActivity::class.java)
                 this.startActivity(mIntent)
             }
             1 -> {

@@ -10,6 +10,7 @@
     <string name="device_is_offline">Device is offline!</string>
     <string name="loading">Loading&#8230;</string>
     <string name="retry">Try Again</string>
+    <string name="server_not_responding">Server not responding try again later?</string>
     <string name="please_check_internet_connection">Please check internet connection</string>
     <string name="internet_connection_has_been_lost">It seems the internet connection has been lost. Please retry when your connection returns.</string>
     <string name="no_result_found">No result found</string>
@@ -172,7 +173,7 @@
 
     <!--CHAT-->
     <string name="send">Send</string>
-    <string name="start_typing">Start typing...</string>
+    <string name="start_typing">Start typing&#8230;</string>
 
     <!--FUN ZONE-->
     <string name="helpful">Helpful</string>
