@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.View
 import android.widget.*
@@ -51,7 +50,6 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
     private var radioGender: RadioGroup? = null
     private var btnUpload: Button? = null
     private var edtDesc: EditText? = null
-    private var mRecyclerView: RecyclerView? = null
     private var checkMatch: CheckBox? = null
     private var btnAddPet: Button? = null
     private var adapter: PhotosAdapter? = null

@@ -3,7 +3,6 @@ package com.pets.app.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
@@ -183,7 +182,7 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         Logger.errorLog("requestCode : " + requestCode)
         if (requestCode == RC_AUTOCOMPLETE) {

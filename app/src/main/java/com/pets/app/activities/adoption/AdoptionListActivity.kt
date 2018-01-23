@@ -9,7 +9,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.ViewFlipper
 import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.adapters.AdoptionListAdapter
@@ -60,7 +63,6 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
     private var llForNoResult: LinearLayout? = null
     private var llForOfflineScreen: LinearLayout? = null
     private var tvNoResult: TextView? = null
-    private var btnRetry: Button? = null
     private var llLoadMore: LinearLayout? = null
     private var llForRecyclerView: LinearLayout? = null
 

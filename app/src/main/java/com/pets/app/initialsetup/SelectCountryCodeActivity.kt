@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -23,7 +22,6 @@ class SelectCountryCodeActivity : BaseActivity(), View.OnClickListener, SimpleIt
     private var edtSearch: EditText? = null
     private var imgSearch: ImageView? = null
     private var imgClear: ImageView? = null
-    private var mRecyclerView: RecyclerView? = null
     private var countryList: ArrayList<Country>? = null
     private var adapter: CountryListAdapter? = null
 

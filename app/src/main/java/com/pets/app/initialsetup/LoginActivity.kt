@@ -160,7 +160,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             RC_FACEBOOK -> {
-                mSocialIntegratorInterface.facebookCallbackManager.onActivityResult(requestCode, resultCode, data)
+                mSocialIntegratorInterface?.facebookCallbackManager?.onActivityResult(requestCode, resultCode, data)
             }
             RC_INSTAGRAM -> {
                 if (resultCode == RESULT_OK) {
@@ -183,7 +183,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         mSocialIntegratorInterface = FaceBookIntegrator(this, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 hideProgressBar()
-                mSocialIntegratorInterface.getProfile(loginResult, object : SimpleItemClickListener {
+                mSocialIntegratorInterface?.getProfile(loginResult, object : SimpleItemClickListener {
                     override fun onItemClick(`object`: Any?) {
                         loginDetails = `object` as LoginDetails
                         if (Utils.isOnline(this@LoginActivity)) {

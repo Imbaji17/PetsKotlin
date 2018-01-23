@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.widget.ViewFlipper
 import com.pets.app.R
 import com.pets.app.adapters.CommonAdapter
@@ -29,7 +28,6 @@ import retrofit2.Response
 class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
 
     private var viewFlipper: ViewFlipper? = null
-    private var mRecyclerView: RecyclerView? = null
     private var mList: ArrayList<Any>? = null
     private var adapter: CommonAdapter? = null
     private var selectedId: String? = ""
