@@ -44,7 +44,6 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
 //    private var recyclerView: RecyclerView? = null
     private var hostelId: String? = null
     private var viewFlipper: ViewFlipper? = null
-    private var btnRetry: Button? = null
     private var rlForLoadingScreen: RelativeLayout? = null
     private var mainLayout: NestedScrollView? = null
     private var llForNoResult: LinearLayout? = null

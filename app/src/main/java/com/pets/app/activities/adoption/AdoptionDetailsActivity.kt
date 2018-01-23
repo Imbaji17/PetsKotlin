@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.NestedScrollView
-import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -52,7 +51,6 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
     private var llDescription: LinearLayout? = null
     private var tvDescription: TextView? = null
     private var viewFlipper: ViewFlipper? = null
-    private var btnRetry: Button? = null
     private var rlForLoadingScreen: RelativeLayout? = null
     private var mainLayout: NestedScrollView? = null
     private var llForNoResult: LinearLayout? = null
@@ -137,7 +135,7 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
             val call = apiClient.adoptionDetails(adoptionId, key, "EN", lat, lng, timeStamp, userId)
             call.enqueue(object : Callback<AdoptionResponse> {
                 override fun onResponse(call: Call<AdoptionResponse>, response: Response<AdoptionResponse>?) {
-                    if (response != null && response.isSuccessful() && response.body() != null && response.body().result != null) {
+                    if (response != null && response.isSuccessful && response.body() != null && response.body().result != null) {
                         setMainLayout()
                         setValues(response.body().result)
                     } else {
@@ -146,7 +144,7 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
                         val mError: NormalResponse
                         try {
                             mError = gson.fromJson(response!!.errorBody().string(), NormalResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
+                            Utils.showToast("" + mError.message)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -211,7 +209,7 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
 
         if (!TextUtils.isEmpty(result.profileImage)) {
             var hostelImage = HostelImage()
-            hostelImage.image = result.profileImage;
+            hostelImage.image = result.profileImage
             imageList.add(hostelImage)
         }
 
@@ -255,8 +253,8 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
             R.id.action_chat -> return true
             else -> return super.onOptionsItemSelected(item)
         }

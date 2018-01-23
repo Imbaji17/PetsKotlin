@@ -19,11 +19,10 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
-import com.google.gson.GsonBuilder
 import com.pets.app.R
 import com.pets.app.common.*
-import com.pets.app.initialsetup.BaseActivity
-import com.pets.app.model.*
+import com.pets.app.model.FunZone
+import com.pets.app.model.FunZoneResponse
 import com.pets.app.utilities.*
 import com.pets.app.webservice.RestClient
 import com.pets.app.webservice.UploadImage
@@ -192,12 +191,12 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
 
                     val selectedPath = FileUtils.getPath(this, videoUri)
                     if (selectedPath != null) {
-                        val parts = selectedPath!!.split("/".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
+                        val parts = selectedPath.split("/".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
                         val lastWord = parts[parts.size - 1]
-                        videoFile = File(selectedPath!!)
+                        videoFile = File(selectedPath)
 
 //                        val ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(selectedPath), 100, 100)
-                        val ThumbImage = ThumbnailUtils.createVideoThumbnail(selectedPath, MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
+                        val ThumbImage = ThumbnailUtils.createVideoThumbnail(selectedPath, MediaStore.Video.Thumbnails.FULL_SCREEN_KIND)
 //                    val thumb = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Images.Thumbnails.MINI_KIND)
                         videoThumbFile = bitmapToFile(ThumbImage)
                         if (videoThumbFile!!.exists()) {
@@ -219,7 +218,7 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
             }
 
             RC_AUTOCOMPLETE -> {
-                if (resultCode == BaseActivity.RESULT_OK) {
+                if (resultCode == Activity.RESULT_OK) {
                     // Get the user's selected place from the Intent.
                     val place = PlaceAutocomplete.getPlace(this, data)
                     Log.i("TAG", "Place Selected: " + place.name)
@@ -231,7 +230,7 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                 } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                     val status = PlaceAutocomplete.getStatus(this, data)
                     Log.e("TAG", "Error: Status = " + status.toString())
-                } else if (resultCode == BaseActivity.RESULT_CANCELED) {
+                } else if (resultCode == Activity.RESULT_CANCELED) {
                     // Indicates that the activity closed before a selection was made. For example if
                     // the user pressed the back button.
                 }
@@ -361,7 +360,7 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                             multipartEntity.addPart("description", StringBody(description))
                             multipartEntity.addPart("lat", StringBody(latitude.toString()))
                             multipartEntity.addPart("lng", StringBody(longitude.toString()))
-                            response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName!!, multipartEntity)
+                            response = UploadImage.uploadImage(Constants.API_BASE_URL + actionName, multipartEntity)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -407,7 +406,7 @@ class AddFunZoneActivity : ImagePicker(), View.OnClickListener {
                     override fun onResponse(call: Call<FunZoneResponse>?, response: Response<FunZoneResponse>?) {
                         hideProgressBar()
                         if (response != null) {
-                            if (response.body() != null && response.isSuccessful()) {
+                            if (response.body() != null && response.isSuccessful) {
                                 if (response.body().result != null)
                                     setResultOk(response.body().result)
 

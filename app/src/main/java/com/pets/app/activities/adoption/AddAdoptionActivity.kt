@@ -20,7 +20,6 @@ import com.pets.app.R
 import com.pets.app.activities.SelectTypeActivity
 import com.pets.app.adapters.PhotosAdapter
 import com.pets.app.common.*
-import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.interfaces.AddPhotoCallback
 import com.pets.app.model.*
 import com.pets.app.model.`object`.PhotosInfo
@@ -244,7 +243,7 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
             }
 
             RC_AUTOCOMPLETE -> {
-                if (resultCode == BaseActivity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     // Get the user's selected place from the Intent.
                     val place = PlaceAutocomplete.getPlace(this, data)
                     Log.i("TAG", "Place Selected: " + place.name)
@@ -256,7 +255,7 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
                 } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                     val status = PlaceAutocomplete.getStatus(this, data)
                     Log.e("TAG", "Error: Status = " + status.toString())
-                } else if (resultCode == BaseActivity.RESULT_CANCELED) {
+                } else if (resultCode == RESULT_CANCELED) {
                     // Indicates that the activity closed before a selection was made. For example if
                     // the user pressed the back button.
                 }

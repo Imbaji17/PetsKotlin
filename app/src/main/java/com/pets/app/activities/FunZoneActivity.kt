@@ -44,8 +44,6 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
     private var llForRecyclerView: LinearLayout? = null
     private var llLoadMore: LinearLayout? = null
     private var tvNoResult: TextView? = null
-    private var btnRetry: Button? = null
-
     private var adapter: FunZoneAdapter? = null
     private var listItems = ArrayList<Any>()
     private var layoutManager: LinearLayoutManager? = null
@@ -347,7 +345,7 @@ class FunZoneActivity : BaseActivity(), View.OnClickListener {
                     listItems.add(0, funZone)
                     adapter!!.notifyDataSetChanged()
                 } else {
-                    var position = data?.getIntExtra(ApplicationsConstants.POSITION, 0)
+                    var position = data.getIntExtra(ApplicationsConstants.POSITION, 0)
                     if (position < listItems.size) {
                         listItems[position] = funZone
                         adapter!!.notifyItemChanged(position)

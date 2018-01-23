@@ -2,15 +2,9 @@ package com.pets.app.activities
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.ViewFlipper
 import com.pets.app.R
 import com.pets.app.adapters.CommonAdapter
 import com.pets.app.common.AppPreferenceManager
-import com.pets.app.common.AppViewFlipper
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
@@ -27,11 +21,6 @@ import retrofit2.Response
 
 class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
 
-    private var mViewFlipper: ViewFlipper? = null
-    private var mRecyclerView: RecyclerView? = null
-    private var linLoadMore: LinearLayout? = null
-    private var tvMessage: TextView? = null
-    private var btnRetry: Button? = null
     private var adapter: CommonAdapter? = null
     private var mList: ArrayList<Any>? = ArrayList()
 
@@ -40,17 +29,12 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
         setContentView(R.layout.activity_my_pets)
 
         initializeToolbar(this.getString(R.string.my_pets))
+        initViewFlipperWithRecyclerView()
         initView()
         checkValidations()
     }
 
     private fun initView() {
-
-        mViewFlipper = findViewById(R.id.viewFlipper)
-        mRecyclerView = findViewById(R.id.recyclerView)
-        linLoadMore = findViewById(R.id.linLoadMore)
-        tvMessage = findViewById(R.id.tvNoResult)
-        btnRetry = findViewById(R.id.btnRetry)
 
         val mLinearLayoutManager = LinearLayoutManager(this)
         mLinearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -65,10 +49,10 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
     private fun checkValidations() {
 
         if (Utils.isOnline(this)) {
-            AppViewFlipper().showMainLayout(mViewFlipper)
+            showMainLayout()
             myPetsApiCall()
         } else {
-            AppViewFlipper().showOfflineMode(mViewFlipper)
+            showOfflineMode()
         }
     }
 
@@ -80,12 +64,12 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
         val timeStamp = TimeStamp.getTimeStamp()
         val key = TimeStamp.getMd5(timeStamp + userId + Constants.TIME_STAMP_KEY)
 
-        AppViewFlipper().showLoader(mViewFlipper)
+        showLoader()
         val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
         val call = apiClient.myPetsList(userId, timeStamp, key, language, offset)
         call.enqueue(object : Callback<PetResponse> {
             override fun onResponse(call: Call<PetResponse>, response: Response<PetResponse>?) {
-                AppViewFlipper().showMainLayout(mViewFlipper)
+                showMainLayout()
                 if (response != null) {
                     if (response.isSuccessful) {
                         if (response.body() != null) {
@@ -98,7 +82,7 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
             }
 
             override fun onFailure(call: Call<PetResponse>, t: Throwable) {
-                AppViewFlipper().showMainLayout(mViewFlipper)
+                showMainLayout()
             }
         })
     }
@@ -106,13 +90,13 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
     private fun checkResponse(petResponse: PetResponse?) {
 
         if (petResponse!!.list != null && petResponse.list.isNotEmpty()) {
-            AppViewFlipper().showMainLayout(mViewFlipper)
+            showMainLayout()
 
             mList!!.clear()
             mList!!.addAll(petResponse.list)
             adapter!!.notifyItemInserted(mList!!.size)
         } else {
-            AppViewFlipper().showNoDataFound(mViewFlipper, this.getString(R.string.no_result_found))
+            showNoDataFound()
         }
     }
 

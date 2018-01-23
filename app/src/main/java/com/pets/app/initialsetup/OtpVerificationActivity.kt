@@ -108,8 +108,8 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
         btnSubmit?.setOnClickListener(this)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
             android.R.id.home -> {
                 val mIntent = Intent()
                 mIntent.putExtra(ApplicationsConstants.NORMAL, true)

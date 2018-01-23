@@ -8,12 +8,14 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.ViewFlipper
 import com.pets.app.R
 import com.pets.app.activities.*
 import com.pets.app.activities.adoption.AdoptionListActivity
@@ -42,7 +44,6 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
     private var imgProfile: ImageView? = null
     private var linHeader: LinearLayout? = null
     /*Landing*/
-    private var btnRetry: Button? = null
     private var mainViewFlipper: ViewFlipper? = null
     private var viewFlipper: ViewFlipper? = null
     private var linAddPet: LinearLayout? = null
@@ -51,7 +52,6 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
     private var imgEdit: ImageView? = null
     private var tvName: TextView? = null
     private var tvBirthDate: TextView? = null
-    private var mRecyclerView: RecyclerView? = null
     private var mList: ArrayList<PetDetails>? = null
     private var position: Int = 0
     private val RC_ADD_PET: Int = 100
@@ -184,11 +184,11 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
+        when (item?.itemId) {
             R.id.action_chat -> return true
             else -> return super.onOptionsItemSelected(item)
         }

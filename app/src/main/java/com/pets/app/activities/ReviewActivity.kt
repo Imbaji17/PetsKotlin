@@ -42,7 +42,6 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
     private var llForNoResult: LinearLayout? = null
     private var llForOfflineScreen: LinearLayout? = null
     private var tvNoResult: TextView? = null
-    private var btnRetry: Button? = null
     private var typeId: String? = null
     private var type: String? = null
     private var nextOffset = 0
@@ -78,8 +77,8 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
                     //check for scroll down
                     if (listItems != null && listItems.size > 0) {
                         if (nextOffset != -1) {
-                            visibleItemCount = layoutManager!!.getChildCount()
-                            totalItemCount = layoutManager!!.getItemCount()
+                            visibleItemCount = layoutManager!!.childCount
+                            totalItemCount = layoutManager!!.itemCount
                             pastVisibleItems = layoutManager!!.findFirstVisibleItemPosition()
                             if (loading) {
                                 if (visibleItemCount + pastVisibleItems >= totalItemCount) {
@@ -165,7 +164,7 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
             call.enqueue(object : Callback<ReviewsResponse> {
                 override fun onResponse(call: Call<ReviewsResponse>, response: Response<ReviewsResponse>?) {
                     loading = true
-                    if (response != null && response.isSuccessful() && response.body() != null) {
+                    if (response != null && response.isSuccessful && response.body() != null) {
                         nextOffset = response.body().next_offset
                         if (response.body().list != null) {
                             listItems.addAll(response.body().list)
@@ -176,7 +175,7 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
                         val mError: NormalResponse
                         try {
                             mError = gson.fromJson(response!!.errorBody().string(), NormalResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
+                            Utils.showToast("" + mError.message)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
@@ -236,7 +235,7 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
             override fun onResponse(call: Call<NormalResponse>?, response: Response<NormalResponse>?) {
                 hideProgressBar()
                 if (response != null) {
-                    if (response.body() != null && response.isSuccessful()) {
+                    if (response.body() != null && response.isSuccessful) {
                         var pos = listItems.indexOf(review as Any)
                         listItems.remove(review)
                         adapter!!.notifyItemRemoved(pos)
@@ -245,7 +244,7 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
                         val mError: NormalResponse
                         try {
                             mError = gson.fromJson(response.errorBody().string(), NormalResponse::class.java)
-                            Utils.showToast("" + mError.getMessage())
+                            Utils.showToast("" + mError.message)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         }
