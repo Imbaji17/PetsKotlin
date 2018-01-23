@@ -10,6 +10,7 @@ import android.widget.ViewFlipper
 import com.pets.app.R
 import com.pets.app.adapters.CommonAdapter
 import com.pets.app.common.AppPreferenceManager
+import com.pets.app.common.AppViewFlipper
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
@@ -64,10 +65,10 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
     private fun checkValidations() {
 
         if (Utils.isOnline(this)) {
-            mViewFlipper?.displayedChild = 0
+            AppViewFlipper().showMainLayout(mViewFlipper)
             myPetsApiCall()
         } else {
-            mViewFlipper?.displayedChild = 3
+            AppViewFlipper().showOfflineMode(mViewFlipper)
         }
     }
 
@@ -79,12 +80,12 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
         val timeStamp = TimeStamp.getTimeStamp()
         val key = TimeStamp.getMd5(timeStamp + userId + Constants.TIME_STAMP_KEY)
 
-        mViewFlipper?.displayedChild = 0
+        AppViewFlipper().showLoader(mViewFlipper)
         val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
         val call = apiClient.myPetsList(userId, timeStamp, key, language, offset)
         call.enqueue(object : Callback<PetResponse> {
             override fun onResponse(call: Call<PetResponse>, response: Response<PetResponse>?) {
-                mViewFlipper?.displayedChild = 1
+                AppViewFlipper().showMainLayout(mViewFlipper)
                 if (response != null) {
                     if (response.isSuccessful) {
                         if (response.body() != null) {
@@ -97,7 +98,7 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
             }
 
             override fun onFailure(call: Call<PetResponse>, t: Throwable) {
-                mViewFlipper?.displayedChild = 1
+                AppViewFlipper().showMainLayout(mViewFlipper)
             }
         })
     }
@@ -105,17 +106,16 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
     private fun checkResponse(petResponse: PetResponse?) {
 
         if (petResponse!!.list != null && petResponse.list.isNotEmpty()) {
-            mViewFlipper?.displayedChild = 1
+            AppViewFlipper().showMainLayout(mViewFlipper)
 
             mList!!.clear()
             mList!!.addAll(petResponse.list)
             adapter!!.notifyItemInserted(mList!!.size)
         } else {
-            mViewFlipper?.displayedChild = 0
+            AppViewFlipper().showNoDataFound(mViewFlipper, this.getString(R.string.no_result_found))
         }
     }
 
     override fun onItemClick(`object`: Any?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
