@@ -96,7 +96,7 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
             mList!!.addAll(petResponse.list)
             adapter!!.notifyItemInserted(mList!!.size)
         } else {
-            showNoDataFound()
+            showNoDataFound(this.getString(R.string.no_result_found))
         }
     }
 

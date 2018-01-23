@@ -16,6 +16,9 @@ import android.widget.*
 import com.pets.app.R
 import com.pets.app.mediator.SocialIntegratorInterface
 import kotlinx.android.synthetic.main.app_loading_screen.*
+import kotlinx.android.synthetic.main.app_no_internet_connection.*
+import kotlinx.android.synthetic.main.app_no_result_found.*
+import kotlinx.android.synthetic.main.app_recycler_view.*
 
 /**
  * Created by BAJIRAO on 05 January 2018.
@@ -140,20 +143,20 @@ open class BaseActivity : AppCompatActivity() {
             mProgressDialog!!.dismiss()
     }
 
-    fun showOfflineMode() {
-        mViewFlipper?.displayedChild = mViewFlipper!!.indexOfChild(rlForLoadingScreen)
-    }
-
     fun showLoader() {
         mViewFlipper?.displayedChild = mViewFlipper!!.indexOfChild(rlForLoadingScreen)
     }
 
     fun showMainLayout() {
-        mViewFlipper?.displayedChild = mViewFlipper!!.indexOfChild(rlForLoadingScreen)
+        mViewFlipper?.displayedChild = mViewFlipper!!.indexOfChild(llForRecyclerView)
     }
 
-    fun showNoDataFound() {
-        mViewFlipper?.displayedChild = mViewFlipper!!.indexOfChild(rlForLoadingScreen)
+    fun showNoDataFound(cmgString: String) {
+        tvMessage?.text = cmgString
+        mViewFlipper?.displayedChild = mViewFlipper!!.indexOfChild(llForNoResult)
     }
 
+    fun showOfflineMode() {
+        mViewFlipper?.displayedChild = mViewFlipper!!.indexOfChild(llForOfflineScreen)
+    }
 }
