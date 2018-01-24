@@ -98,6 +98,10 @@ public class PetDetails implements Serializable {
         return pet_image;
     }
 
+    public void setPet_image(String pet_image) {
+        this.pet_image = pet_image;
+    }
+
     public PetsType getPetsType() {
         return petsType;
     }
