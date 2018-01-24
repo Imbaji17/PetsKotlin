@@ -20,6 +20,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.gson.GsonBuilder
 import com.pets.app.R
+import com.pets.app.activities.SelectTypeActivity
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
@@ -63,7 +64,8 @@ class FilterAdoptionActivity : BaseActivity(), View.OnClickListener {
     private var gender: String? = ""
     private var distance: String? = ""
     private var location: String? = ""
-
+    private val RC_BREED: Int = 101
+    private val RC_TYPE: Int = 102
 
     companion object {
         private val TAG = FilterAdoptionActivity::class.java.simpleName
@@ -91,7 +93,6 @@ class FilterAdoptionActivity : BaseActivity(), View.OnClickListener {
         init()
         initView()
         setValues()
-        getPetTypeList()
     }
 
     private fun init() {
@@ -152,13 +153,12 @@ class FilterAdoptionActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.rlType -> {
-                if (petsTypeList.size > 0)
-                    showTypeDialog(petsTypeList)
+                SelectTypeActivity.startActivity(this, RC_TYPE, "", 0, "")
             }
 
             R.id.rlBreed -> {
                 if (!TextUtils.isEmpty(petsTypeId))
-                    getBreedList(petsTypeId!!)
+                    SelectTypeActivity.startActivity(this, RC_BREED, "", 1, petsTypeId!!)
             }
 
             R.id.rlLocation -> {
@@ -205,135 +205,6 @@ class FilterAdoptionActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun getPetTypeList() {
-        val timeStamp = TimeStamp.getTimeStamp()
-        val language = Enums.Language.EN.name.toUpperCase()
-        val userId = AppPreferenceManager.getUserID()
-        val key = TimeStamp.getMd5(timeStamp + userId + Constants.TIME_STAMP_KEY)
-        if (Utils.isOnline(this)) {
-            val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-            val call = apiClient.getPetTypeList(key, language, timeStamp, userId)
-            call.enqueue(object : Callback<PetsTypeResponse> {
-                override fun onResponse(call: Call<PetsTypeResponse>, response: Response<PetsTypeResponse>?) {
-                    if (response != null && response.isSuccessful() && response.body() != null) {
-                        if (response.body().list != null) {
-                            petsTypeList.clear()
-                            petsTypeList.addAll(response.body().list)
-                        }
-                    } else {
-                        val gson = GsonBuilder().create()
-                        val mError: NormalResponse
-                        try {
-                            mError = gson.fromJson(response!!.errorBody().string(), NormalResponse::class.java)
-                            Logger.errorLog("" + mError.getMessage())
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<PetsTypeResponse>, t: Throwable) {
-                }
-            })
-        }
-    }
-
-    private fun getBreedList(petTypeId: String) {
-        val timeStamp = TimeStamp.getTimeStamp()
-        val language = Enums.Language.EN.name.toUpperCase()
-        val userId = AppPreferenceManager.getUserID()
-        val key = TimeStamp.getMd5(timeStamp + userId + petTypeId + Constants.TIME_STAMP_KEY)
-        if (Utils.isOnline(this)) {
-            val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-            val call = apiClient.getBreedList(key, language, timeStamp, userId, petTypeId)
-            call.enqueue(object : Callback<BreedResponse> {
-                override fun onResponse(call: Call<BreedResponse>, response: Response<BreedResponse>?) {
-                    if (response != null && response.isSuccessful() && response.body() != null) {
-                        if (response.body().list != null && response.body().list.size > 0) {
-//                            breedList.clear()
-//                            breedList.addAll(response.body().list)
-                            showBreedDialog(response.body().list)
-                        }
-                    } else {
-                        val gson = GsonBuilder().create()
-                        val mError: NormalResponse
-                        try {
-                            mError = gson.fromJson(response!!.errorBody().string(), NormalResponse::class.java)
-                            Logger.errorLog("" + mError.getMessage())
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<BreedResponse>, t: Throwable) {
-                }
-            })
-        }
-    }
-
-
-    private fun showTypeDialog(list: ArrayList<PetsType>) {
-        var firstLineArrays: Array<String> = Array(list.size) { "" }
-        for (i in list.indices) {
-            firstLineArrays[i] = list[i].typeName
-        }
-        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val contentView = inflater.inflate(R.layout.single_dial_row, null)
-        val mDialog = Dialog(this, R.style.dialogStyle)
-        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        mDialog.setContentView(contentView)
-        mDialog.setCancelable(true)
-        mDialog.show()
-
-        val numberPicker = mDialog.findViewById<NumberPicker>((R.id.numberPicker))
-        var tvCancel = mDialog.findViewById<TextView>(R.id.tvCancel)
-        var tvDone = mDialog.findViewById<TextView>(R.id.tvDone)
-
-        numberPicker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-        numberPicker.minValue = 0
-        numberPicker.maxValue = firstLineArrays!!.size - 1
-        numberPicker.displayedValues = firstLineArrays
-        numberPicker.wrapSelectorWheel = false
-        tvCancel.setOnClickListener { mDialog.cancel() }
-        tvDone.setOnClickListener {
-            mDialog.cancel()
-            var petsType: PetsType = list[numberPicker.value]
-            tvType!!.text = petsType.typeName
-            petsTypeId = petsType.petsTypeId
-        }
-    }
-
-    private fun showBreedDialog(list: ArrayList<Breed>) {
-        var firstLineArrays: Array<String> = Array(list.size) { "" }
-        for (i in list.indices) {
-            firstLineArrays[i] = list[i].breed_name
-        }
-        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val contentView = inflater.inflate(R.layout.single_dial_row, null)
-        val mDialog = Dialog(this, R.style.dialogStyle)
-        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        mDialog.setContentView(contentView)
-        mDialog.setCancelable(true)
-        mDialog.show()
-
-        val numberPicker = mDialog.findViewById<NumberPicker>((R.id.numberPicker))
-        var tvCancel = mDialog.findViewById<TextView>(R.id.tvCancel)
-        var tvDone = mDialog.findViewById<TextView>(R.id.tvDone)
-
-        numberPicker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-        numberPicker.minValue = 0
-        numberPicker.maxValue = firstLineArrays!!.size - 1
-        numberPicker.displayedValues = firstLineArrays
-        numberPicker.wrapSelectorWheel = false
-        tvCancel.setOnClickListener { mDialog.cancel() }
-        tvDone.setOnClickListener {
-            mDialog.cancel()
-            var breed: Breed = list[numberPicker.value]
-            tvBreed!!.text = breed.breed_name
-            breedId = breed.breed_id
-        }
-    }
 
     private fun showGenderDialog() {
 
@@ -409,6 +280,26 @@ class FilterAdoptionActivity : BaseActivity(), View.OnClickListener {
                     // the user pressed the back button.
                 }
             }
+
+            RC_TYPE -> {
+                if (data != null) {
+                    val petsType = data.getSerializableExtra(ApplicationsConstants.DATA) as PetsType
+                    if (petsType != null) {
+                        petsTypeId = petsType.petsTypeId
+                        tvType!!.text = petsType.typeName
+                    }
+                }
+            }
+            RC_BREED -> {
+                if (data != null) {
+                    val breed = data.getSerializableExtra(ApplicationsConstants.DATA) as Breed
+                    if (breed != null) {
+                        breedId = breed.breed_id
+                        tvBreed!!.text = breed.breed_name
+                    }
+                }
+            }
+
         }
     }
 }

@@ -63,7 +63,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
     private var llForNoResult: LinearLayout? = null
     private var llForOfflineScreen: LinearLayout? = null
     private var tvNoResult: TextView? = null
-    private var llLoadMore: LinearLayout? = null
+    //    private var llLoadMore: LinearLayout? = null
     private var llForRecyclerView: LinearLayout? = null
 
     private var loading = true
@@ -83,6 +83,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_adoption)
         initializeToolbar(getString(R.string.adoption))
+        initViewFlipperWithRecyclerView()
         initView()
         setAdapter()
         getAdoptionList()
@@ -121,7 +122,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
         btnRetry = findViewById(R.id.btnRetry)
         tvNoResult = findViewById(R.id.tvNoResult)
         recyclerView = findViewById(R.id.recyclerView)
-        llLoadMore = findViewById(R.id.linLoadMore)
+//        llLoadMore = findViewById(R.id.linLoadMore)
 
         btnRetry!!.setOnClickListener(this)
     }
@@ -150,7 +151,12 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
 //        @Query("lng") String lng, @Query("pets_type_id") String petsTypeId, @Query("breed_id") String breedId,
 //        @Query("gender") String gender, @Query("distance") String distance
 
-        setLoadingLayout()
+        if (nextOffset == 0) {
+            setLoadingLayout()
+        } else {
+            linLoadMore!!.visibility = View.VISIBLE
+        }
+
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
             val call = apiClient.adoptionList(userId, timeStamp, key, language, nextOffset, latitude.toString(), longitude.toString(),
@@ -158,6 +164,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
             call.enqueue(object : Callback<AdoptionResponse> {
                 override fun onResponse(call: Call<AdoptionResponse>, response: Response<AdoptionResponse>?) {
                     loading = true
+                    linLoadMore!!.visibility = View.GONE
                     if (response != null) {
                         if (response.isSuccessful) {
                             nextOffset = response.body().nextOffset
@@ -181,6 +188,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
 
                 override fun onFailure(call: Call<AdoptionResponse>, t: Throwable) {
                     loading = true
+                    linLoadMore!!.visibility = View.GONE
                     setNoResult()
                 }
             })
