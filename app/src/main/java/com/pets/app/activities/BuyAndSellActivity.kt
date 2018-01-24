@@ -5,16 +5,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
+import android.view.View
+import android.widget.Button
 import com.pets.app.R
 import com.pets.app.adapters.BuySellPagerAdapter
 import com.pets.app.initialsetup.BaseActivity
 
 
-class BuyAndSellActivity : BaseActivity() {
+class BuyAndSellActivity : BaseActivity(), View.OnClickListener {
 
     private var vpBuySell: ViewPager? = null
     private var tlBuySell: TabLayout? = null
     private var adapter: BuySellPagerAdapter? = null
+    private var btnPostProduct: Button? = null
 
     companion object {
         private val TAG = BuyAndSellActivity::class.java.simpleName
@@ -34,8 +37,19 @@ class BuyAndSellActivity : BaseActivity() {
     fun initView() {
         vpBuySell = findViewById(R.id.vpBuySell)
         tlBuySell = findViewById(R.id.tlBuySell)
+        btnPostProduct = findViewById(R.id.btnPostProduct)
         adapter = BuySellPagerAdapter(this, supportFragmentManager)
-        vpBuySell!!.adapter = adapter;
-        tlBuySell!!.setupWithViewPager(vpBuySell);
+        vpBuySell!!.adapter = adapter
+        tlBuySell!!.setupWithViewPager(vpBuySell)
+        btnPostProduct!!.setOnClickListener(this)
     }
+
+    override fun onClick(p0: View?) {
+        when (p0!!.id) {
+            R.id.btnPostProduct -> {
+
+            }
+        }
+    }
+
 }

@@ -30,7 +30,7 @@
             android:paddingLeft="@dimen/dimen_size_10"
             android:paddingRight="@dimen/dimen_size_10"
             android:textColor="@color/dark_grey"
-            android:textSize="@dimen/text_size_15"
+            android:textSize="@dimen/text_size_14"
             tools:text="@string/app_name" />
 
         <RelativeLayout

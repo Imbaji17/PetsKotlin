@@ -19,6 +19,13 @@
         android:id="@+id/vpBuySell"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:background="@android:color/white" />
+
+    <Button
+        android:id="@+id/btnPostProduct"
+        style="@style/ButtonStyle"
+        android:layout_margin="@dimen/dimen_size_20"
+        android:text="@string/post_your_product" />
 
 </LinearLayout>

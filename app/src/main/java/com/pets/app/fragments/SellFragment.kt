@@ -71,7 +71,28 @@ class SellFragment : Fragment(), View.OnClickListener {
         initView(view)
         setAdapter()
         getProductList()
-//        return inflater!!.inflate(R.layout.fragment_buy, container, false)
+
+        recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    //check for scroll down
+                    if (listItems.size > 0) {
+                        if (nextOffset != -1) {
+                            visibleItemCount = layoutManager!!.childCount
+                            totalItemCount = layoutManager!!.itemCount
+                            pastVisibleItems = layoutManager!!.findFirstVisibleItemPosition()
+                            if (loading) {
+                                if (visibleItemCount + pastVisibleItems >= totalItemCount) {
+                                    loading = false
+                                    getProductList()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
         return view
     }
 

@@ -61,9 +61,6 @@ class BuyFragment : Fragment(), View.OnClickListener {
     private var categoryStr: String? = ""
     private var sortPrice: String = ""
 
-
-//    product_type=SELL&pets_type_id=0&product_category_id=1&next_offset
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -74,7 +71,27 @@ class BuyFragment : Fragment(), View.OnClickListener {
         initView(view)
         setAdapter()
         getProductList()
-//        return inflater!!.inflate(R.layout.fragment_buy, container, false)
+        recyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    //check for scroll down
+                    if (listItems.size > 0) {
+                        if (nextOffset != -1) {
+                            visibleItemCount = layoutManager!!.childCount
+                            totalItemCount = layoutManager!!.itemCount
+                            pastVisibleItems = layoutManager!!.findFirstVisibleItemPosition()
+                            if (loading) {
+                                if (visibleItemCount + pastVisibleItems >= totalItemCount) {
+                                    loading = false
+                                    getProductList()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
         return view
     }
 
@@ -195,7 +212,9 @@ class BuyFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0!!.id) {
+            R.id.llBuy -> {
 
+            }
         }
     }
 
