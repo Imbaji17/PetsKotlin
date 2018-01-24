@@ -84,7 +84,7 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
 
             initializeToolbar(this.getString(R.string.category))
             if (Utils.isOnline(this)) {
-                getPetBreedApiCall()
+                getCategory()
             } else {
                 viewFlipper?.displayedChild = 2
             }
