@@ -173,10 +173,7 @@ class PetDetailsActivity : BaseActivity(), View.OnClickListener {
             val mList = ArrayList<PetDetails>()
 
             val petDetails = PetDetails()
-            petDetails.pet_name = petResponse.result.pet_name
             petDetails.pet_image = petResponse.result.pet_image
-            petDetails.dob = petResponse.result.dob
-            mList.add(petDetails)
             mList.add(petDetails)
 
             if (petResponse.result.petImages.isNotEmpty()) {
@@ -190,8 +187,8 @@ class PetDetailsActivity : BaseActivity(), View.OnClickListener {
             viewPager?.adapter = adapter
             pageIndicator?.setViewPager(viewPager)
 
-            tvName?.text = mList[0].pet_name
-            tvBirthDate?.text = this@PetDetailsActivity.getString(R.string.birthday).plus(mList[0].dob.replace("-", "/"))
+            tvName?.text = petResponse.result.pet_name
+            tvBirthDate?.text = this@PetDetailsActivity.getString(R.string.birthday).plus(petResponse.result.dob.replace("-", "/"))
 
             viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
@@ -201,8 +198,6 @@ class PetDetailsActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 override fun onPageSelected(position: Int) {
-                    tvName?.text = mList[position].pet_name
-                    tvBirthDate?.text = this@PetDetailsActivity.getString(R.string.birthday).plus(mList[position].dob.replace("-", "/"))
                 }
             })
         }
