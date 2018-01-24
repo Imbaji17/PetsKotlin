@@ -28,16 +28,16 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
     private var mList: ArrayList<Any>? = null
     private var adapter: CommonAdapter? = null
     private var selectedId: String? = ""
-    private var petTypeId: String? = ""
+    private var typeId: String? = ""
     private var navigationType: Int? = 0 // 0- PetType, 1- breed, 2-category
 
     companion object {
         private val TAG = SelectTypeActivity::class.java.simpleName
-        fun startActivity(activity: Activity, requestCode: Int, selectedId: String, navigationType: Int, petsTypeId: String) {
+        fun startActivity(activity: Activity, requestCode: Int, selectedId: String, navigationType: Int, typeId: String) {
             val intent = Intent(activity, SelectTypeActivity::class.java)
             intent.putExtra(ApplicationsConstants.SELECTION, selectedId)
             intent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, navigationType)
-            intent.putExtra(ApplicationsConstants.DATA, petsTypeId)
+            intent.putExtra(ApplicationsConstants.DATA, typeId)
             activity.startActivityForResult(intent, requestCode)
         }
     }
@@ -61,7 +61,7 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
     private fun getIntentData() {
         navigationType = intent.getIntExtra(ApplicationsConstants.NAVIGATION_TYPE, 0)
         selectedId = intent.getStringExtra(ApplicationsConstants.SELECTION)
-        petTypeId = intent.getStringExtra(ApplicationsConstants.DATA)
+        typeId = intent.getStringExtra(ApplicationsConstants.DATA)
 
         if (navigationType == 0) {
             initializeToolbar(this.getString(R.string.pet_type))
@@ -140,11 +140,11 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
 
         val languageCode = Enums.Language.EN.name
         val timeStamp = TimeStamp.getTimeStamp()
-        val key = TimeStamp.getMd5(timeStamp + AppPreferenceManager.getUserID() + petTypeId + Constants.TIME_STAMP_KEY)
+        val key = TimeStamp.getMd5(timeStamp + AppPreferenceManager.getUserID() + typeId + Constants.TIME_STAMP_KEY)
 
         showProgressBar()
         val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-        val call = api.getBreedList(key, languageCode, timeStamp, AppPreferenceManager.getUserID(), petTypeId)
+        val call = api.getBreedList(key, languageCode, timeStamp, AppPreferenceManager.getUserID(), typeId)
         call.enqueue(object : Callback<BreedResponse> {
             override fun onResponse(call: Call<BreedResponse>?, response: Response<BreedResponse>?) {
                 hideProgressBar()
