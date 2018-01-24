@@ -10,7 +10,6 @@ import android.view.View
 import com.pets.app.R
 import com.pets.app.adapters.CommonAdapter
 import com.pets.app.common.AppPreferenceManager
-import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
@@ -172,9 +171,7 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
 
     override fun onItemClick(`object`: Any?) {
         if (`object` is PetDetails) {
-            val mIntent = Intent(this, PetDetailsActivity::class.java)
-            mIntent.putExtra(ApplicationsConstants.DATA, `object`)
-            this.startActivity(mIntent)
+            PetDetailsActivity.startActivity(this, `object`)
         }
     }
 }

@@ -148,7 +148,7 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun showMainLayout() {
-        if (linLoadMore!!.visibility == View.VISIBLE) {
+        if (linLoadMore?.visibility == View.VISIBLE) {
             linLoadMore!!.visibility = View.GONE
         }
         mViewFlipper?.displayedChild = mViewFlipper!!.indexOfChild(llForRecyclerView)
