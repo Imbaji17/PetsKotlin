@@ -70,6 +70,10 @@ public class PetDetails implements Serializable {
         return pet_name;
     }
 
+    public void setPet_name(String pet_name) {
+        this.pet_name = pet_name;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -88,6 +92,10 @@ public class PetDetails implements Serializable {
 
     public String getDob() {
         return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
     }
 
     public String getGender() {

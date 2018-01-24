@@ -173,8 +173,12 @@ class PetDetailsActivity : BaseActivity(), View.OnClickListener {
             val mList = ArrayList<PetDetails>()
 
             val petDetails = PetDetails()
+            petDetails.pet_name = petResponse.result.pet_name
             petDetails.pet_image = petResponse.result.pet_image
+            petDetails.dob = petResponse.result.dob
             mList.add(petDetails)
+            mList.add(petDetails)
+
             if (petResponse.result.petImages.isNotEmpty()) {
                 for (item in petResponse.result.petImages) {
                     val petDetails = PetDetails()
