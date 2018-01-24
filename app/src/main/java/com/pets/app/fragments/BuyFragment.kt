@@ -180,7 +180,13 @@ class BuyFragment : Fragment(), View.OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_filter -> {
-                BuySellFilterActivity.startActivity(activity, RC_FILTER, petsTypeId, petsTypeStr!!, categoryId, categoryStr!!, sortPrice)
+                val intent = Intent(activity, BuySellFilterActivity::class.java)
+                intent.putExtra(ApplicationsConstants.PETS_TYPE_ID, petsTypeId)
+                intent.putExtra(ApplicationsConstants.PETS_TYPE_NAME, petsTypeStr)
+                intent.putExtra(ApplicationsConstants.CATEGORY_ID, categoryId)
+                intent.putExtra(ApplicationsConstants.CATEGORY, categoryStr)
+                intent.putExtra(ApplicationsConstants.PRICE, sortPrice)
+                startActivityForResult(intent, RC_FILTER)
                 true
             }
             else -> super.onOptionsItemSelected(item)
