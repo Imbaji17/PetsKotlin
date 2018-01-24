@@ -3,6 +3,7 @@ package com.pets.app.webservice;
 import com.pets.app.model.Adoption;
 import com.pets.app.model.AdoptionResponse;
 import com.pets.app.model.BreedResponse;
+import com.pets.app.model.CategoryResponse;
 import com.pets.app.model.FindHostelResponse;
 import com.pets.app.model.FunZone;
 import com.pets.app.model.FunZoneCommentResponse;
@@ -11,6 +12,7 @@ import com.pets.app.model.LoginResponse;
 import com.pets.app.model.NormalResponse;
 import com.pets.app.model.PetResponse;
 import com.pets.app.model.PetsTypeResponse;
+import com.pets.app.model.ProductResponse;
 import com.pets.app.model.ReviewsResponse;
 import com.pets.app.model.request.FavouriteHostel;
 import com.pets.app.model.request.FunZoneAddComment;
@@ -171,5 +173,13 @@ public class WebServiceBuilder {
         @POST("fun_zone_delete_comment")
         Call<NormalResponse> funZoneDeleteComment(@Body FunZoneAddComment funZoneAddComment);
 
+        @GET("product_category")
+        Call<CategoryResponse> getProductCategory(@Query("user_id") String user_id, @Query("timestamp") String timeStamp, @Query("key") String key,
+                                                  @Query("language_code") String languageCode);
+
+        @GET("product_list")
+        Call<ProductResponse> getProductList(@Query("user_id") String user_id, @Query("timestamp") String timeStamp, @Query("key") String key,
+                                             @Query("language_code") String languageCode, @Query("product_type") String productType, @Query("pets_type_id") String petsTypeId,
+                                             @Query("product_category_id") String productCategoryId, @Query("next_offset") int offset);
     }
 }

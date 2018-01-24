@@ -1,9 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pets.app.activities.adoption.BuySellFilterActivity">
+    android:orientation="vertical"
+    tools:context="com.pets.app.activities.BuySellFilterActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include layout="@layout/app_toolbar" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dimen_size_20"
+        android:layout_marginRight="@dimen/dimen_size_20"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlPetType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_size_20"
+            android:layout_toLeftOf="@+id/ivType"
+            android:layout_toStartOf="@+id/ivType">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/ivPetType"
+                android:layout_toStartOf="@+id/ivPetType"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:text="@string/type_of_pet"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/tvPetType"
+                    style="@style/TextViewStyle"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:textSize="@dimen/text_size_14"
+                    tools:text="@string/type_of_pet" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivPetType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/downarrow" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:background="@color/light_grey" />
+
+        <RelativeLayout
+            android:id="@+id/rlCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_size_10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/ivCategory"
+                android:layout_toStartOf="@+id/ivCategory"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:text="@string/category"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/tvCategory"
+                    style="@style/TextViewStyle"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:textSize="@dimen/text_size_14"
+                    tools:text="@string/category" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/downarrow" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:background="@color/light_grey" />
+
+        <RelativeLayout
+            android:id="@+id/rlSortPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_size_10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/ivSortPrice"
+                android:layout_toStartOf="@+id/ivSortPrice"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewStyle"
+                    android:text="@string/sort_price"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/tvSortPrice"
+                    style="@style/TextViewStyle"
+                    android:layout_marginTop="@dimen/dimen_size_5"
+                    android:textSize="@dimen/text_size_14"
+                    tools:text="@string/sort_price" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivSortPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/downarrow" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dimen_size_10"
+            android:background="@color/light_grey" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
