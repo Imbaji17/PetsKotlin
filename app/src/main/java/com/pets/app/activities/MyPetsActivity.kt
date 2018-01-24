@@ -97,10 +97,12 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             RC_ADD_PET -> {
-                if (Utils.isOnline(this)) {
-                    loadMore = false
-                    offset = 0
-                    myPetsApiCall()
+                if (data != null) {
+                    if (Utils.isOnline(this)) {
+                        loadMore = false
+                        offset = 0
+                        myPetsApiCall()
+                    }
                 }
             }
         }
