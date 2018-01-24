@@ -2,6 +2,8 @@ package com.pets.app.activities
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.pets.app.R
 import com.pets.app.adapters.CommonAdapter
 import com.pets.app.common.AppPreferenceManager
@@ -23,6 +25,8 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
 
     private var adapter: CommonAdapter? = null
     private var mList: ArrayList<Any>? = ArrayList()
+    private var loadMore: Boolean = false
+    private var offset: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,19 +48,41 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
         adapter = CommonAdapter(this, mList!!)
         mRecyclerView?.adapter = adapter
         adapter!!.setItemClick(this)
+
+        mRecyclerView!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    val visibleItemCount = mLinearLayoutManager.childCount
+                    val totalItemCount = mLinearLayoutManager.itemCount
+                    val pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition()
+                    if (!loadMore) {
+                        if (visibleItemCount + pastVisibleItems >= totalItemCount) {
+                            loadMore = true
+                            if (offset != -1) {
+                                if (Utils.isOnline(this@MyPetsActivity))
+                                    myPetsApiCall(false)
+                            }
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun checkValidations() {
 
+        loadMore = false
+        offset = 0
+
         if (Utils.isOnline(this)) {
             showMainLayout()
-            myPetsApiCall()
+            myPetsApiCall(true)
         } else {
             showOfflineMode()
         }
     }
 
-    private fun myPetsApiCall() {
+    private fun myPetsApiCall(isLoadMore: Boolean) {
 
         val offset = "0"
         val userId = AppPreferenceManager.getUserID()
@@ -64,7 +90,11 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
         val timeStamp = TimeStamp.getTimeStamp()
         val key = TimeStamp.getMd5(timeStamp + userId + Constants.TIME_STAMP_KEY)
 
-        showLoader()
+        if (loadMore) {
+            linLoadMore!!.visibility = View.VISIBLE
+        } else {
+            showLoader()
+        }
         val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
         val call = apiClient.myPetsList(userId, timeStamp, key, language, offset)
         call.enqueue(object : Callback<PetResponse> {
@@ -89,7 +119,9 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
 
     private fun checkResponse(petResponse: PetResponse?) {
 
-        if (petResponse!!.list != null && petResponse.list.isNotEmpty()) {
+        offset = petResponse!!.nextOffset
+
+        if (petResponse.list != null && petResponse.list.isNotEmpty()) {
             showMainLayout()
 
             mList!!.clear()
