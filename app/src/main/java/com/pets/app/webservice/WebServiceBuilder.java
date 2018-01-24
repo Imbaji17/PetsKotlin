@@ -5,7 +5,6 @@ import com.pets.app.model.AdoptionResponse;
 import com.pets.app.model.BreedResponse;
 import com.pets.app.model.FindHostelResponse;
 import com.pets.app.model.FunZone;
-import com.pets.app.model.FunZoneComment;
 import com.pets.app.model.FunZoneCommentResponse;
 import com.pets.app.model.FunZoneResponse;
 import com.pets.app.model.LoginResponse;
@@ -82,6 +81,9 @@ public class WebServiceBuilder {
 
         @GET("myPetsList")
         Call<PetResponse> myPetsList(@Query("user_id") String user_id, @Query("timestamp") String timestamp, @Query("key") String key, @Query("language_code") String language_code, @Query("next_offset") String next_offset);
+
+        @GET("pet_details_by_id")
+        Call<PetResponse> getPetDetails(@Query("user_id") String user_id, @Query("timestamp") String timestamp, @Query("key") String key, @Query("language_code") String language_code, @Query("pet_id") String pet_id);
 
         @FormUrlEncoded
         @POST("delete_pet_image_by_id/")
