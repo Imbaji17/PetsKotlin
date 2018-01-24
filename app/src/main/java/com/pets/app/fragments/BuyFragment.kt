@@ -103,7 +103,7 @@ class BuyFragment : Fragment(), View.OnClickListener {
 
         recyclerView!!.layoutManager = layoutManager
         recyclerView!!.itemAnimator = DefaultItemAnimator()
-        adapter = BuyAdapter(listItems, this)
+        adapter = BuyAdapter(listItems, this, 0)
         recyclerView!!.adapter = adapter
     }
 
@@ -209,6 +209,11 @@ class BuyFragment : Fragment(), View.OnClickListener {
                     categoryId = data.getStringExtra(ApplicationsConstants.CATEGORY_ID)
                     categoryStr = data.getStringExtra(ApplicationsConstants.CATEGORY)
                     sortPrice = data.getStringExtra(ApplicationsConstants.PRICE)
+
+                    listItems.clear()
+                    adapter!!.notifyDataSetChanged()
+                    nextOffset = 0
+                    getProductList()
                 }
             }
         }

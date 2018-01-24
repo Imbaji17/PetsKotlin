@@ -30,7 +30,7 @@ public class ImageSetter {
             Picasso.with(mContext)
                     .load(mUrl)
                     .placeholder(placeHolder)
-//                    .resize(400, 200)
+                    .resize(200, 200)
                     .into(mImageView);
         } else {
             mImageView.setImageResource(placeHolder);
