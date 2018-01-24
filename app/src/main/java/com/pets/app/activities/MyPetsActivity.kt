@@ -60,7 +60,7 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
                             loadMore = true
                             if (offset != -1) {
                                 if (Utils.isOnline(this@MyPetsActivity))
-                                    myPetsApiCall(false)
+                                    myPetsApiCall()
                             }
                         }
                     }
@@ -76,13 +76,13 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
 
         if (Utils.isOnline(this)) {
             showMainLayout()
-            myPetsApiCall(true)
+            myPetsApiCall()
         } else {
             showOfflineMode()
         }
     }
 
-    private fun myPetsApiCall(isLoadMore: Boolean) {
+    private fun myPetsApiCall() {
 
         val offset = "0"
         val userId = AppPreferenceManager.getUserID()
@@ -122,13 +122,15 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
         offset = petResponse!!.nextOffset
 
         if (petResponse.list != null && petResponse.list.isNotEmpty()) {
-            showMainLayout()
 
-            mList!!.clear()
+            if (!loadMore)
+                mList!!.clear()
+
             mList!!.addAll(petResponse.list)
             adapter!!.notifyItemInserted(mList!!.size)
         } else {
-            showNoDataFound(this.getString(R.string.no_result_found))
+            if (mList!!.isEmpty())
+                showNoDataFound(this.getString(R.string.no_result_found))
         }
     }
 
