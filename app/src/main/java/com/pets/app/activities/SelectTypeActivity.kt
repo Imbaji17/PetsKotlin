@@ -50,7 +50,6 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
         getIntentData()
     }
 
-
     private fun initView() {
         mList = ArrayList()
         viewFlipper = findViewById(R.id.viewFlipper)
@@ -230,7 +229,6 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
             viewFlipper?.displayedChild = 1
         }
     }
-
 
     override fun onItemClick(`object`: Any?) {
 
