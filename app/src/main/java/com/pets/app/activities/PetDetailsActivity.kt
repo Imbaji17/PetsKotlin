@@ -1,5 +1,6 @@
 package com.pets.app.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -25,6 +26,14 @@ class PetDetailsActivity : BaseActivity() {
 
     private val RC_EDIT_PET: Int = 100
     private var petObj: PetDetails? = null
+
+    companion object {
+        fun startActivity(mActivity: Activity, any: Any?) {
+            val mIntent = Intent(mActivity, PetDetailsActivity::class.java)
+            mIntent.putExtra(ApplicationsConstants.DATA, any as PetDetails)
+            mActivity.startActivity(mIntent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +96,7 @@ class PetDetailsActivity : BaseActivity() {
         val userId = AppPreferenceManager.getUserID()
         val language = Enums.Language.EN.name.toUpperCase()
         val timeStamp = TimeStamp.getTimeStamp()
-        val key = TimeStamp.getMd5(timeStamp + userId + Constants.TIME_STAMP_KEY)
+        val key = TimeStamp.getMd5(timeStamp + userId + petObj!!.pet_id + Constants.TIME_STAMP_KEY)
 
         showProgressBar()
         val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
@@ -116,6 +125,8 @@ class PetDetailsActivity : BaseActivity() {
     private fun checkResponse(petResponse: PetResponse?) {
 
         if (petResponse!!.result != null) {
+
+
         }
     }
 }
