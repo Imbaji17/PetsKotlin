@@ -1,0 +1,90 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dimen_size_10"
+    app:cardCornerRadius="@dimen/dimen_size_5"
+    app:cardElevation="@dimen/dimen_size_5">
+
+
+    <LinearLayout
+        android:id="@+id/llBuy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ivBuy"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_size_120"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/img_placeholder" />
+
+        <TextView
+            android:id="@+id/tvName"
+            style="@style/TextViewStyle"
+            android:layout_marginTop="@dimen/dimen_size_5"
+            android:paddingLeft="@dimen/dimen_size_10"
+            android:paddingRight="@dimen/dimen_size_10"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/text_size_15"
+            tools:text="@string/app_name" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dimen_size_10"
+            android:paddingRight="@dimen/dimen_size_10">
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="@style/StarRatingBarSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:clickable="false"
+                android:isIndicator="true"
+                android:rating="0"
+                android:stepSize="0.5" />
+
+            <TextView
+                android:id="@+id/tvReview"
+                style="@style/TextViewStyle"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dimen_size_10"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:layout_toEndOf="@+id/ratingBar"
+                android:layout_toRightOf="@+id/ratingBar"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_14"
+                tools:text="review" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_size_5"
+            android:background="@drawable/app_gradient"
+            android:padding="@dimen/dimen_size_10">
+
+            <TextView
+                android:id="@+id/tvBuy"
+                style="@style/TextViewStyle"
+                android:text="@string/buy"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                style="@style/TextViewStyle"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16"
+                tools:text="price" />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

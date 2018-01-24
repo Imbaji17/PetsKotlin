@@ -166,10 +166,12 @@
     <string name="select_category">Select Category</string>
     <string name="post">POST</string>
     <string name="add_image">Add Image</string>
-    <string name="apply">Apply</string>
+    <string name="apply">APPLY</string>
     <string name="type_of_pet">Type of Pet</string>
     <string name="category">Category</string>
     <string name="sort_by">Sort by</string>
+    <string name="x_price">$ %s</string>
+    <string name="sort_price">Sort Price</string>
 
     <!--CHAT-->
     <string name="send">Send</string>
