@@ -30,7 +30,7 @@ class BuySellFilterActivity : BaseActivity(), View.OnClickListener {
     private var categoryStr: String? = ""
     private var sortPrice: String? = ""
     private val RC_TYPE: Int = 102
-    private val RC_CATEGORY: Int = 102
+    private val RC_CATEGORY: Int = 103
 
     companion object {
         private val TAG = BuySellFilterActivity::class.java.simpleName

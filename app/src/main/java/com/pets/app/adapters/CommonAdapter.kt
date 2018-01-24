@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.pets.app.R
 import com.pets.app.interfaces.SimpleItemClickListener
 import com.pets.app.model.Breed
+import com.pets.app.model.Category
 import com.pets.app.model.PetsType
 import com.pets.app.model.`object`.PetDetails
 import com.pets.app.viewholders.*
@@ -71,7 +72,7 @@ class CommonAdapter(mContext: Context, mList: ArrayList<Any>) : RecyclerView.Ada
             return BREED_TYPE
         } else if (mList[position] is PetDetails) {
             return MY_PETS
-        } else if (mList[position] is PetDetails) {
+        } else if (mList[position] is Category) {
             return PRODUCT_CATEGORY
         }
         return -1
