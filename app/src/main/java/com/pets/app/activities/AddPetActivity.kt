@@ -189,20 +189,11 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                 showTakeImagePopup()
             }
             R.id.edtType -> {
-                SelectTypeActivity.startActivity(this, RC_TYPE, petsTypeId!!, 0, "");
-//                val mIntent = Intent(this, SelectTypeActivity::class.java)
-//                mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, true)
-//                mIntent.putExtra(ApplicationsConstants.SELECTION, petsTypeId)
-//                this.startActivityForResult(mIntent, RC_TYPE)
+                SelectTypeActivity.startActivity(this, RC_TYPE, petsTypeId!!, 0, "")
             }
             R.id.edtBreed -> {
                 if (petsTypeId!!.isNotEmpty()) {
-                    SelectTypeActivity.startActivity(this, RC_BREED, breedId!!, 1, petsTypeId!!);
-//                    val mIntent = Intent(this, SelectTypeActivity::class.java)
-//                    mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, false)
-//                    mIntent.putExtra(ApplicationsConstants.SELECTION, breedId)
-//                    mIntent.putExtra(ApplicationsConstants.DATA, petsTypeId)
-//                    this.startActivityForResult(mIntent, RC_BREED)
+                    SelectTypeActivity.startActivity(this, RC_BREED, breedId!!, 1, petsTypeId!!)
                 } else {
                     Utils.showToast(this.getString(R.string.please_select_pet_type_first))
                 }
