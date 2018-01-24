@@ -205,4 +205,5 @@
     <string name="please_enter_comment">Please enter comment</string>
     <string name="are_you_sure_you_want_to_delete_comment">Are you sure you want to delete comment?</string>
     <string name="no_comment_found">No comment found</string>
+    <string name="pet_certificate_doesnt_exist">Pet certificate doesn\'t exist</string>
 </resources>

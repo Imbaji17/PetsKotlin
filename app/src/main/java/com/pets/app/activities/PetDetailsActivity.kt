@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -119,7 +120,11 @@ class PetDetailsActivity : BaseActivity(), View.OnClickListener {
 
         when (v?.id) {
             R.id.btnView -> {
-
+                if (petObj != null) {
+                    if (TextUtils.isEmpty(petObj?.certificate_image)) {
+                        Utils.showToast(this.getString(R.string.pet_certificate_doesnt_exist))
+                    }
+                }
             }
             R.id.btnRetry -> checkValidations()
         }
@@ -170,37 +175,35 @@ class PetDetailsActivity : BaseActivity(), View.OnClickListener {
 
         if (petResponse!!.result != null) {
 
-            val mList = ArrayList<PetDetails>()
+            petObj = petResponse.result
+
+            val mList: ArrayList<PetDetails>? = ArrayList()
 
             val petDetails = PetDetails()
-            petDetails.pet_image = petResponse.result.pet_image
-            mList.add(petDetails)
+            petDetails.pet_image = petObj?.pet_image
+            mList?.add(petDetails)
+
             if (petResponse.result.petImages.isNotEmpty()) {
                 for (item in petResponse.result.petImages) {
                     val petDetails = PetDetails()
                     petDetails.pet_image = item.pet_image
-                    mList.add(petDetails)
+                    mList?.add(petDetails)
                 }
             }
-            val adapter = LandingImageAdapter(this, mList)
+            val adapter = LandingImageAdapter(this, mList!!)
             viewPager?.adapter = adapter
             pageIndicator?.setViewPager(viewPager)
 
-            tvName?.text = mList[0].pet_name
-            tvBirthDate?.text = this@PetDetailsActivity.getString(R.string.birthday).plus(mList[0].dob.replace("-", "/"))
+            tvName?.text = if (!TextUtils.isEmpty(petObj!!.pet_name)) petObj!!.pet_name else ""
+            tvBirthDate?.text = this@PetDetailsActivity.getString(R.string.birthday).plus(petResponse.result.dob.replace("-", "/"))
+            tvContactPerson?.text = if (!TextUtils.isEmpty(petObj!!.user!!.name)) petObj!!.user!!.name else ""
+            tvContact?.text = if (!TextUtils.isEmpty(petObj!!.user!!.phone_number)) petObj!!.user!!.phone_number else ""
+            tvEmailAddress?.text = if (!TextUtils.isEmpty(petObj!!.user!!.email_id)) petObj!!.user!!.email_id else ""
+            tvAddress?.text = if (!TextUtils.isEmpty(petObj!!.user!!.location)) petObj!!.user!!.location else ""
+            tvType?.text = if (!TextUtils.isEmpty(petObj!!.petsType!!.typeName)) petObj!!.petsType!!.typeName else ""
+            tvBreed?.text = if (!TextUtils.isEmpty(petObj!!.breed!!.breed_name)) petObj!!.breed!!.breed_name else ""
+            tvDescription?.text = if (!TextUtils.isEmpty(petObj!!.description)) petObj!!.description else ""
 
-            viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrollStateChanged(state: Int) {
-                }
-
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                }
-
-                override fun onPageSelected(position: Int) {
-                    tvName?.text = mList[position].pet_name
-                    tvBirthDate?.text = this@PetDetailsActivity.getString(R.string.birthday).plus(mList[position].dob.replace("-", "/"))
-                }
-            })
         }
     }
 }
