@@ -42,14 +42,12 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_type)
         initView()
         getIntentData()
     }
-
 
     private fun initView() {
         mList = ArrayList()
@@ -84,7 +82,7 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
 
             initializeToolbar(this.getString(R.string.category))
             if (Utils.isOnline(this)) {
-                getCategory()
+                getCategoryApiCall()
             } else {
                 viewFlipper?.displayedChild = 2
             }
@@ -185,7 +183,8 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
         }
     }
 
-    private fun getCategory() {
+    private fun getCategoryApiCall() {
+
         val languageCode = Enums.Language.EN.name
         val timeStamp = TimeStamp.getTimeStamp()
         val key = TimeStamp.getMd5(timeStamp + AppPreferenceManager.getUserID() + Constants.TIME_STAMP_KEY)
@@ -230,7 +229,6 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
             viewFlipper?.displayedChild = 1
         }
     }
-
 
     override fun onItemClick(`object`: Any?) {
 
