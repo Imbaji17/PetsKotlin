@@ -187,6 +187,7 @@
             android:name=".activities.MyPetsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.PetDetailsActivity"></activity>
     </application>
 
 </manifest>
