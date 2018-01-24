@@ -65,4 +65,8 @@ public class FunZoneComment implements Serializable {
     public LoginDetails getUser() {
         return user;
     }
+
+    public void setUser(LoginDetails user) {
+        this.user = user;
+    }
 }

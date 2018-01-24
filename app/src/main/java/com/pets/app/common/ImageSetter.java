@@ -25,6 +25,19 @@ public class ImageSetter {
         }
     }
 
+    public static void loadImageResize(Context mContext, String mUrl, int placeHolder, ImageView mImageView) {
+        if (!TextUtils.isEmpty(mUrl)) {
+            Picasso.with(mContext)
+                    .load(mUrl)
+                    .placeholder(placeHolder)
+//                    .resize(400, 200)
+                    .into(mImageView);
+        } else {
+            mImageView.setImageResource(placeHolder);
+        }
+    }
+
+
     public static void loadRoundedImage(Context mContext, String mUrl, int placeHolder, ImageView mImageView) {
         if (!TextUtils.isEmpty(mUrl)) {
             Picasso.with(mContext)

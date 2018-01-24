@@ -58,13 +58,12 @@ class FunZoneVH(itemView: View, clickListener: View.OnClickListener) : RecyclerV
         tvDate.text = Utils.getTimeString(context, DateFormatter.getDate(DateFormatter.yyyy_mm_dd_HH_mm_ss, funZone.createdDate))
 //        tvDate.text = DateFormatter.getFormattedDate(DateFormatter.yyyy_mm_dd_HH_mm_ss, funZone.createdDate, DateFormatter.REVIEW_DATE_FORMAT)
 
-        ImageSetter.loadImage(context, funZone.funZoneImage, R.drawable.alert_placeholder, ivFunZone)
         if (!TextUtils.isEmpty(funZone.type) && funZone.type == Enums.FunZoneType.VIDEO.name) {
             ivPlay.visibility = View.VISIBLE
-            ImageSetter.loadImage(context, funZone.videoThumb, R.drawable.alert_placeholder, ivFunZone)
+            ImageSetter.loadImageResize(context, funZone.videoThumb, R.drawable.alert_placeholder, ivFunZone)
         } else {
             ivPlay.visibility = View.GONE
-            ImageSetter.loadImage(context, funZone.funZoneImage, R.drawable.alert_placeholder, ivFunZone)
+            ImageSetter.loadImageResize(context, funZone.funZoneImage, R.drawable.alert_placeholder, ivFunZone)
         }
 
         if (funZone.isFunZoneLike) {
