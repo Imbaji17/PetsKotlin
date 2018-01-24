@@ -1,8 +1,11 @@
 package com.pets.app.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.pets.app.R
 import com.pets.app.adapters.CommonAdapter
@@ -23,6 +26,7 @@ import retrofit2.Response
 
 class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
 
+    private val RC_ADD_PET: Int = 100
     private var adapter: CommonAdapter? = null
     private var mList: ArrayList<Any>? = ArrayList()
     private var loadMore: Boolean = false
@@ -67,6 +71,39 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
                 }
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_add, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        when (item?.itemId) {
+            R.id.action_add -> {
+                val mIntent = Intent(this, AddPetActivity::class.java)
+                this.startActivityForResult(mIntent, RC_ADD_PET)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            RC_ADD_PET -> {
+                if (Utils.isOnline(this)) {
+                    loadMore = false
+                    offset = 0
+                    myPetsApiCall()
+                }
+            }
+        }
     }
 
     private fun checkValidations() {
