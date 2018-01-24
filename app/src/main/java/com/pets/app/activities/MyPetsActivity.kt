@@ -74,15 +74,11 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_add, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         when (item?.itemId) {
             R.id.action_add -> {
                 val mIntent = Intent(this, AddPetActivity::class.java)
@@ -123,7 +119,6 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
 
     private fun myPetsApiCall() {
 
-        val offset = "0"
         val userId = AppPreferenceManager.getUserID()
         val language = Enums.Language.EN.name.toUpperCase()
         val timeStamp = TimeStamp.getTimeStamp()
@@ -135,7 +130,7 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
             showLoader()
         }
         val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-        val call = apiClient.myPetsList(userId, timeStamp, key, language, offset)
+        val call = apiClient.myPetsList(userId, timeStamp, key, language, offset.toString())
         call.enqueue(object : Callback<PetResponse> {
             override fun onResponse(call: Call<PetResponse>, response: Response<PetResponse>?) {
                 showMainLayout()
