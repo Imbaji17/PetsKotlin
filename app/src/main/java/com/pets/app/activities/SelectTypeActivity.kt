@@ -13,10 +13,7 @@ import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.interfaces.SimpleItemClickListener
-import com.pets.app.model.Breed
-import com.pets.app.model.BreedResponse
-import com.pets.app.model.PetsType
-import com.pets.app.model.PetsTypeResponse
+import com.pets.app.model.*
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -32,6 +29,19 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
     private var adapter: CommonAdapter? = null
     private var selectedId: String? = ""
     private var petTypeId: String? = ""
+    private var navigationType: Int? = 0 // 0- PetType, 1- breed, 2-category
+
+    companion object {
+        private val TAG = SelectTypeActivity::class.java.simpleName
+        fun startActivity(activity: Activity, requestCode: Int, selectedId: String, navigationType: Int, petsTypeId: String) {
+            val intent = Intent(activity, SelectTypeActivity::class.java)
+            intent.putExtra(ApplicationsConstants.SELECTION, selectedId)
+            intent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, navigationType)
+            intent.putExtra(ApplicationsConstants.DATA, petsTypeId)
+            activity.startActivityForResult(intent, requestCode)
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,31 +50,39 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
         getIntentData()
     }
 
+
     private fun initView() {
-
         mList = ArrayList()
-
         viewFlipper = findViewById(R.id.viewFlipper)
         mRecyclerView = findViewById(R.id.recyclerView)
-
         val mLinearLayoutManager = LinearLayoutManager(this)
         mLinearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         mRecyclerView?.layoutManager = mLinearLayoutManager
     }
 
     private fun getIntentData() {
-
+        navigationType = intent.getIntExtra(ApplicationsConstants.NAVIGATION_TYPE, 0)
         selectedId = intent.getStringExtra(ApplicationsConstants.SELECTION)
-        if (intent.getBooleanExtra(ApplicationsConstants.NAVIGATION_TYPE, false)) {
+        petTypeId = intent.getStringExtra(ApplicationsConstants.DATA)
+
+        if (navigationType == 0) {
             initializeToolbar(this.getString(R.string.pet_type))
             if (Utils.isOnline(this)) {
                 getPetTypeApiCall()
             } else {
                 viewFlipper?.displayedChild = 2
             }
-        } else {
-            petTypeId = intent.getStringExtra(ApplicationsConstants.DATA)
+        } else if (navigationType == 1) {
+
             initializeToolbar(this.getString(R.string.breed))
+            if (Utils.isOnline(this)) {
+                getPetBreedApiCall()
+            } else {
+                viewFlipper?.displayedChild = 2
+            }
+        } else if (navigationType == 2) {
+
+            initializeToolbar(this.getString(R.string.category))
             if (Utils.isOnline(this)) {
                 getPetBreedApiCall()
             } else {
@@ -167,6 +185,53 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
         }
     }
 
+    private fun getCategory() {
+        val languageCode = Enums.Language.EN.name
+        val timeStamp = TimeStamp.getTimeStamp()
+        val key = TimeStamp.getMd5(timeStamp + AppPreferenceManager.getUserID() + Constants.TIME_STAMP_KEY)
+
+        showProgressBar()
+        val api = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
+        val call = api.getProductCategory(AppPreferenceManager.getUserID(), timeStamp, key, languageCode)
+        call.enqueue(object : Callback<CategoryResponse> {
+            override fun onResponse(call: Call<CategoryResponse>?, response: Response<CategoryResponse>?) {
+                hideProgressBar()
+                if (response != null) {
+                    if (response.body() != null && response.isSuccessful) {
+                        checkCategoryResponse(response.body().list)
+                    } else {
+                        Utils.showErrorToast(response.errorBody())
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<CategoryResponse>?, t: Throwable?) {
+                hideProgressBar()
+            }
+        })
+    }
+
+    private fun checkCategoryResponse(list: ArrayList<Category>?) {
+        viewFlipper?.displayedChild = 0
+        if (list != null && list.isNotEmpty()) {
+            if (!selectedId.isNullOrEmpty()) {
+                for (obj in list) {
+                    if (obj.productCategoryId.equals(selectedId, true)) {
+                        obj.isSelected = true
+                        break
+                    }
+                }
+            }
+            mList?.addAll(list)
+            adapter = CommonAdapter(this, mList!!)
+            mRecyclerView?.adapter = adapter
+            adapter?.setItemClick(this)
+        } else {
+            viewFlipper?.displayedChild = 1
+        }
+    }
+
+
     override fun onItemClick(`object`: Any?) {
 
         if (`object` is PetsType) {
@@ -193,6 +258,19 @@ class SelectTypeActivity : BaseActivity(), SimpleItemClickListener {
             adapter?.notifyDataSetChanged()
             val mIntent = Intent()
             mIntent.putExtra(ApplicationsConstants.DATA, breed)
+            setResult(Activity.RESULT_OK, mIntent)
+            finish()
+        } else if (`object` is Category) {
+            val categoty = `object`
+            categoty.isSelected = true
+            for (i in mList!!.indices) {
+                if (i != mList!!.indexOf(categoty)) {
+                    (mList?.get(i) as Category).isSelected = false
+                }
+            }
+            adapter?.notifyDataSetChanged()
+            val mIntent = Intent()
+            mIntent.putExtra(ApplicationsConstants.DATA, categoty)
             setResult(Activity.RESULT_OK, mIntent)
             finish()
         }

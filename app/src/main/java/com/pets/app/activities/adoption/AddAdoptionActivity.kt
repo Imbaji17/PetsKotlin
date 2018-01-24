@@ -170,16 +170,18 @@ class AddAdoptionActivity : ImagePicker(), View.OnClickListener {
             }
 
             R.id.rlType -> {
-                val mIntent = Intent(this, SelectTypeActivity::class.java)
-                mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, true)
-                this.startActivityForResult(mIntent, RC_TYPE)
+                SelectTypeActivity.startActivity(this, RC_TYPE, "", 0, "")
+//                val mIntent = Intent(this, SelectTypeActivity::class.java)
+//                mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, true)
+//                this.startActivityForResult(mIntent, RC_TYPE)
             }
             R.id.rlBreed -> {
                 if (petsTypeId!!.isNotEmpty()) {
-                    val mIntent = Intent(this, SelectTypeActivity::class.java)
-                    mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, false)
-                    mIntent.putExtra(ApplicationsConstants.DATA, petsTypeId)
-                    this.startActivityForResult(mIntent, RC_BREED)
+                    SelectTypeActivity.startActivity(this, RC_BREED, "", 1, petsTypeId!!)
+//                    val mIntent = Intent(this, SelectTypeActivity::class.java)
+//                    mIntent.putExtra(ApplicationsConstants.NAVIGATION_TYPE, false)
+//                    mIntent.putExtra(ApplicationsConstants.DATA, petsTypeId)
+//                    this.startActivityForResult(mIntent, RC_BREED)
                 } else {
                     Utils.showToast(this.getString(R.string.please_select_pet_type_first))
                 }

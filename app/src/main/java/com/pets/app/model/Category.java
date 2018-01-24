@@ -16,6 +16,8 @@ public class Category implements Serializable {
     @SerializedName("product_category_name")
     private String productCategoryName;
 
+    private boolean isSelected;
+
     public String getProductCategoryId() {
         return productCategoryId;
     }
@@ -30,5 +32,13 @@ public class Category implements Serializable {
 
     public void setProductCategoryName(String productCategoryName) {
         this.productCategoryName = productCategoryName;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }
