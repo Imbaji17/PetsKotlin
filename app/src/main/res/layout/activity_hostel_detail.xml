@@ -42,6 +42,7 @@
                         android:id="@+id/cvp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_margin="@dimen/dimen_size_5"
                         android:background="@drawable/rec_transparent_black"

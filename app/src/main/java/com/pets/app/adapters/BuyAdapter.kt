@@ -14,13 +14,15 @@ import java.util.*
  * Created by admin on 24/01/18.
  */
 
-class BuyAdapter(arrayList: ArrayList<Any>, private val clickListener: View.OnClickListener) : RecyclerView.Adapter<RecyclerViewHolder>() {
+class BuyAdapter(arrayList: ArrayList<Any>, private val clickListener: View.OnClickListener, from1: Int) : RecyclerView.Adapter<RecyclerViewHolder>() {
 
     private val BUY = 1
     private var items = ArrayList<Any>()
+    private var from: Int? = from1
 
     init {
         this.items = arrayList
+        this.from = from1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
@@ -29,11 +31,11 @@ class BuyAdapter(arrayList: ArrayList<Any>, private val clickListener: View.OnCl
         when (viewType) {
             BUY -> {
                 val homeCategoryLayout = inflater.inflate(R.layout.item_buy, parent, false)
-                viewHolder = BuyVH(homeCategoryLayout, clickListener)
+                viewHolder = BuyVH(homeCategoryLayout, clickListener, from)
             }
             else -> {
                 val layout = inflater.inflate(R.layout.item_buy, parent, false)
-                viewHolder = BuyVH(layout, clickListener)
+                viewHolder = BuyVH(layout, clickListener, from)
             }
         }
         return viewHolder
@@ -52,4 +54,9 @@ class BuyAdapter(arrayList: ArrayList<Any>, private val clickListener: View.OnCl
             BUY
         } else -1
     }
+
+    fun setFrom() {
+        this.from = 1
+    }
+
 }
