@@ -120,7 +120,11 @@ class PetDetailsActivity : BaseActivity(), View.OnClickListener {
 
         when (v?.id) {
             R.id.btnView -> {
-
+                if (petObj != null) {
+                    if (TextUtils.isEmpty(petObj?.certificate_image)) {
+                        Utils.showToast(this.getString(R.string.pet_certificate_doesnt_exist))
+                    }
+                }
             }
             R.id.btnRetry -> checkValidations()
         }
