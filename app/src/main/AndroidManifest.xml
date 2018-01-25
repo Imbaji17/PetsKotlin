@@ -203,6 +203,7 @@
             android:name=".activities.ProductDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.adoption.PostProductActivity"></activity>
     </application>
 
 </manifest>

@@ -3,7 +3,6 @@ package com.pets.app.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
@@ -69,9 +68,7 @@ class ProductDetailActivity : BaseActivity() {
 //                tvBuy.text = context.getString(R.string.sell)
 //            } else {
 //                tvBuy.text = context.getString(R.string.buy)
-//            }
+//            } `
         }
-
     }
-
 }
