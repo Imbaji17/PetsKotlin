@@ -22,8 +22,8 @@
                 android:id="@+id/ivBuy"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="@drawable/img_placeholder" />
-
+                android:background="@drawable/img_placeholder"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,7 +35,6 @@
                     android:id="@+id/tvName"
                     style="@style/TextViewStyle"
                     android:maxLines="1"
-                    android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_16"
                     tools:text="@string/name" />
@@ -45,29 +44,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_size_5">
 
+                    <TextView
+                        android:id="@+id/tvReview"
+                        style="@style/TextViewStyle"
+                        android:layout_centerVertical="true"
+                        android:maxLines="1"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_14"
+                        tools:text="review" />
+
                     <RatingBar
                         android:id="@+id/ratingBar"
                         style="@style/StarRatingBarSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_size_10"
+                        android:layout_marginStart="@dimen/dimen_size_10"
+                        android:layout_toEndOf="@+id/tvReview"
+                        android:layout_toRightOf="@+id/tvReview"
                         android:clickable="false"
                         android:isIndicator="true"
                         android:rating="0"
                         android:stepSize="0.5" />
-
-                    <TextView
-                        android:id="@+id/tvReview"
-                        style="@style/TextViewStyle"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/dimen_size_10"
-                        android:layout_marginStart="@dimen/dimen_size_10"
-                        android:layout_toEndOf="@+id/ratingBar"
-                        android:layout_toRightOf="@+id/ratingBar"
-                        android:maxLines="1"
-                        android:textColor="@color/grey"
-                        android:textSize="@dimen/text_size_14"
-                        tools:text="review" />
 
                     <TextView
                         android:id="@+id/tvPrice"
@@ -96,13 +95,10 @@
                     android:layout_marginTop="@dimen/dimen_size_10"
                     android:layout_toEndOf="@+id/ratingBar"
                     android:layout_toRightOf="@+id/ratingBar"
-                    android:maxLines="1"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/text_size_14"
-                    tools:text="review" />
-
+                    tools:text="@string/description" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

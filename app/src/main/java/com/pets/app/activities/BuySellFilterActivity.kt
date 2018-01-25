@@ -1,12 +1,13 @@
 package com.pets.app.activities
 
 import android.app.Activity
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
+import android.widget.NumberPicker
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.pets.app.R
@@ -127,6 +128,10 @@ class BuySellFilterActivity : BaseActivity(), View.OnClickListener {
             R.id.rlCategory -> {
                 SelectTypeActivity.startActivity(this, RC_CATEGORY, categoryId!!, 2, "")
             }
+
+            R.id.rlSortPrice -> {
+                showSortPriceDialog()
+            }
         }
     }
 
@@ -151,6 +156,40 @@ class BuySellFilterActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
             }
+        }
+    }
+
+
+    private fun showSortPriceDialog() {
+
+        val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val contentView = inflater.inflate(R.layout.single_dial_row, null)
+        val mDialog = Dialog(this)
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        mDialog.setContentView(contentView)
+        mDialog.setCancelable(true)
+        mDialog.show()
+
+
+        val fractionArr = resources.getStringArray(R.array.sort_price_arr)
+
+        var numberPicker = mDialog.findViewById<NumberPicker>(R.id.numberPicker)
+        numberPicker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+        numberPicker.minValue = 0
+        numberPicker.maxValue = fractionArr.size - 1
+        numberPicker.displayedValues = fractionArr
+        numberPicker.wrapSelectorWheel = false
+
+        val tvCancel = mDialog.findViewById<TextView>(R.id.tvCancel)
+        val tvDone = mDialog.findViewById<TextView>(R.id.tvDone)
+        var tvTitle = mDialog.findViewById<TextView>(R.id.tvTitle)
+        tvTitle.text = getString(R.string.sort_by)
+        tvCancel.setOnClickListener { mDialog.cancel() }
+
+        tvDone.setOnClickListener {
+            val s = fractionArr[numberPicker.value]
+            mDialog.cancel()
+            tvSortPrice!!.text = s
         }
     }
 
