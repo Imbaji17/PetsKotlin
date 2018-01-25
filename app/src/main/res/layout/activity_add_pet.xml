@@ -249,6 +249,15 @@
                 style="@style/ButtonStyle"
                 android:layout_marginTop="@dimen/dimen_size_20"
                 android:text="@string/add_pet" />
+
+            <TextView
+                android:id="@+id/tvDelete"
+                style="@style/TextViewStyle"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/lato_bold"
+                android:padding="@dimen/dimen_size_15"
+                android:text="@string/delete_pet"
+                android:textColor="@color/colorAccent" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

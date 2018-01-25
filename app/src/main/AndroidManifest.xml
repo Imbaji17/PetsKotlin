@@ -204,6 +204,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.adoption.PostProductActivity"></activity>
+        <activity android:name=".activities.ConfirmationActivity"></activity>
     </application>
 
 </manifest>
