@@ -1,5 +1,6 @@
 package com.pets.app.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -32,6 +33,13 @@ class MyPetsActivity : BaseActivity(), SimpleItemClickListener {
     private var mList: ArrayList<Any>? = ArrayList()
     private var loadMore: Boolean = false
     private var offset: Int = 0
+
+    companion object {
+        fun startActivity(mActivity: Activity) {
+            val mIntent = Intent(mActivity, MyPetsActivity::class.java)
+            mActivity.startActivity(mIntent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

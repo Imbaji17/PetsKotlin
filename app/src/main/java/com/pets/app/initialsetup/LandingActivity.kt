@@ -201,8 +201,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
             }
             R.id.nav_mypets -> {
-                val mIntent = Intent(this, MyPetsActivity::class.java)
-                this.startActivity(mIntent)
+                MyPetsActivity.startActivity(this)
             }
             R.id.nav_mymatches -> {
 
@@ -244,8 +243,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
         when (`object` as Int) {
 
             0 -> {
-                val mIntent = Intent(this, MyPetsActivity::class.java)
-                this.startActivity(mIntent)
+                MyPetsActivity.startActivity(this)
             }
             1 -> {
                 FunZoneActivity.startActivity(this)
