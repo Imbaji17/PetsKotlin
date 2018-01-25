@@ -52,6 +52,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
     private var edtDesc: EditText? = null
     private var checkMatch: CheckBox? = null
     private var btnAddPet: Button? = null
+    private var tvDelete: TextView? = null
     private var adapter: PhotosAdapter? = null
     private var photoList: ArrayList<Any>? = null
     private var selectedType: Int = 0
@@ -87,6 +88,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         mRecyclerView = findViewById(R.id.recyclerView)
         checkMatch = findViewById(R.id.checkMatch)
         btnAddPet = findViewById(R.id.btnAddPet)
+        tvDelete = findViewById(R.id.tvDelete)
 
         val mGridLayoutManager = GridLayoutManager(this, 3)
         mGridLayoutManager.orientation = GridLayoutManager.VERTICAL
@@ -126,6 +128,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         edtDOB?.setOnClickListener(this)
         btnUpload?.setOnClickListener(this)
         btnAddPet?.setOnClickListener(this)
+        tvDelete?.setOnClickListener(this)
     }
 
     private fun getIntentData() {
@@ -218,6 +221,9 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
                         Utils.showToast(this.getString(R.string.device_is_offline))
                     }
                 }
+            }
+            R.id.tvDelete -> {
+                ConfirmationActivity.startActivity(this)
             }
         }
     }
