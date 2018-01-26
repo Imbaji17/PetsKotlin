@@ -203,7 +203,9 @@
             android:name=".activities.ProductDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.ConfirmationActivity"></activity>
+        <activity
+            android:name=".activities.ConfirmationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -3,10 +3,11 @@ package com.pets.app.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import com.pets.app.R
+import com.pets.app.initialsetup.BaseActivity
+import kotlinx.android.synthetic.main.activity_confirmation.*
 
-class ConfirmationActivity : AppCompatActivity() {
+class ConfirmationActivity : BaseActivity() {
 
     companion object {
 
@@ -20,5 +21,18 @@ class ConfirmationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirmation)
 
+        initView()
+    }
+
+    private fun initView() {
+
+
+        btnNo?.setOnClickListener {
+            this.finish()
+        }
+
+        btnYes?.setOnClickListener {
+
+        }
     }
 }

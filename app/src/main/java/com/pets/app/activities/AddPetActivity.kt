@@ -133,9 +133,11 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
 
     private fun getIntentData() {
 
+        tvDelete!!.visibility = View.GONE
         if (intent.hasExtra(ApplicationsConstants.DATA)) {
             tvToolbar.text = this.getText(R.string.edit_pet)
             btnAddPet!!.text = this.getText(R.string.update)
+            tvDelete!!.visibility = View.VISIBLE
             petObj = intent.getSerializableExtra(ApplicationsConstants.DATA) as PetDetails
 
             edtName?.setText(if (!TextUtils.isEmpty(petObj!!.pet_name)) petObj!!.pet_name else "")
