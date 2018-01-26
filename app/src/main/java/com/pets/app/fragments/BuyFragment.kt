@@ -13,11 +13,10 @@ import android.widget.*
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.pets.app.R
 import com.pets.app.activities.BuySellFilterActivity
+import com.pets.app.activities.ProductDetailActivity
 import com.pets.app.adapters.BuyAdapter
 import com.pets.app.common.*
-import com.pets.app.model.Breed
-import com.pets.app.model.PetsType
-import com.pets.app.model.ProductResponse
+import com.pets.app.model.*
 import com.pets.app.model.`object`.PhotosInfo
 import com.pets.app.utilities.*
 import com.pets.app.webservice.RestClient
@@ -213,7 +212,8 @@ class BuyFragment : Fragment(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.llBuy -> {
-
+                val product = p0.tag as Product
+                ProductDetailActivity.startActivity(activity, product)
             }
         }
     }

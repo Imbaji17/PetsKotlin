@@ -10,11 +10,13 @@ import android.view.*
 import android.widget.*
 import com.pets.app.R
 import com.pets.app.activities.BuySellFilterActivity
+import com.pets.app.activities.ProductDetailActivity
 import com.pets.app.adapters.BuyAdapter
 import com.pets.app.common.AppPreferenceManager
 import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
+import com.pets.app.model.Product
 import com.pets.app.model.ProductResponse
 import com.pets.app.utilities.GridSpacingItemDecoration
 import com.pets.app.utilities.TimeStamp
@@ -212,7 +214,10 @@ class SellFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0!!.id) {
-
+            R.id.llBuy -> {
+                val product = p0.tag as Product
+                ProductDetailActivity.startActivity(activity, product)
+            }
         }
     }
 

@@ -172,6 +172,13 @@
     <string name="sort_by">Sort by</string>
     <string name="x_price">$ %s</string>
     <string name="sort_price">Sort Price</string>
+    <string name="done">Done</string>
+
+    <string-array name="sort_price_arr">
+        <item>PRICE</item>
+        <item>REVIEWS</item>
+    </string-array>
+
 
     <!--CHAT-->
     <string name="send">Send</string>

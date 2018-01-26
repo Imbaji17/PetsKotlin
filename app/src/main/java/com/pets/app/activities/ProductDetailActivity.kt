@@ -2,18 +2,18 @@ package com.pets.app.activities
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import com.pets.app.R
 import com.pets.app.common.ApplicationsConstants
+import com.pets.app.common.ImageSetter
+import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.model.Product
 
-class ProductDetailActivity : AppCompatActivity() {
+class ProductDetailActivity : BaseActivity() {
 
     private var ivBuy: ImageView? = null
     private var tvName: TextView? = null
@@ -38,6 +38,7 @@ class ProductDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_product_detail)
         init()
         initView()
+        setValues()
     }
 
     fun init() {
@@ -52,5 +53,22 @@ class ProductDetailActivity : AppCompatActivity() {
         tvPrice = findViewById(R.id.tvPrice)
         tvDescription = findViewById(R.id.tvDescription)
         btnBuy = findViewById(R.id.btnBuy)
+    }
+
+    private fun setValues() {
+        if (product != null) {
+            initializeToolbar(product!!.productName)
+            tvName!!.text = product!!.productName
+            ImageSetter.loadImageResize(this, product!!.productImage, R.drawable.alert_placeholder, ivBuy)
+            ratingBar!!.rating = product!!.avgRating.toFloat()
+            tvReview?.text = resources.getQuantityString(R.plurals.reviews_plural, product!!.reviewsCount, product!!.reviewsCount)
+            tvPrice?.text = String.format(getString(R.string.x_price), product!!.price)
+            tvDescription!!.text = product!!.description
+//            if (from == 1) {
+//                tvBuy.text = context.getString(R.string.sell)
+//            } else {
+//                tvBuy.text = context.getString(R.string.buy)
+//            } `
+        }
     }
 }

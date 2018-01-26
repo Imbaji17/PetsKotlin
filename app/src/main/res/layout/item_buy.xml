@@ -20,7 +20,8 @@
             android:layout_height="@dimen/dimen_size_120"
             android:layout_centerVertical="true"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/img_placeholder" />
+            android:background="@drawable/img_placeholder"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/tvName"
@@ -40,29 +41,31 @@
             android:paddingLeft="@dimen/dimen_size_10"
             android:paddingRight="@dimen/dimen_size_10">
 
+            <TextView
+                android:id="@+id/tvReview"
+                style="@style/TextViewStyle"
+                android:layout_centerVertical="true"
+                android:maxLines="1"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_14"
+                tools:text="review" />
+
             <RatingBar
                 android:id="@+id/ratingBar"
                 style="@style/StarRatingBarSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_size_10"
+                android:layout_marginStart="@dimen/dimen_size_10"
+                android:layout_toEndOf="@+id/tvReview"
+                android:layout_toRightOf="@+id/tvReview"
                 android:clickable="false"
                 android:isIndicator="true"
                 android:rating="0"
                 android:stepSize="0.5" />
 
-            <TextView
-                android:id="@+id/tvReview"
-                style="@style/TextViewStyle"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dimen_size_10"
-                android:layout_marginStart="@dimen/dimen_size_10"
-                android:layout_toEndOf="@+id/ratingBar"
-                android:layout_toRightOf="@+id/ratingBar"
-                android:maxLines="1"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_14"
-                tools:text="review" />
+
         </RelativeLayout>
 
         <RelativeLayout
