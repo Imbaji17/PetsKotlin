@@ -62,10 +62,10 @@ class MyInterestActivity : BaseActivity(), SimpleItemClickListener {
             0 -> {
             }
             1 -> {
-                FindHostelActivity.startActivity(this)
+                FindHostelActivity.startActivity(this, "Y")
             }
             2 -> {
-                AdoptionListActivity.startActivity(this)
+                AdoptionListActivity.startActivity(this, "Y")
             }
             3 -> {
             }

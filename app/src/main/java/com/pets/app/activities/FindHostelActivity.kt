@@ -57,11 +57,13 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
     private var edtSearch: EditText? = null
     private var imgClear: ImageView? = null
     private var findHostel: FindHostel? = null
+    private var isInterested: String? = ""
 
     companion object {
         private val TAG = FindHostelActivity::class.java.simpleName
-        fun startActivity(activity: Activity) {
+        fun startActivity(activity: Activity, isInterested: String) {
             val intent = Intent(activity, FindHostelActivity::class.java)
+            intent.putExtra(ApplicationsConstants.INTERESTED, isInterested)
             activity.startActivity(intent)
         }
     }
@@ -71,9 +73,14 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_hostel)
         initializeToolbar(getString(R.string.find_hostel))
+        init()
         initView()
         setAdapter()
         getHostelList()
+    }
+
+    private fun init() {
+        isInterested = intent.getStringExtra(ApplicationsConstants.INTERESTED)
     }
 
     private fun initView() {
@@ -112,7 +119,7 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
         viewFlipper!!.displayedChild = 0
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-            val call = apiClient.hostelList(key, keyWord, language, lat, lng, nextOffset, timeStamp, userId)
+            val call = apiClient.hostelList(key, keyWord, language, lat, lng, nextOffset, timeStamp, userId, isInterested)
             call.enqueue(object : Callback<FindHostelResponse> {
                 override fun onResponse(call: Call<FindHostelResponse>, response: Response<FindHostelResponse>?) {
                     if (response != null) {
@@ -181,7 +188,7 @@ class FindHostelActivity : BaseActivity(), View.OnClickListener, TextView.OnEdit
             }
 
             R.id.action_map -> {
-                FindHostelMapActivity.startActivity(this, listItems, RC_MAP_ACTIVITY)
+                FindHostelMapActivity.startActivity(this, listItems, RC_MAP_ACTIVITY, isInterested!!)
             }
 
             R.id.action_search -> {

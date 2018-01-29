@@ -94,7 +94,8 @@ public class WebServiceBuilder {
         //http://34.199.202.75/pets/api/PetsApi/hostel_list?key=6b88b734ebb2c9f02ffe2cfdc1f40020&keyword=&language_code=EN&lat=0.000000&lng=0.000000&next_offset=0&timestamp=1515495550497.3&user_id=10
         @GET("hostel_list")
         Call<FindHostelResponse> hostelList(@Query("key") String key, @Query("keyword") String keyword, @Query("language_code") String languageCode, @Query("lat") String lat,
-                                            @Query("lng") String lng, @Query("next_offset") int next_offset, @Query("timestamp") String timestamp, @Query("user_id") String user_id);
+                                            @Query("lng") String lng, @Query("next_offset") int next_offset, @Query("timestamp") String timestamp, @Query("user_id") String user_id,
+                                            @Query("is_interest") String isInterested);
 
         @POST("favorite_unfavorite/")
         Call<NormalResponse> favourite(@Body FavouriteHostel favouriteHostel);
@@ -120,7 +121,7 @@ public class WebServiceBuilder {
         Call<AdoptionResponse> adoptionList(@Query("user_id") String user_id, @Query("timestamp") String timestamp, @Query("key") String key,
                                             @Query("language_code") String languageCode, @Query("next_offset") int next_offset, @Query("lat") String lat,
                                             @Query("lng") String lng, @Query("pets_type_id") String petsTypeId, @Query("breed_id") String breedId,
-                                            @Query("gender") String gender, @Query("distance") String distance);
+                                            @Query("gender") String gender, @Query("distance") String distance, @Query("is_interest") String isInterest);
 
         @GET("adoption_by_id")
         Call<AdoptionResponse> adoptionDetails(@Query("adoption_id") String id, @Query("key") String key, @Query("language_code") String languageCode, @Query("lat") String lat,

@@ -29,5 +29,8 @@ public class Enums {
         VIDEO, IMAGE
     }
 
+    public enum buySell {
+        SELL, BUY
+    }
 
 }
