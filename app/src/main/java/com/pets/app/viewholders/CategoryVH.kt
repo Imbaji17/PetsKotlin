@@ -1,18 +1,17 @@
 package com.pets.app.viewholders
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.pets.app.R
 import com.pets.app.interfaces.SimpleItemClickListener
-import com.pets.app.model.Breed
 import com.pets.app.model.Category
 
 /**
- * Created by admin on 24/01/18.
+ * Created by BAJIRAO on 24/01/18.
  */
-
 class CategoryVH(mContext: Context, itemView: View?, itemClick: SimpleItemClickListener) : RecyclerViewViewHolder(itemView) {
 
     private var mContext: Context
@@ -35,7 +34,7 @@ class CategoryVH(mContext: Context, itemView: View?, itemClick: SimpleItemClickL
 
             categoryObj = `object`
 
-            tvName?.text = categoryObj?.productCategoryName
+            tvName?.text = if (!TextUtils.isEmpty(categoryObj!!.productCategoryName)) categoryObj!!.productCategoryName else ""
 
             if (categoryObj!!.isSelected) {
                 imgCheckBox!!.visibility = View.VISIBLE
