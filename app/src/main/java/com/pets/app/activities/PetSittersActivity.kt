@@ -1,5 +1,6 @@
 package com.pets.app.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -84,7 +85,8 @@ class PetSittersActivity : BaseActivity(), View.OnClickListener, SimpleItemClick
                 checkValidations()
             }
             R.id.btnRegister -> {
-
+                val mIntent = Intent(this, RegisterPetSitterActivity::class.java)
+                this.startActivity(mIntent)
             }
         }
     }
