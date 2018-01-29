@@ -257,7 +257,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
                 this.startActivity(mIntent)
             }
             4 -> {
-                val mIntent = Intent(this, ProfileActivity::class.java)
+                val mIntent = Intent(this, PetSittersActivity::class.java)
                 this.startActivity(mIntent)
             }
             5 -> {
