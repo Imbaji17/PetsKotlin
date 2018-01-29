@@ -276,14 +276,17 @@
 
                 <EditText
                     android:id="@+id/etDescription"
-                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/lato_regular"
                     android:gravity="start"
                     android:hint="@string/description"
-                    android:inputType="textMultiLine"
-                    android:maxLength="500"
-                    android:maxLines="5"
-                    android:minHeight="@dimen/dimen_size_80"
-                    android:singleLine="false" />
+                    android:lines="4"
+                    android:maxLines="4"
+                    android:padding="@dimen/dimen_size_10"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/colorAccent"
+                    android:textSize="@dimen/text_size_14" />
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout

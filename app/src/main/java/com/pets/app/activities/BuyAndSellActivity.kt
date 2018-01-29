@@ -8,7 +8,9 @@ import android.support.v4.view.ViewPager
 import android.view.View
 import android.widget.Button
 import com.pets.app.R
+import com.pets.app.activities.adoption.PostProductActivity
 import com.pets.app.adapters.BuySellPagerAdapter
+import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
 
 
@@ -18,6 +20,7 @@ class BuyAndSellActivity : BaseActivity(), View.OnClickListener {
     private var tlBuySell: TabLayout? = null
     private var adapter: BuySellPagerAdapter? = null
     private var btnPostProduct: Button? = null
+    private val RC_ADD_PRODUCT: Int = 100
 
     companion object {
         private val TAG = BuyAndSellActivity::class.java.simpleName
@@ -47,7 +50,13 @@ class BuyAndSellActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.btnPostProduct -> {
-
+                var type = ""
+                if (vpBuySell!!.currentItem == 0) {
+                    type = Enums.buySell.BUY.name
+                } else {
+                    type = Enums.buySell.SELL.name
+                }
+                PostProductActivity.startActivity(this, RC_ADD_PRODUCT, type)
             }
         }
     }

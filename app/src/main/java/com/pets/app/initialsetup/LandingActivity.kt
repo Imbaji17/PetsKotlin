@@ -253,8 +253,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 //                this.startActivity(mIntent)
             }
             3 -> {
-                val mIntent = Intent(this, FindHostelActivity::class.java)
-                this.startActivity(mIntent)
+                FindHostelActivity.startActivity(this, "")
             }
             4 -> {
                 val mIntent = Intent(this, PetSittersActivity::class.java)
@@ -265,8 +264,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 //                this.startActivity(mIntent)
             }
             6 -> {
-                val mIntent = Intent(this, AdoptionListActivity::class.java)
-                this.startActivity(mIntent)
+                AdoptionListActivity.startActivity(this, "")
             }
             7 -> {
                 BuyAndSellActivity.startActivity(this)

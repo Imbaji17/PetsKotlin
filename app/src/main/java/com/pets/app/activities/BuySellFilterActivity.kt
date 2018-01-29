@@ -170,7 +170,6 @@ class BuySellFilterActivity : BaseActivity(), View.OnClickListener {
         mDialog.setCancelable(true)
         mDialog.show()
 
-
         val fractionArr = resources.getStringArray(R.array.sort_price_arr)
 
         var numberPicker = mDialog.findViewById<NumberPicker>(R.id.numberPicker)

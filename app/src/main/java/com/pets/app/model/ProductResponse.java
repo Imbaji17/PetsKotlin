@@ -14,7 +14,14 @@ public class ProductResponse extends NormalResponse implements Serializable {
     @SerializedName("list")
     ArrayList<Product> list;
 
+    @SerializedName("result")
+    Product result;
+
     public ArrayList<Product> getList() {
         return list;
+    }
+
+    public Product getResult() {
+        return result;
     }
 }

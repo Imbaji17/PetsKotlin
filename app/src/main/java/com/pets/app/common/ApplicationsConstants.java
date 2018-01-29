@@ -30,4 +30,5 @@ public class ApplicationsConstants {
     public static final String CATEGORY_ID = "category_id";
     public static final String CATEGORY = "category";
     public static final String PRICE = "price";
+    public static final String INTERESTED = "interested";
 }

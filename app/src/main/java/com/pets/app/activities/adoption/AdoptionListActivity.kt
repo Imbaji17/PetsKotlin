@@ -70,11 +70,13 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
     private var pastVisibleItems: Int = 0
     private var visibleItemCount: Int = 0
     private var totalItemCount: Int = 0
+    private var isInterested: String? = ""
 
     companion object {
         private val TAG = AdoptionListActivity::class.java.simpleName
-        fun startActivity(activity: Activity) {
+        fun startActivity(activity: Activity, isInterested: String) {
             val intent = Intent(activity, AdoptionListActivity::class.java)
+            intent.putExtra(ApplicationsConstants.INTERESTED, isInterested)
             activity.startActivity(intent)
         }
     }
@@ -83,6 +85,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_adoption)
         initializeToolbar(getString(R.string.adoption))
+        init()
         initViewFlipperWithRecyclerView()
         initView()
         setAdapter()
@@ -109,6 +112,10 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
             }
         })
 
+    }
+
+    private fun init() {
+        isInterested = intent.getStringExtra(ApplicationsConstants.INTERESTED)
     }
 
     private fun initView() {
@@ -160,7 +167,7 @@ class AdoptionListActivity : BaseActivity(), View.OnClickListener {
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
             val call = apiClient.adoptionList(userId, timeStamp, key, language, nextOffset, latitude.toString(), longitude.toString(),
-                    petsTypeId, breedId, gender, distance!!)
+                    petsTypeId, breedId, gender, distance!!, isInterested)
             call.enqueue(object : Callback<AdoptionResponse> {
                 override fun onResponse(call: Call<AdoptionResponse>, response: Response<AdoptionResponse>?) {
                     loading = true

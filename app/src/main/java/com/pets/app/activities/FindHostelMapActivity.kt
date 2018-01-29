@@ -56,12 +56,14 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
     private val nextOffset: Int = 0
     private var mapFragment: SupportMapFragment? = null
     private var mHashMap: HashMap<Marker, String>? = HashMap()
+    private var isInterested: String? = ""
 
     companion object {
         private val TAG = FindHostelMapActivity::class.java.simpleName
-        fun startActivity(activity: Activity, list: ArrayList<Any>, requestCode: Int) {
+        fun startActivity(activity: Activity, list: ArrayList<Any>, requestCode: Int, isInterested: String) {
             val intent = Intent(activity, FindHostelMapActivity::class.java)
             intent.putExtra(ApplicationsConstants.DATA, list)
+            intent.putExtra(ApplicationsConstants.INTERESTED, isInterested)
             activity.startActivityForResult(intent, requestCode)
         }
     }
@@ -79,6 +81,7 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
 
     private fun init() {
         listItems = intent.getSerializableExtra(ApplicationsConstants.DATA) as java.util.ArrayList<Any>
+        isInterested = intent.getStringExtra(ApplicationsConstants.INTERESTED)
     }
 
     @SuppressLint("NewApi")
@@ -218,7 +221,7 @@ class FindHostelMapActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
         viewFlipper!!.displayedChild = 0
         if (Utils.isOnline(this)) {
             val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-            val call = apiClient.hostelList(key, "", language, latitude.toString(), longitude.toString(), nextOffset, timeStamp, userId)
+            val call = apiClient.hostelList(key, "", language, latitude.toString(), longitude.toString(), nextOffset, timeStamp, userId, isInterested)
             call.enqueue(object : Callback<FindHostelResponse> {
                 override fun onResponse(call: Call<FindHostelResponse>, response: Response<FindHostelResponse>?) {
                     if (response != null) {
