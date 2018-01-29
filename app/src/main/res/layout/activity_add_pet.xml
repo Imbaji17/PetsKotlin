@@ -257,7 +257,8 @@
                 android:fontFamily="@font/lato_bold"
                 android:padding="@dimen/dimen_size_15"
                 android:text="@string/delete_pet"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorAccent"
+                android:visibility="gone" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

@@ -256,7 +256,7 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
                 FindHostelActivity.startActivity(this, "")
             }
             4 -> {
-                val mIntent = Intent(this, ProfileActivity::class.java)
+                val mIntent = Intent(this, PetSittersActivity::class.java)
                 this.startActivity(mIntent)
             }
             5 -> {
