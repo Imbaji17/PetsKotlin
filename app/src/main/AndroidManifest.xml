@@ -208,6 +208,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.adoption.PostProductActivity"></activity>
         <activity android:name=".activities.ConfirmationActivity"></activity>
+        <activity
+            android:name=".activities.adoption.PostProductActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ConfirmationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

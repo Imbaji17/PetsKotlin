@@ -173,6 +173,7 @@
     <string name="x_price">$ %s</string>
     <string name="sort_price">Sort Price</string>
     <string name="done">Done</string>
+    <string name="price">Price</string>
 
     <string-array name="sort_price_arr">
         <item>PRICE</item>
