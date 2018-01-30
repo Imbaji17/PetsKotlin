@@ -221,5 +221,6 @@
     <string name="pet_certificate_doesnt_exist">Pet certificate doesn\'t exist</string>
     <string name="delete_pet">DELETE PET</string>
     <string name="are_you_sure_you_want_to_delete_pet">Are you sure you want to delete your pet</string>
-    <string name="register_as_pet_sitter">Register as pet sitter</string>
+    <string name="register_as_pet_sitter">Register As Pet Sitter</string>
+    <string name="save_information">Save Information</string>
 </resources>
