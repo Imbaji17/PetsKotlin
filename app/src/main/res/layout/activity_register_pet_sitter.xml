@@ -119,7 +119,7 @@
                         android:textColor="@color/grey"
                         android:textSize="@dimen/text_size_14" />
 
-                    <com.pets.app.widgets.RangeSee5kBar
+                    <com.pets.app.widgets.RangeSeekBar
                         android:id="@+id/rsbDistance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
