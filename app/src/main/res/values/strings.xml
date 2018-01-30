@@ -227,4 +227,5 @@
     <string name="register_as_pet_sitter">Register As Pet Sitter</string>
     <string name="save_information">Save Information</string>
     <string name="please_enter_phone_number">Please enter phone number</string>
+    <string name="pet_sitter">Pet Sitter</string>
 </resources>
