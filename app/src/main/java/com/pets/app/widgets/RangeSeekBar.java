@@ -25,7 +25,6 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.widget.ImageView;
 
-
 import com.pets.app.R;
 import com.pets.app.utilities.BitmapUtil;
 import com.pets.app.utilities.Logger;
@@ -38,7 +37,7 @@ public class RangeSeekBar<T extends Number> extends ImageView {
      * Default color of a {@link RangeSeekBar}, #FF33B5E5. This is also known as "Ice Cream Sandwich" blue.
      */
 //    public static final int ACTIVE_COLOR = Color.argb(0xFF, 0x33, 0xB5, 0xE5);
-    public static final int ACTIVE_COLOR = Color.argb(0xFF, 0xe2, 0x77, 0x25);
+    public static final int ACTIVE_COLOR = Color.argb(0xFF, 30, 187, 104);
     /**
      * <color name="orange">#e27725</color>
      * An invalid pointer id.
@@ -54,7 +53,7 @@ public class RangeSeekBar<T extends Number> extends ImageView {
     public static final int HEIGHT_IN_DP = 30;
     public static final int TEXT_LATERAL_PADDING_IN_DP = 3;
 
-    private static final int INITIAL_PADDING_IN_DP = 75;
+    private static final int INITIAL_PADDING_IN_DP = 25;
     private static final int DEFAULT_TEXT_SIZE_IN_DP = 10;
     private static final int DEFAULT_TEXT_DISTANCE_TO_BUTTON_IN_DP = 8;
     private static final int DEFAULT_TEXT_DISTANCE_TO_TOP_IN_DP = 8;
@@ -632,11 +631,11 @@ public class RangeSeekBar<T extends Number> extends ImageView {
 
             String minText = String.valueOf(getSelectedMinValue());
             String maxText = String.valueOf(getSelectedMaxValue());
-            T newT1 = (T) getSelectedMaxValue();
+            T newT1 = getSelectedMaxValue();
             Integer newT2 = (Integer) newT1;
 
 //            maxText = String.valueOf((newT2 + 1) / 2.0);
-            maxText = String.valueOf((newT2-1));
+            maxText = String.valueOf((newT2 - 1));
             maxText = maxText.concat(" " + getContext().getString(R.string.miles));
             float minTextWidth = paint.measureText(minText) + offset;
             float maxTextWidth = paint.measureText(maxText) + offset;

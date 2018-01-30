@@ -11,6 +11,7 @@ import com.pets.app.model.Breed
 import com.pets.app.model.Category
 import com.pets.app.model.PetsType
 import com.pets.app.model.`object`.PetDetails
+import com.pets.app.model.`object`.PetSitterDetails
 import com.pets.app.viewholders.*
 
 /**
@@ -24,6 +25,7 @@ class CommonAdapter(mContext: Context, mList: ArrayList<Any>) : RecyclerView.Ada
     private val BREED_TYPE: Int = 2
     private val MY_PETS: Int = 3
     private val PRODUCT_CATEGORY: Int = 4
+    private val PET_SITTER: Int = 5
     private lateinit var itemClick: SimpleItemClickListener
 
     init {
@@ -52,6 +54,10 @@ class CommonAdapter(mContext: Context, mList: ArrayList<Any>) : RecyclerView.Ada
                 val view: View = inflater.inflate(R.layout.item_select_type, parent, false)
                 viewHolder = CategoryVH(mContext, view, itemClick)
             }
+            PET_SITTER -> {
+                val view: View = inflater.inflate(R.layout.item_pet_sitter, parent, false)
+                viewHolder = PetSitterVH(mContext, view, itemClick)
+            }
         }
         return viewHolder!!
     }
@@ -74,6 +80,8 @@ class CommonAdapter(mContext: Context, mList: ArrayList<Any>) : RecyclerView.Ada
             return MY_PETS
         } else if (mList[position] is Category) {
             return PRODUCT_CATEGORY
+        } else if (mList[position] is PetSitterDetails) {
+            return PET_SITTER
         }
         return -1
     }

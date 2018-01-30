@@ -1,6 +1,7 @@
 package com.pets.app.viewholders
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -33,7 +34,7 @@ class BreedTypeVH(mContext: Context, itemView: View?, itemClick: SimpleItemClick
 
             breedObj = `object`
 
-            tvName?.text = breedObj?.breed_name
+            tvName?.text = if (!TextUtils.isEmpty(breedObj!!.breed_name)) breedObj!!.breed_name else ""
 
             if (breedObj!!.isSelected) {
                 imgCheckBox!!.visibility = View.VISIBLE

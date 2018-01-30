@@ -224,4 +224,7 @@
 
     <string name="feedback">Enter feedback</string>
     <string name="enter_your_feedback">Enter your feedback</string>
+    <string name="register_as_pet_sitter">Register As Pet Sitter</string>
+    <string name="save_information">Save Information</string>
+    <string name="please_enter_phone_number">Please enter phone number</string>
 </resources>

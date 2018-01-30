@@ -11,6 +11,7 @@ import com.pets.app.model.FunZoneResponse;
 import com.pets.app.model.LoginResponse;
 import com.pets.app.model.NormalResponse;
 import com.pets.app.model.PetResponse;
+import com.pets.app.model.PetSitterResponse;
 import com.pets.app.model.PetsTypeResponse;
 import com.pets.app.model.ProductResponse;
 import com.pets.app.model.ReviewsResponse;
@@ -91,6 +92,19 @@ public class WebServiceBuilder {
         @FormUrlEncoded
         @POST("delete_pet_image_by_id/")
         Call<PetResponse> deletePetImage(@Field("user_id") String user_id, @Field("pet_id") String pet_id, @Field("pet_image_id") String pet_image_id, @Field("timestamp") String timestamp, @Field("key") String key);
+
+        @GET("pet_sitters_list")
+        Call<PetSitterResponse> myPetSitterList(@Query("user_id") String user_id, @Query("timestamp") String timestamp, @Query("key") String key, @Query("language_code") String language_code, @Query("next_offset") String next_offset, @Query("lat") String lat, @Query("lng") String lng);
+
+        @FormUrlEncoded
+        @POST("add_edit_pet_sitter/")
+        Call<PetSitterResponse> addEditPetSitter(@Field("user_id") String user_id, @Field("key") String key, @Field("timestamp") String timestamp, @Field("pet_sitter_id") String pet_sitter_id, @Field("contact_person") String contact_person, @Field("contact_no") String contact_no,
+                                                 @Field("pets_type_id") String pets_type_id, @Field("address") String address, @Field("description") String description, @Field("lat") String lat, @Field("lng") String lng, @Field("distance") String distance);
+
+        @FormUrlEncoded
+        @POST("add_edit_pet_sitter/")
+        Call<PetSitterResponse> addEditPetSitter(@Field("user_id") String user_id, @Field("key") String key, @Field("timestamp") String timestamp, @Field("contact_person") String contact_person, @Field("contact_no") String contact_no,
+                                                 @Field("pets_type_id") String pets_type_id, @Field("address") String address, @Field("description") String description, @Field("lat") String lat, @Field("lng") String lng, @Field("distance") String distance);
 
         //http://34.199.202.75/pets/api/PetsApi/hostel_list?key=6b88b734ebb2c9f02ffe2cfdc1f40020&keyword=&language_code=EN&lat=0.000000&lng=0.000000&next_offset=0&timestamp=1515495550497.3&user_id=10
         @GET("hostel_list")

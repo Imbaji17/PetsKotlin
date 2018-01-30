@@ -6,7 +6,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.view.View
 import android.widget.*
@@ -90,8 +90,8 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         btnAddPet = findViewById(R.id.btnAddPet)
         tvDelete = findViewById(R.id.tvDelete)
 
-        val mGridLayoutManager = GridLayoutManager(this, 3)
-        mGridLayoutManager.orientation = GridLayoutManager.VERTICAL
+        val mGridLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        mGridLayoutManager.orientation = GridLayoutManager.HORIZONTAL
         mRecyclerView?.layoutManager = mGridLayoutManager
 
         adapter = PhotosAdapter(this, photoList, false)
