@@ -48,6 +48,7 @@
                         android:background="@drawable/rec_transparent_black"
                         android:paddingBottom="@dimen/dimen_size_5"
                         android:paddingLeft="@dimen/dimen_size_5"
+                        android:paddingStart="@dimen/dimen_size_5"
                         android:paddingTop="@dimen/dimen_size_5"
                         app:fillColor="@color/green"
                         app:pageColor="@color/white"
@@ -255,10 +256,7 @@
                         android:layout_marginTop="@dimen/dimen_size_5"
                         android:background="@color/light_grey" />
                 </LinearLayout>
-
-
             </LinearLayout>
-
         </android.support.v4.widget.NestedScrollView>
 
         <include layout="@layout/app_no_result_found" />
