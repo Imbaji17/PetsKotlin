@@ -1,7 +1,9 @@
 package com.pets.app.activities
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -11,15 +13,18 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.pets.app.R
+import com.pets.app.adapters.PhotosAdapter
 import com.pets.app.common.ApplicationsConstants
-import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.initialsetup.SelectCountryCodeActivity
+import com.pets.app.interfaces.AddPhotoCallback
 import com.pets.app.model.PetsType
+import com.pets.app.model.`object`.PhotosInfo
+import com.pets.app.utilities.ImagePicker
 import com.pets.app.utilities.Logger
 import com.pets.app.utilities.Utils
 import com.pets.app.widgets.RangeSeekBar
 
-class RegisterPetSitterActivity : BaseActivity(), View.OnClickListener {
+class RegisterPetSitterActivity : ImagePicker(), View.OnClickListener {
 
     private var edtContactPerson: EditText? = null
     private var edtCountryCode: EditText? = null
@@ -35,6 +40,8 @@ class RegisterPetSitterActivity : BaseActivity(), View.OnClickListener {
     private val RC_AUTOCOMPLETE: Int = 200
     private val RC_TYPE: Int = 300
     private var petsTypeId: String? = ""
+    private var adapter: PhotosAdapter? = null
+    private var photoList: ArrayList<Any>? = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +63,39 @@ class RegisterPetSitterActivity : BaseActivity(), View.OnClickListener {
         etDescription = findViewById(R.id.etDescription)
         btnSave = findViewById(R.id.btnSave)
 
+        mRecyclerView = findViewById(R.id.recyclerView)
+        val mGridLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        mGridLayoutManager.orientation = GridLayoutManager.HORIZONTAL
+        mRecyclerView?.layoutManager = mGridLayoutManager
+
+        adapter = PhotosAdapter(this, photoList, false)
+        mRecyclerView?.adapter = adapter
+        adapter?.setItemClickListener(object : AddPhotoCallback {
+            override fun onAddPhotoClick(position: Int) {
+                showTakeImagePopup()
+            }
+
+            override fun onDeleteClick(position: Int) {
+                if (position != -1 && position < photoList!!.size) {
+                    val photo = photoList!!.get(position) as PhotosInfo
+                    if (photoList!!.get(photoList!!.size - 1) is PhotosInfo) {
+                        photoList!!.add(getString(R.string.add_photo))
+                    }
+                    if (photo.url.contains("http")) {
+//                        if (Utils.isOnline(this@RegisterPetSitterActivity))
+//                            deletePetImageApiCall(photo, position)
+                    } else {
+                        photoList!!.removeAt(position)
+                        adapter!!.notifyDataSetChanged()
+                    }
+                }
+            }
+        })
+
         rsbDistance!!.selectedMaxValue = 0
+
+        photoList!!.add("")
+        adapter!!.notifyDataSetChanged()
     }
 
     private fun clickListeners() {
@@ -90,6 +129,20 @@ class RegisterPetSitterActivity : BaseActivity(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
+            RC_CROP_ACTIVITY -> {
+                if (data != null) {
+                    val result = com.theartofdev.edmodo.cropper.CropImage.getActivityResult(data)
+                    val mCurrentPhotoPath = result.uri.path
+                    val bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath)
+                    val photo = PhotosInfo()
+                    photo.url = mCurrentPhotoPath
+                    photoList?.size?.minus(1)?.let { photoList!!.add(it, photo) }
+                    if (photoList!!.size >= 3) {
+                        photoList!!.removeAt(photoList!!.size - 1)
+                    }
+                    adapter!!.notifyDataSetChanged()
+                }
+            }
             RC_AUTOCOMPLETE -> {
                 if (resultCode == RESULT_OK) {
                     // Get the user's selected place from the Intent.

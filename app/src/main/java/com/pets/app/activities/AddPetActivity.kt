@@ -91,7 +91,7 @@ class AddPetActivity : ImagePicker(), View.OnClickListener {
         tvDelete = findViewById(R.id.tvDelete)
 
         val mGridLayoutManager = GridLayoutManager(this, 3)
-        mGridLayoutManager.orientation = GridLayoutManager.VERTICAL
+        mGridLayoutManager.orientation = GridLayoutManager.HORIZONTAL
         mRecyclerView?.layoutManager = mGridLayoutManager
 
         adapter = PhotosAdapter(this, photoList, false)
