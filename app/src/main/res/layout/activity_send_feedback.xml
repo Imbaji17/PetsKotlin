@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_fade"
+    android:orientation="vertical"
+    tools:context="com.pets.app.activities.SendFeedbackActivity">
+
+    <include layout="@layout/app_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/etFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_size_20"
+                android:layout_marginRight="@dimen/dimen_size_20"
+                android:layout_marginTop="@dimen/dimen_size_20"
+                android:background="@drawable/rc_rounded_grey"
+                android:fontFamily="@font/lato_regular"
+                android:gravity="start"
+                android:hint="@string/description"
+                android:lines="6"
+                android:maxLines="6"
+                android:padding="@dimen/dimen_size_10"
+                android:textColor="@color/black"
+                android:textColorHint="@color/colorAccent"
+                android:textSize="@dimen/text_size_14" />
+
+            <Button
+                android:id="@+id/btnSubmit"
+                style="@style/ButtonStyle"
+                android:layout_marginLeft="@dimen/dimen_size_20"
+                android:layout_marginRight="@dimen/dimen_size_20"
+                android:layout_marginTop="@dimen/dimen_size_20"
+                android:text="@string/submit" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

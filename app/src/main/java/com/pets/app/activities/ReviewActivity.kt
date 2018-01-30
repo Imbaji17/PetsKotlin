@@ -46,14 +46,14 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
     private var type: String? = null
     private var nextOffset = 0
     private var btnWriteReview: Button? = null
-
+    val DEVICE_TYPE = "ANDROID"
     private var loading = true
     private var pastVisibleItems: Int = 0
     private var visibleItemCount: Int = 0
     private var totalItemCount: Int = 0
 
     companion object {
-        private val TAG = ReviewActivity::class.java.simpleName
+        val TAG = ReviewActivity::class.java.simpleName
         fun startActivity(activity: Activity, hostelId: String, type: String) {
             val intent = Intent(activity, ReviewActivity::class.java)
             intent.putExtra(ApplicationsConstants.ID, hostelId)
@@ -91,7 +91,6 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         })
-
     }
 
     private fun init() {

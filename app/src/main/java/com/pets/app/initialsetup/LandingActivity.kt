@@ -207,10 +207,10 @@ class LandingActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedL
 
             }
             R.id.nav_my_interests -> {
-//                MyInterestActivity.startActivity(this)
+                MyInterestActivity.startActivity(this)
             }
             R.id.nav_sent_feedback -> {
-
+                SendFeedbackActivity.startActivity(this)
             }
             R.id.nav_logout -> {
                 DialogManager.showDialogWithYesAndNo(this, this.getString(R.string.are_you_sure_you_want_to_exit), { dialogInterface, i ->

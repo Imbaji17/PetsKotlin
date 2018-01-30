@@ -18,6 +18,7 @@ import com.pets.app.model.request.FavouriteHostel;
 import com.pets.app.model.request.FunZoneAddComment;
 import com.pets.app.model.request.FunZoneLike;
 import com.pets.app.model.request.PetUpdateRequest;
+import com.pets.app.model.request.SentFeedback;
 import com.pets.app.model.request.UpdateUserRequest;
 import com.pets.app.model.request.WriteReview;
 
@@ -182,5 +183,9 @@ public class WebServiceBuilder {
         Call<ProductResponse> getProductList(@Query("user_id") String user_id, @Query("timestamp") String timeStamp, @Query("key") String key,
                                              @Query("language_code") String languageCode, @Query("product_type") String productType, @Query("pets_type_id") String petsTypeId,
                                              @Query("product_category_id") String productCategoryId, @Query("next_offset") int offset);
+
+        @POST("send_feedback")
+        Call<NormalResponse> sentFeedback(@Body SentFeedback sentFeedback);
+
     }
 }

@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.pets.app.R;
+import com.pets.app.activities.ReviewActivity;
 import com.pets.app.common.AppPreferenceManager;
 import com.pets.app.common.MyApplication;
 import com.pets.app.model.NormalResponse;
@@ -106,7 +107,6 @@ public class Utils {
     }
 
     public static boolean getConnectionStatus(Context context) {
-
         ConnectivityManager mConnectivityManager;
         NetworkInfo mNetworkInfoMobile, mNetworkInfoWifi;
 

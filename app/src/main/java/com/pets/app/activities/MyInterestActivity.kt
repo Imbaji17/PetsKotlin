@@ -20,7 +20,7 @@ class MyInterestActivity : BaseActivity(), SimpleItemClickListener {
     private var recyclerView: RecyclerView? = null
 
     companion object {
-        private val TAG = ReviewActivity::class.java.simpleName
+        private val TAG = MyInterestActivity::class.java.simpleName
         fun startActivity(activity: Activity) {
             val intent = Intent(activity, MyInterestActivity::class.java)
             activity.startActivity(intent)
