@@ -115,11 +115,11 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:paddingLeft="@dimen/dimen_size_5"
-                        android:text="@string/zero_mile"
+                        android:text="@string/distance"
                         android:textColor="@color/grey"
-                        android:textSize="@dimen/text_size_12" />
+                        android:textSize="@dimen/text_size_14" />
 
-                    <com.pets.app.widgets.RangeSeekBar
+                    <com.pets.app.widgets.RangeSee5kBar
                         android:id="@+id/rsbDistance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
