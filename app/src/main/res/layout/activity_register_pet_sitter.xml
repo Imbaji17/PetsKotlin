@@ -110,6 +110,15 @@
                     android:layout_centerVertical="true"
                     android:orientation="vertical">
 
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:paddingLeft="@dimen/dimen_size_5"
+                        android:text="@string/zero_mile"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_12" />
+
                     <com.pets.app.widgets.RangeSeekBar
                         android:id="@+id/rsbDistance"
                         android:layout_width="match_parent"

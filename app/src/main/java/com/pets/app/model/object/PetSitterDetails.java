@@ -39,6 +39,8 @@ public class PetSitterDetails implements Serializable {
     private boolean is_interest;
     @SerializedName("lat")
     private String lat;
+    @SerializedName("user_id")
+    private String user_id;
 
     @SerializedName("pets_type")
     private PetsType petsType;

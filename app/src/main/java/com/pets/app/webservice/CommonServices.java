@@ -1,21 +1,12 @@
 package com.pets.app.webservice;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 
 import com.pets.app.common.AppPreferenceManager;
 import com.pets.app.common.Constants;
 import com.pets.app.common.Enums;
 import com.pets.app.model.LoginResponse;
 import com.pets.app.utilities.TimeStamp;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
