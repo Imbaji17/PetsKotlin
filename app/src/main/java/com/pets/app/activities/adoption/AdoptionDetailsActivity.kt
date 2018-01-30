@@ -57,6 +57,7 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
     private var llForOfflineScreen: LinearLayout? = null
     private var adoptionId: String? = ""
     private var tvAvailable: TextView? = null
+    private var ivFavourite: ImageView? = null
 
     companion object {
         private val TAG = AdoptionDetailsActivity::class.java.simpleName
@@ -99,7 +100,7 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
         llAddress = findViewById(R.id.llAddress)
         tvAddress = findViewById(R.id.tvAddress)
         tvAvailable = findViewById(R.id.tvAvailable)
-
+        ivFavourite = findViewById(R.id.ivFavourite)
         viewFlipper = findViewById(R.id.viewFlipper)
         rlForLoadingScreen = findViewById(R.id.rlForLoadingScreen)
         mainLayout = findViewById(R.id.mainLayout)
@@ -197,7 +198,6 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
             llType?.visibility = View.GONE
         }
 
-
         if (!TextUtils.isEmpty(result.description)) {
             llDescription?.visibility = View.VISIBLE
             tvDescription?.text = result.description
@@ -229,6 +229,7 @@ class AdoptionDetailsActivity : BaseActivity(), View.OnClickListener {
         } else {
             ""
         }
+        ivFavourite!!.setImageResource(if (result.isInterest) R.drawable.fav1 else R.drawable.fav2)
     }
 
     private fun setOfflineLayout() {

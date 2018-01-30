@@ -51,6 +51,7 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
     private var llAddress: LinearLayout? = null
     private var tvAddress: TextView? = null
     private var cvp: CirclePageIndicator? = null
+    private var ivFavourite: ImageView? = null
 
     companion object {
         private val TAG = HostelDetailActivity::class.java.simpleName
@@ -90,6 +91,7 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
         llAddress = findViewById(R.id.llAddress)
         tvAddress = findViewById(R.id.tvAddress)
         cvp = findViewById(R.id.cvp)
+        ivFavourite = findViewById(R.id.ivFavourite)
 
         viewFlipper = findViewById(R.id.viewFlipper)
         rlForLoadingScreen = findViewById(R.id.rlForLoadingScreen)
@@ -183,6 +185,7 @@ class HostelDetailActivity : BaseActivity(), View.OnClickListener {
         } else {
             ""
         }
+        ivFavourite!!.setImageResource(if (result.isInterest) R.drawable.fav1 else R.drawable.fav2)
     }
 
     override fun onClick(view: View?) {
