@@ -36,13 +36,6 @@ public class MyApplication extends MultiDexApplication {
         return mInstance;
     }
 
-    public static SharedPreferences getSharedPreferences() {
-        if (prefs == null) {
-            prefs = getInstance().getSharedPreferences(Constants.PREFERENCE_FILE, MODE_PRIVATE);
-        }
-        return prefs;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
