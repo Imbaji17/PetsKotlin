@@ -11,12 +11,13 @@ import android.widget.Button
 import com.pets.app.R
 import com.pets.app.adapters.CommonAdapter
 import com.pets.app.common.AppPreferenceManager
+import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
 import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
 import com.pets.app.interfaces.SimpleItemClickListener
 import com.pets.app.model.PetSitterResponse
-import com.pets.app.model.`object`.PetDetails
+import com.pets.app.model.`object`.PetSitterDetails
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -164,8 +165,10 @@ class PetSittersActivity : BaseActivity(), View.OnClickListener, SimpleItemClick
     }
 
     override fun onItemClick(`object`: Any?) {
-        if (`object` is PetDetails) {
-            PetDetailsActivity.startActivity(this, `object`)
+        if (`object` is PetSitterDetails) {
+            val mIntent = Intent(this, RegisterPetSitterActivity::class.java)
+            mIntent.putExtra(ApplicationsConstants.ID, `object`.pet_sitter_id)
+            this.startActivity(mIntent)
         }
     }
 }

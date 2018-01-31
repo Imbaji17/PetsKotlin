@@ -9,9 +9,12 @@ import android.widget.TextView
 import android.widget.ViewFlipper
 import com.pets.app.R
 import com.pets.app.common.AppPreferenceManager
+import com.pets.app.common.ApplicationsConstants
 import com.pets.app.common.Constants
+import com.pets.app.common.Enums
 import com.pets.app.initialsetup.BaseActivity
-import com.pets.app.model.FindHostelResponse
+import com.pets.app.model.PetSitterResponse
+import com.pets.app.model.`object`.PetSitterDetails
 import com.pets.app.utilities.TimeStamp
 import com.pets.app.utilities.Utils
 import com.pets.app.webservice.RestClient
@@ -35,6 +38,7 @@ class PetSitterDetailsActivity : BaseActivity(), View.OnClickListener {
     private var viewFlipper: ViewFlipper? = null
     private var mainLayout: NestedScrollView? = null
     private var tvAddress: TextView? = null
+    private var petSitterId: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,7 @@ class PetSitterDetailsActivity : BaseActivity(), View.OnClickListener {
         initializeToolbar(getString(R.string.pet_sitter))
         initView()
         clickListeners()
+        getIntentData()
         checkValidations()
     }
 
@@ -68,6 +73,11 @@ class PetSitterDetailsActivity : BaseActivity(), View.OnClickListener {
 
         btnRetry?.setOnClickListener(this)
         tvReview?.setOnClickListener(this)
+    }
+
+    private fun getIntentData() {
+
+        petSitterId = intent?.getStringExtra(ApplicationsConstants.ID)
     }
 
     override fun onClick(v: View?) {
@@ -96,23 +106,32 @@ class PetSitterDetailsActivity : BaseActivity(), View.OnClickListener {
     private fun getPetSitterDetailsApiCall() {
 
         val userId = AppPreferenceManager.getUserID()
+        val languageCode = Enums.Language.EN.name
+        val latitude = AppPreferenceManager.getUser().lat
+        val longitude = AppPreferenceManager.getUser().lng
         val timestamp = TimeStamp.getTimeStamp()
         val key = TimeStamp.getMd5(timestamp + userId + Constants.TIME_STAMP_KEY)
 
         showLoader()
         val apiClient = RestClient.createService(WebServiceBuilder.ApiClient::class.java)
-        val call = apiClient.hostelDetailsById(hostelId, key, "EN", lat, lng, timeStamp, userId)
-        call.enqueue(object : Callback<FindHostelResponse> {
-            override fun onResponse(call: Call<FindHostelResponse>, response: Response<FindHostelResponse>?) {
+        val call = apiClient.petSitterDetailsById(userId, timestamp, key, languageCode, latitude, longitude, petSitterId)
+        call.enqueue(object : Callback<PetSitterResponse> {
+            override fun onResponse(call: Call<PetSitterResponse>, response: Response<PetSitterResponse>?) {
                 if (response != null && response.isSuccessful && response.body() != null && response.body().result != null) {
+                    checkResponse(response.body().result)
                 } else {
                     Utils.showErrorToast(response?.errorBody())
                 }
             }
 
-            override fun onFailure(call: Call<FindHostelResponse>, t: Throwable) {
+            override fun onFailure(call: Call<PetSitterResponse>, t: Throwable) {
             }
         })
+    }
+
+    private fun checkResponse(details: PetSitterDetails?) {
+
+
     }
 
     private fun showMainScreenLayout() {
